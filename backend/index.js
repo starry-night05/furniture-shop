@@ -2,16 +2,17 @@ import express from 'express';
 import cors from 'cors';
 import session from 'express-session';
 import dotenv from 'dotenv';
-import db from './config/Database';
+import db from './config/Database.js';
 import SequelizeStore from 'connect-session-sequelize';
+
 
 dotenv.config();
 
 const app = express();
 
-(async () => {
-    await db.sync();
-})();
+// (async () => {
+//     await db.sync();
+// })();
 
 const sessionStore = SequelizeStore(session.Store);
 
@@ -35,6 +36,7 @@ app.use(cors(
         origin: 'http://localhost:3000',
     }));
 app.use(express.json());
+// app.use()
 
 store.sync();
 

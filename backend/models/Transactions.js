@@ -5,7 +5,7 @@ import Products from "./Products.js";
 
 const { DataTypes } = Sequelize;
 
-const Transactions = db.define('Transactions', {
+const Transactions = db.define('transactions', {
     userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
