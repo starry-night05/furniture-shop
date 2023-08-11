@@ -9,9 +9,9 @@ dotenv.config();
 
 const app = express();
 
-// (async () => {
-//     await db.sync();
-// })();
+(async () => {
+    await db.sync();
+})();
 
 const sessionStore = SequelizeStore(session.Store);
 
@@ -36,7 +36,7 @@ app.use(cors(
     }));
 app.use(express.json());
 
-// store.sync();
+store.sync();
 
 app.listen(process.env.APP_PORT, () => {
     console.log('Server up and running...');
