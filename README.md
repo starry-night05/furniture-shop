@@ -1,3 +1,4 @@
+![Logo](https://miro.medium.com/v2/resize:fit:1182/1*PT2QknYqbHN1TsRuR_ghXA.png)
 
 # Furniture shop website
 
