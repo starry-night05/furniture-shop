@@ -69,7 +69,7 @@ const Transactions = db.define('transactions', {
 Users.hasMany(Transactions);
 Transactions.belongsTo(Users, { foreignKey: 'userId' });
 
-Products.hasMany(Transactions);
+Products.hasOne(Transactions);
 Transactions.belongsTo(Products, { foreignKey: 'productId' });
 
 export default Transactions;

@@ -52,10 +52,10 @@ const Users = db.define('users', {
         }
     },
     address: {
-        type: DataTypes.LONGTEXT,
-        allowNull: false,
+        type: DataTypes.TEXT,
+        allowNull: true,
         validate: {
-            notEmpty: true,
+            notEmpty: false,
             len: [3, 225]
         }
     },
