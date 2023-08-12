@@ -1,4 +1,4 @@
-![Logo](https://miro.medium.com/v2/resize:fit:1182/1*PT2QknYqbHN1TsRuR_ghXA.png)
+![Logo]([https://miro.medium.com/v2/resize:fit:1182/1*PT2QknYqbHN1TsRuR_ghXA.png](https://i.pinimg.com/originals/f3/47/70/f34770503b90f26ea389f557500ff825.png))
 
 # Furniture shop website
 
