@@ -56,6 +56,7 @@ export const addToCart = async (req, res) => {
                 status: 'checkin'
             });
         }
+        res.status(200).json({ msg: "Products added to cart" });
     } catch (error) {
 
     }
