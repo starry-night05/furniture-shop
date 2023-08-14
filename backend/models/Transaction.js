@@ -1,37 +1,23 @@
 import { Sequelize } from "sequelize";
 import db from "../config/Database.js";
+import Cart from "./Cart.js";
 import Users from "./Users.js";
-import Products from "./Products.js";
 
 const { DataTypes } = Sequelize;
 
-const Transactions = db.define('transactions', {
+const Transaction = db.define('transaction', {
+    cartId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
+    },
     userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
             notEmpty: true
-        }
-    },
-    productId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        }
-    },
-    qty: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        validate: {
-            notEmpty: true,
-        }
-    },
-    subtotal_price: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        validate: {
-            notEmpty: true,
         }
     },
     total_price: {
@@ -66,10 +52,13 @@ const Transactions = db.define('transactions', {
     freezeTableName: true
 });
 
-Users.hasMany(Transactions);
-Transactions.belongsTo(Users, { foreignKey: 'userId' });
+// Relation between cart and transaction
+Cart.hasOne(Transaction);
+Transaction.belongsTo(Cart, { foreignKey: 'cartId' });
 
-Products.hasOne(Transactions);
-Transactions.belongsTo(Products, { foreignKey: 'productId' });
+// Relation between user and transaction
+Users.hasMany(Transaction);
+Transaction.belongsTo(Users, { foreignKey: 'userId' });
 
-export default Transactions;
+
+export default Transaction;
