@@ -1,4 +1,4 @@
-![Logo](https://miro.medium.com/v2/resize:fit:1182/1*PT2QknYqbHN1TsRuR_ghXA.png)
+![Logo](https://www.stridenyc.com/hs-fs/hubfs/React-logo-1.png?width=559&name=React-logo-1.png)
 
 # Furniture shop website
 
