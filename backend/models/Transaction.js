@@ -41,6 +41,13 @@ const Transaction = db.define('transaction', {
             notEmpty: true
         }
     },
+    address: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
+    },
     status: {
         type: DataTypes.STRING,
         allowNull: false,
