@@ -8,33 +8,6 @@ import { Op } from "sequelize";
 export const cartList = async (req, res) => {
     try {
         let response;
-        if (req.role === 'user') {
-            response = await Cart.findAll({
-                attributes: ['id', 'userId', 'productId', 'qty', 'subtotal_price', 'subtotal_disc'],
-                where: {
-                    [Op.and]: [{
-                        userId: req.userId,
-                        status: 'checkin'
-                    }]
-                },
-                include: [{
-                    model: Users, Products,
-                    attributes: ['id', 'firstname', 'lastname', 'email', 'tlp', 'address', 'product_name', 'img', 'url', 'price', 'discount']
-                }]
-            });
-        }
-        res.status(200).json(response);
-    } catch (error) {
-        res.status(500).json({ msg: error.message });
-    }
-}
-
-// Create a new Product
-export const addToCart = async (req, res) => {
-    let qty;
-    let subtotal_price;
-    let subtotal_disc;
-    try {
         // Cek apakah sudah ada product di dalam cart
         const cart = await Cart.findAll({
             // Mengambil data cart berdasarkan user id dan status
@@ -45,19 +18,61 @@ export const addToCart = async (req, res) => {
                 }]
             }
         });
+        // Jika keranjang tidak kosong
         if (!cart) {
-            qty = 1;
-            const getProduct = await Products.findOne({
-                where: {
-                    id: req.params.id
-                },
-            });
-            subtotal_price = getProduct.price;
-            subtotal_disc = getProduct.disc;
+            if (req.role === 'user') {
+                response = await Cart.findAll({
+                    attributes: ['id', 'userId', 'productId', 'qty', 'subtotal_price', 'subtotal_disc'],
+                    where: {
+                        [Op.and]: [{
+                            userId: req.userId,
+                            status: 'checkin'
+                        }]
+                    },
+                    include: [{
+                        model: Users, Products,
+                        attributes: ['id', 'firstname', 'lastname', 'email', 'tlp', 'address', 'product_name', 'img', 'url', 'price', 'discount']
+                    }]
+                });
+            }
+            res.status(200).json(response);
+        } else { // Jika keranjang kosong
+            res.status(422).json({ msg: "Cart is empty, please order some product" });
+        }
+    } catch (error) {
+        res.status(500).json({ msg: error.message });
+    }
+}
+
+// add product to cart
+export const addToCart = async (req, res) => {
+    let qty;
+    let subtotal_price;
+    let subtotal_disc;
+    try {
+        qty = 1; // value default ketika produk baru ditambah ke cart
+        const getProduct = await Products.findOne({
+            where: {
+                id: req.params.id
+            },
+        });
+        subtotal_price = getProduct.price; // mengambil harga dari product yang dipesan
+        subtotal_disc = getProduct.disc; // mengambil diskon dari product yang dipesan
+
+        if (!getProduct.id === null) { // Jika product yang baru ditambah ke cart
             await Cart.create({
                 userId: req.userId,
                 productId: req.productId,
                 qty: qty,
+                subtotal_price: subtotal_price,
+                subtotal_disc: subtotal_disc,
+                status: 'checkin'
+            });
+        } else { // Jika product yang ditambahkan sudah ada
+            await Cart.create({
+                userId: req.userId,
+                productId: req.productId,
+                qty: qty + 1, // akan ditambah 1
                 subtotal_price: subtotal_price,
                 subtotal_disc: subtotal_disc,
                 status: 'checkin'

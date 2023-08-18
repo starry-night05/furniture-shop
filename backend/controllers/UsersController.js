@@ -26,7 +26,7 @@ export const getUserById = async (req, res) => {
     }
 }
 
-export const createUser = async (req, res) => {
+export const regUser = async (req, res) => {
     const { firstname, lastname, username, password, confPassword, email, tlp } = req.body; // request parameters
     if (password !== confPassword) return res.status(400).json({ msg: 'password and confirmation password didn`t match' }); // if password not match with confimPassword
     const hashPassword = await argon2.hash(password); // Hash password
@@ -39,6 +39,26 @@ export const createUser = async (req, res) => {
             email: email,
             tlp: tlp,
             role: 'user'
+        }); // Create user account/Register
+        res.status(200).json({ msg: 'Registration complete' });
+    } catch (error) {
+        res.status(400).json({ msg: error.message });
+    }
+}
+
+export const createUser = async (req, res) => {
+    const { firstname, lastname, username, password, confPassword, email, tlp, role } = req.body; // request parameters
+    if (password !== confPassword) return res.status(400).json({ msg: 'password and confirmation password didn`t match' }); // if password not match with confimPassword
+    const hashPassword = await argon2.hash(password); // Hash password
+    try {
+        await Users.create({
+            firstname: firstname,
+            lastname: lastname,
+            username: username,
+            password: hashPassword,
+            email: email,
+            tlp: tlp,
+            role: role
         }); // Create user account/Register
         res.status(200).json({ msg: 'Registration complete' });
     } catch (error) {

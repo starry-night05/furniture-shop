@@ -1,0 +1,46 @@
+// Create a new user
+POST http://localhost:5000/create-users
+Content-Type: application/json
+
+{
+    "firstname": "Bryant",
+    "lastname": "Sulthan Nugroho",
+    "username": "starry-night",
+    "password": "123456",
+    "confPassword": "123456",
+    "email": "starry@gmail.com",
+    "tlp": "6281239121",
+    "role": "admin"
+}
+
+###
+// Register user
+POST http://localhost:5000/registration
+Content-Type: application/json
+
+{
+    "firstname": "Ryan",
+    "lastname": "Sulthan",
+    "username": "starry05",
+    "password": "123456",
+    "confPassword": "123456",
+    "email": "starry05@gmail.com",
+    "tlp": "6290283428"
+}
+
+###
+// Update user profile
+PATCH http://localhost:5000/users/1
+Content-Type: application/json
+
+{
+    "firstname": "Bryant",
+    "lastname": "Sulthan Nugroho",
+    "username": "starry-night",
+    "password": "123456",
+    "confPassword": "123456",
+    "email": "starry@gmail.com",
+    "tlp": "0812313123",
+    "address": "Bogor",
+    "role": "user"
+}
