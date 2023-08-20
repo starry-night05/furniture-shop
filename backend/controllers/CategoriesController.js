@@ -1,4 +1,4 @@
-import Categories from "../models/Categories";
+import Categories from "../models/Categories.js";
 import path from "path"
 import fs from "fs"
 
@@ -17,9 +17,9 @@ export const getCategoryById = async (req, res) => {
                 id: req.params.id
             }
         });
-        res.json(response);
+        res.status(200).json(response);
     } catch (error) {
-        console.log(error.message);
+        res.status(500).json({ msg: error.message });
     }
 }
 export const addCategory = async (req, res) => {
@@ -46,7 +46,7 @@ export const addCategory = async (req, res) => {
             });
             res.status(201).json({ msg: "Category added successfully" });
         } catch (error) {
-            console.log(error.message);
+            res.status(500).json({ msg: "Error adding category" });
         }
     });
 }

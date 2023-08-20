@@ -8,8 +8,14 @@ import fs from 'fs';
 export const getProducts = async (req, res) => {
     try {
         const response = await Products.findAll({
+            attributes: ['id', 'product_name', 'description', 'stock', 'image', 'url', 'price', 'discount'],
             include: [{
                 model: Users,
+                attribute: ['id', 'firstname', 'lastname', 'username']
+            }],
+            include: [{
+                model: Categories,
+                attribute: ['id', 'category', 'img', 'url']
             }]
         });
         res.json(response);
@@ -35,7 +41,7 @@ export const getProductById = async (req, res) => {
 // Create a new Product
 export const createProduct = async (req, res) => {
     if (req.files === null) return res.status(400).json({ msg: 'No File added' }); // if file didn't exist
-    const { product_name, description, price, discount } = req.body;
+    const { categoryId, product_name, description, price, discount } = req.body;
     const file = req.files.file;
     const size = file.data.length;
     const ext = path.extname(file.product_name);
@@ -51,6 +57,8 @@ export const createProduct = async (req, res) => {
         if (err) return res.status(500).json({ msg: err.message });
         try {
             await Products.create({
+                categoryId: categoryId,
+                userId: req.userId,
                 product_name: product_name,
                 description: description,
                 image: fileName,
@@ -93,11 +101,12 @@ export const updateProduct = async (req, res) => {
         });
     }
 
-    const { name, price } = req.body;
+    const { categoryId, product_name, description, price, discount } = req.body;
     const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
 
     try {
         await Products.update({
+            categoryId: categoryId,
             product_name: product_name,
             description: description,
             image: fileName,

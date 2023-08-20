@@ -3,14 +3,14 @@ POST http://localhost:5000/create-users
 Content-Type: application/json
 
 {
-    "firstname": "Bryant",
-    "lastname": "Sulthan Nugroho",
-    "username": "starry-night",
+    "firstname": "user",
+    "lastname": "192312389",
+    "username": "starry-1",
     "password": "123456",
     "confPassword": "123456",
-    "email": "starry@gmail.com",
-    "tlp": "6281239121",
-    "role": "admin"
+    "email": "user1@gmail.com",
+    "tlp": "1298739121",
+    "role": "user"
 }
 
 ###
@@ -30,17 +30,21 @@ Content-Type: application/json
 
 ###
 // Update user profile
-PATCH http://localhost:5000/users/1
+PATCH http://localhost:5000/users/3
 Content-Type: application/json
 
 {
-    "firstname": "Bryant",
-    "lastname": "Sulthan Nugroho",
-    "username": "starry-night",
+    "firstname": "user 2",
+    "lastname": "keren",
+    "username": "user 2",
     "password": "123456",
     "confPassword": "123456",
-    "email": "starry@gmail.com",
-    "tlp": "0812313123",
+    "email": "user2@gmail.com",
+    "tlp": "98234235",
     "address": "Bogor",
     "role": "user"
 }
+
+###
+// get categories
+GET http://localhost:5000/category/1
