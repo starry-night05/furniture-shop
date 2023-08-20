@@ -1,11 +1,17 @@
 import Products from "../models/Products.js";
+import Users from "../models/Users.js";
+import Categories from "../models/Categories.js";
 import path from 'path';
 import fs from 'fs';
 
 // Get all products
 export const getProducts = async (req, res) => {
     try {
-        const response = await Products.findAll();
+        const response = await Products.findAll({
+            include: [{
+                model: Users,
+            }]
+        });
         res.json(response);
     } catch (error) {
         console.log(error.message);
