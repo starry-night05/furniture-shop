@@ -3,13 +3,13 @@ POST http://localhost:5000/create-users
 Content-Type: application/json
 
 {
-    "firstname": "user",
-    "lastname": "192312389",
-    "username": "starry-1",
+    "firstname": "Ryo",
+    "lastname": "Yamada",
+    "username": "yamada",
     "password": "123456",
     "confPassword": "123456",
-    "email": "user1@gmail.com",
-    "tlp": "1298739121",
+    "email": "ryo@gmail.com",
+    "tlp": "8462587712",
     "role": "user"
 }
 

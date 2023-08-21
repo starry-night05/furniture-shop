@@ -11,11 +11,10 @@ export const getProducts = async (req, res) => {
             attributes: ['id', 'product_name', 'description', 'stock', 'image', 'url', 'price', 'discount'],
             include: [{
                 model: Users,
-                attribute: ['id', 'firstname', 'lastname', 'username']
-            }],
-            include: [{
+                attribute: ['firstname', 'lastname', 'username']
+            }, {
                 model: Categories,
-                attribute: ['id', 'category', 'img', 'url']
+                attribute: ['category', 'img', 'url']
             }]
         });
         res.json(response);
@@ -28,6 +27,14 @@ export const getProducts = async (req, res) => {
 export const getProductById = async (req, res) => {
     try {
         const response = await Products.findOne({
+            attributes: ['id', 'product_name', 'description', 'stock', 'image', 'url', 'price', 'discount'],
+            include: [{
+                model: Users,
+                attribute: ['firstname', 'lastname', 'username']
+            }, {
+                model: Categories,
+                attribute: ['category', 'img', 'url']
+            }],
             where: {
                 id: req.params.id
             }
@@ -41,26 +48,27 @@ export const getProductById = async (req, res) => {
 // Create a new Product
 export const createProduct = async (req, res) => {
     if (req.files === null) return res.status(400).json({ msg: 'No File added' }); // if file didn't exist
-    const { categoryId, product_name, description, price, discount } = req.body;
+    const { categoryId, userId, product_name, description, stock, price, discount } = req.body;
     const file = req.files.file;
     const size = file.data.length;
-    const ext = path.extname(file.product_name);
+    const ext = path.extname(file.name);
     const fileName = file.md5 + ext;
-    const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
-    const allowedType = ['.jpeg', '.jpg', '.png', '.mp4', '.mp3'];
+    const url = `${req.protocol}://${req.get("host")}/images/products/${fileName}`;
+    const allowedType = ['.jpeg', '.jpg', '.png'];
 
     if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ msg: "Invalid image" }); // if the image is not in the allowed
 
     if (size > 200000000) return res.status(422).json({ msg: "Image must be less than 200MB" }); // if size is more than 200MB
 
-    file.mv(`./public/images/${fileName}`, async (err) => {
+    file.mv(`./public/images/products/${fileName}`, async (err) => {
         if (err) return res.status(500).json({ msg: err.message });
         try {
             await Products.create({
                 categoryId: categoryId,
-                userId: req.userId,
+                userId: userId,
                 product_name: product_name,
                 description: description,
+                stock: stock,
                 image: fileName,
                 url: url,
                 price: price,
@@ -87,13 +95,13 @@ export const updateProduct = async (req, res) => {
         const size = file.data.length;
         const ext = path.extname(file.product_name);
         fileName = file.md5 + ext;
-        const allowedType = ['.jpeg', '.jpg', '.png', '.mp4', '.mp3'];
+        const allowedType = ['.jpeg', '.jpg', '.png'];
 
         if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ msg: "Invalid image" });
 
         if (size > 200000000) return res.status(422).json({ msg: "Image must be less than 200MB" });
 
-        const filePath = `./public/images/${product.image}`;
+        const filePath = `./public/images/products/${product.image}`;
         fs.unlinkSync(filePath);
 
         file.mv(`./public/images/${fileName}`, (err) => {
@@ -102,7 +110,7 @@ export const updateProduct = async (req, res) => {
     }
 
     const { categoryId, product_name, description, price, discount } = req.body;
-    const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
+    const url = `${req.protocol}://${req.get("host")}/images/products/${fileName}`;
 
     try {
         await Products.update({
@@ -132,7 +140,7 @@ export const deleteProduct = async (req, res) => {
     if (!product) return res.status(404).json({ msg: "Product didn`t found" });
 
     try {
-        const filePath = `./public/images/${product.image}`;
+        const filePath = `./public/images/products/${product.image}`;
         fs.unlinkSync(filePath);
         await Products.destroy({
             where: {

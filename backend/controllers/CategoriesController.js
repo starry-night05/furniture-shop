@@ -10,6 +10,7 @@ export const categoryList = async (req, res) => {
         console.log(error.message);
     }
 }
+
 export const getCategoryById = async (req, res) => {
     try {
         const response = await Categories.findOne({
@@ -22,15 +23,16 @@ export const getCategoryById = async (req, res) => {
         res.status(500).json({ msg: error.message });
     }
 }
+
 export const addCategory = async (req, res) => {
     if (req.files === null) return res.status(400).json({ msg: 'No File added' });
-    const category = req.body;
+    const { category } = req.body;
     const file = req.files.file;
     const size = file.data.length;
     const ext = path.extname(file.name);
     const fileName = file.md5 + ext;
     const url = `${req.protocol}://${req.get("host")}/images/categories/${fileName}`;
-    const allowedType = ['.jpeg', '.jpg', '.png', '.mp4', '.mp3'];
+    const allowedType = ['.jpeg', '.jpg', '.png'];
 
     if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ msg: "Invalid image" });
 
@@ -39,14 +41,14 @@ export const addCategory = async (req, res) => {
     file.mv(`./public/images/categories/${fileName}`, async (err) => {
         if (err) return res.status(500).json({ msg: err.message });
         try {
-            await Products.create({
+            await Categories.create({
                 category: category,
                 img: fileName,
                 url: url
             });
             res.status(201).json({ msg: "Category added successfully" });
         } catch (error) {
-            res.status(500).json({ msg: "Error adding category" });
+            res.status(500).json({ msg: error.message });
         }
     });
 }
@@ -79,11 +81,11 @@ export const updateCategory = async (req, res) => {
         });
     }
 
-    const categoryName = req.body;
-    const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
+    const { categoryName } = req.body;
+    const url = `${req.protocol}://${req.get("host")}/images/categories/${fileName}`;
 
     try {
-        await Products.update({
+        await Categories.update({
             category: categoryName,
             img: fileName,
             url: url
@@ -106,7 +108,7 @@ export const removeCategory = async (req, res) => {
     if (!categories) return res.status(404).json({ msg: "Not found" });
 
     try {
-        const filePath = `./public/images/categories/${categories.image}`;
+        const filePath = `./public/images/categories/${categories.img}`;
         fs.unlinkSync(filePath);
         await Categories.destroy({
             where: {

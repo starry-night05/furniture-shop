@@ -23,8 +23,8 @@ const Products = db.define('products', {
     product_name: DataTypes.STRING,
     description: DataTypes.TEXT,
     stock: DataTypes.INTEGER,
-    image: DataTypes.STRING,
-    url: DataTypes.STRING,
+    image: DataTypes.TEXT,
+    url: DataTypes.TEXT,
     price: DataTypes.INTEGER,
     discount: DataTypes.INTEGER
 }, {
