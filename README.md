@@ -2,7 +2,7 @@
 
 # Furniture shop website
 
-## Pengenalan Aplikasi
+<h3>Pengenalan Aplikasi</h3>
 Merupakan website ecommerce yang berfokus pada penjualan berbagai furniture atau perabotan rumah tangga. Melalui website ini perusahaan dapat mempromosikan serta menjual produk-produknya secara online, dan konsumen dapat membeli dan melihat deskripsi produk tanpa harus berkunjung langsung ke tempat.
 
 ## Authentikasi
