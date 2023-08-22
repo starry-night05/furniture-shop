@@ -10,7 +10,7 @@ Merupakan website ecommerce yang berfokus pada penjualan berbagai furniture atau
 ## Authentikasi
 Aplikasi ini Terdapat 2 role :
 
-#### Admin
+<p style="font-weight: bold">Admin</p>
 dengan memasukkan username dan password pada form login
 - Username : username (admin)
 - password : password (admin)
