@@ -1,13 +1,16 @@
 import express from 'express';
 import {
-
-} from '../controllers';
+    cartList,
+    addToCart,
+    updateCartProduct,
+    deleteCartProduct
+} from '../controllers/CartController.js';
 
 const router = express.Router();
 
-router.get('/cart', get);
-router.post('/cart', createProduct);
-router.patch('/cart/:id', updateProduct);
-router.delete('/cart/:id', deleteProduct);
+router.get('/cart/:id', cartList);
+router.post('/addToCart/:id', addToCart);
+router.patch('/updateCart/:id', updateCartProduct);
+router.delete('/deleteCart/:id', deleteCartProduct);
 
 export default router;

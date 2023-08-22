@@ -8,6 +8,7 @@ import SequelizeStore from 'connect-session-sequelize';
 import UserRoute from './routes/UserRoute.js'
 import CategoriesRoute from './routes/CategoriesRoute.js'
 import ProductRoute from './routes/ProductRoute.js'
+import CartRoute from './routes/CartRoute.js'
 
 dotenv.config();
 
@@ -46,6 +47,7 @@ app.use(UserRoute);
 app.use(ProductRoute);
 app.use(CategoriesRoute);
 app.use(ProductRoute);
+app.use(CartRoute);
 
 // Create a new session
 // store.sync();

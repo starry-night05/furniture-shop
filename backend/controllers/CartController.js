@@ -13,28 +13,31 @@ export const cartList = async (req, res) => {
             // Mengambil data cart berdasarkan user id dan status
             where: {
                 [Op.and]: [{
-                    userId: req.userId,
+                    userId: req.params.id,
                     status: 'checkin'
                 }]
             }
         });
         // Jika keranjang tidak kosong
-        if (!cart) {
-            if (req.role === 'user') {
-                response = await Cart.findAll({
-                    attributes: ['id', 'userId', 'productId', 'qty', 'subtotal_price', 'subtotal_disc'],
-                    where: {
-                        [Op.and]: [{
-                            userId: req.userId,
-                            status: 'checkin'
-                        }]
-                    },
-                    include: [{
-                        model: Users, Products,
-                        attributes: ['id', 'firstname', 'lastname', 'email', 'tlp', 'address', 'product_name', 'img', 'url', 'price', 'discount']
+        if (cart !== null) {
+            // if (req.role === 'user') {
+            response = await Cart.findAll({
+                attributes: ['id', 'userId', 'productId', 'qty', 'subtotal_price', 'subtotal_disc'],
+                where: {
+                    [Op.and]: [{
+                        userId: req.params.id,
+                        status: 'checkin'
                     }]
-                });
-            }
+                },
+                include: [{
+                    model: Users,
+                    attributes: ['id', 'firstname', 'lastname', 'email', 'tlp', 'address']
+                }, {
+                    model: Products,
+                    attributes: ['product_name', 'image', 'url', 'price', 'discount']
+                }]
+            });
+            // }
             res.status(200).json(response);
         } else { // Jika keranjang kosong
             res.status(422).json({ msg: "Cart is empty, please order some product" });
@@ -59,22 +62,22 @@ export const addToCart = async (req, res) => {
         subtotal_price = getProduct.price; // mengambil harga dari product yang dipesan
         subtotal_disc = getProduct.disc; // mengambil diskon dari product yang dipesan
 
-        if (!getProduct.id === null) { // Jika product yang baru ditambah ke cart
+        if (req.params.id === null) { // Jika product yang baru ditambah ke cart
             await Cart.create({
-                userId: req.userId,
-                productId: req.productId,
+                userId: 2,
+                productId: req.params.id,
                 qty: qty,
-                subtotal_price: subtotal_price,
-                subtotal_disc: subtotal_disc,
+                subtotal_price: 1000000,
+                subtotal_disc: 0,
                 status: 'checkin'
             });
         } else { // Jika product yang ditambahkan sudah ada
             await Cart.create({
-                userId: req.userId,
-                productId: req.productId,
+                userId: 2,
+                productId: req.params.id,
                 qty: qty + 1, // akan ditambah 1
-                subtotal_price: subtotal_price,
-                subtotal_disc: subtotal_disc,
+                subtotal_price: 1000000,
+                subtotal_disc: 0,
                 status: 'checkin'
             });
         }

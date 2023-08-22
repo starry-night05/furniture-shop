@@ -47,4 +47,4 @@ Content-Type: application/json
 
 ###
 // get categories
-GET http://localhost:5000/category/1
+GET http://localhost:5000/products-category/6

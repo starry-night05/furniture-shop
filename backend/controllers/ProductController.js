@@ -11,11 +11,33 @@ export const getProducts = async (req, res) => {
             attributes: ['id', 'product_name', 'description', 'stock', 'image', 'url', 'price', 'discount'],
             include: [{
                 model: Users,
-                attribute: ['firstname', 'lastname', 'username']
+                attributes: ['firstname', 'lastname', 'username']
             }, {
                 model: Categories,
-                attribute: ['category', 'img', 'url']
+                attributes: ['category', 'img', 'url']
             }]
+        });
+        res.json(response);
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+// get products by category
+export const getProductBycategory = async (req, res) => {
+    try {
+        const response = await Products.findAll({
+            attributes: ['id', 'product_name', 'description', 'stock', 'image', 'url', 'price', 'discount'],
+            include: [{
+                model: Users,
+                attributes: ['firstname', 'lastname', 'username']
+            }, {
+                model: Categories,
+                attributes: ['category', 'img', 'url']
+            }],
+            where: {
+                categoryId: req.params.id
+            }
         });
         res.json(response);
     } catch (error) {
@@ -30,10 +52,10 @@ export const getProductById = async (req, res) => {
             attributes: ['id', 'product_name', 'description', 'stock', 'image', 'url', 'price', 'discount'],
             include: [{
                 model: Users,
-                attribute: ['firstname', 'lastname', 'username']
+                attributes: ['firstname', 'lastname', 'username']
             }, {
                 model: Categories,
-                attribute: ['category', 'img', 'url']
+                attributes: ['category', 'img', 'url']
             }],
             where: {
                 id: req.params.id
