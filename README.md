@@ -1,4 +1,6 @@
-![Logo](https://www.stridenyc.com/hs-fs/hubfs/React-logo-1.png?width=559&name=React-logo-1.png)
+<div style="display: flex; justify-content= center;">
+  <img src="https://www.stridenyc.com/hs-fs/hubfs/React-logo-1.png?width=559&name=React-logo-1.png" alt="logo" />
+</div>
 
 # Furniture shop website
 
