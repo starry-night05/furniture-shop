@@ -1,4 +1,6 @@
-<img src="https://www.stridenyc.com/hs-fs/hubfs/React-logo-1.png?width=559&name=React-logo-1.png" alt="logo" />
+<p align="center">
+  <img align="center" src="https://www.stridenyc.com/hs-fs/hubfs/React-logo-1.png?width=559&name=React-logo-1.png" alt="logo" />
+</p>
 
 # Furniture shop website
 
