@@ -49,39 +49,36 @@ export const cartList = async (req, res) => {
 
 // add product to cart
 export const addToCart = async (req, res) => {
-    let qty;
-    let subtotal_price;
-    let subtotal_disc;
-    try {
-        qty = 1; // value default ketika produk baru ditambah ke cart
-        const getProduct = await Products.findOne({
-            where: {
-                id: req.params.id
-            },
-        });
-        subtotal_price = getProduct.price; // mengambil harga dari product yang dipesan
-        subtotal_disc = getProduct.disc; // mengambil diskon dari product yang dipesan
+    const getProduct = await Products.findOne({
+        where: {
+            id: req.params.id
+        },
+    });
+    let qty = 1;
+    let subtotal_price = getProduct.price; // mengambil harga dari product yang dipesan
+    let subtotal_disc = getProduct.discount; // mengambil diskon dari product yang dipesan
+    let productId = getProduct.id;
 
-        if (req.params.id === null) { // Jika product yang baru ditambah ke cart
+    try {
+        // cek apakah keranjang user kosong
+        const cartUser = await Cart.findAll({
+            where: {
+                userId: 1
+            }
+        });
+        if (cartUser.productId === productId) { // !Masih error Jika product yang baru ditambah ke cart
             await Cart.create({
-                userId: 2,
-                productId: req.params.id,
+                userId: 1,
+                productId: productId,
                 qty: qty,
-                subtotal_price: 1000000,
-                subtotal_disc: 0,
+                subtotal_price: subtotal_price,
+                subtotal_disc: subtotal_disc,
                 status: 'checkin'
             });
+            res.status(200).json({ msg: "Products added to cart" });
         } else { // Jika product yang ditambahkan sudah ada
-            await Cart.create({
-                userId: 2,
-                productId: req.params.id,
-                qty: qty + 1, // akan ditambah 1
-                subtotal_price: 1000000,
-                subtotal_disc: 0,
-                status: 'checkin'
-            });
+            res.status(500).json({ msg: 'Product sudah ada' });
         }
-        res.status(200).json({ msg: "Products added to cart" });
     } catch (error) {
         res.status(500).json({ msg: error.message });
     }
