@@ -1,14 +1,16 @@
-![Logo](https://www.stridenyc.com/hs-fs/hubfs/React-logo-1.png?width=559&name=React-logo-1.png)
+<p align="center">
+  <img align="center" src="https://www.stridenyc.com/hs-fs/hubfs/React-logo-1.png?width=559&name=React-logo-1.png" alt="logo" />
+</p>
 
 # Furniture shop website
 
-## Pengenalan Aplikasi
+<h3>Pengenalan Aplikasi</h3>
 Merupakan website ecommerce yang berfokus pada penjualan berbagai furniture atau perabotan rumah tangga. Melalui website ini perusahaan dapat mempromosikan serta menjual produk-produknya secara online, dan konsumen dapat membeli dan melihat deskripsi produk tanpa harus berkunjung langsung ke tempat.
 
 ## Authentikasi
 Aplikasi ini Terdapat 2 role :
 
-#### Admin
+<p style="font-weight: bold">Admin</p>
 dengan memasukkan username dan password pada form login
 - Username : username (admin)
 - password : password (admin)
