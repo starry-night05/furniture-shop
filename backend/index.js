@@ -9,6 +9,7 @@ import UserRoute from './routes/UserRoute.js'
 import CategoriesRoute from './routes/CategoriesRoute.js'
 import ProductRoute from './routes/ProductRoute.js'
 import CartRoute from './routes/CartRoute.js'
+import TransactionsRoute from './routes/TransactionsRoute.js'
 
 dotenv.config();
 
@@ -48,6 +49,7 @@ app.use(ProductRoute);
 app.use(CategoriesRoute);
 app.use(ProductRoute);
 app.use(CartRoute);
+app.use(TransactionsRoute);
 
 // Create a new session
 // store.sync();

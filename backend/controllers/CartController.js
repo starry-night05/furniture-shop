@@ -1,7 +1,6 @@
 import Cart from "../models/Cart.js";
 import Products from "../models/Products.js";
 import Users from "../models/Users.js";
-import Transaction from "../models/Transaction.js";
 import { Op } from "sequelize";
 
 // Get all products
@@ -44,21 +43,21 @@ export const addToCart = async (req, res) => {
             id: req.params.id
         },
     });
-    let qty = 1;
+    let qty = 1; // quantity defualt ketika user memesan product
     let subtotal_price = getProduct.price; // mengambil harga dari product yang dipesan
     let subtotal_disc = getProduct.discount; // mengambil diskon dari product yang dipesan
-    let prdctId = getProduct.id;
+    let prdctId = getProduct.id; // mendapat dari productId yang dipesan
 
     let cartUser = await Cart.findAll({
         where: {
-            [Op.and]: [{ userId: 2 }, { productId: prdctId }, { status: 'checkin' }]
+            [Op.and]: [{ userId: 1 }, { productId: prdctId }, { status: 'checkin' }]
         }
     });
 
     try {
         if (cartUser.length === 0) { // Check if no cart items were found
             await Cart.create({
-                userId: 2,
+                userId: 1,
                 productId: prdctId,
                 qty: qty,
                 subtotal_price: subtotal_price,
@@ -110,40 +109,17 @@ export const updateCartProduct = async (req, res) => {
 // delete product from cart
 export const deleteCartProduct = async (req, res) => {
     try {
-        const product = await Products.findOne({
+        const cart = await Cart.findOne({
             where: {
                 id: req.params.id
             }
         });
-        await Products.destroy({
+        await Cart.destroy({
             where: {
-                [Op.and]: [{ id: product.id }, { userId: req.userId }]
+                [Op.and]: [{ id: cart.id }, { userId: 2 }]
             }
         });
-        res.status(200).json({ msg: "Product deleted successfully" });
-    } catch (error) {
-        res.status(500).json(error.message);
-    }
-}
-
-// checkout product from cart
-export const confirmOrder = async (req, res) => {
-    const { total_price, total_disc, payment, address } = req.body;
-    const cartId = result.Cart.id;
-    try {
-        if (address === null || address === '') {
-            res.status(422).json({ msg: "Address can`t be empty" });
-        }
-        await Transaction.create({
-            cartId: cartId,
-            userId: req.userId,
-            total_price: total_price,
-            total_disc: total_disc,
-            payment: payment,
-            address: address,
-            status: 'pending'
-        });
-        res.status(200).json({ msg: 'Checkout successfully' });
+        res.status(200).json({ msg: "Product removed from cart" });
     } catch (error) {
         res.status(500).json(error.message);
     }

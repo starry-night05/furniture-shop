@@ -5,7 +5,7 @@ import Users from "./Users.js";
 
 const { DataTypes } = Sequelize;
 
-const Transaction = db.define('transaction', {
+const Transaction = db.define('transactions', {
     cartId: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -34,7 +34,21 @@ const Transaction = db.define('transaction', {
             notEmpty: true,
         }
     },
+    total_qty: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+            notEmpty: true,
+        }
+    },
     payment: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
+    },
+    acc_num: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
