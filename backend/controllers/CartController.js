@@ -8,36 +8,26 @@ import { Op } from "sequelize";
 export const cartList = async (req, res) => {
     try {
         let response;
-        // Cek apakah sudah ada product di dalam cart
-        const cart = await Cart.findAll({
-            // Mengambil data cart berdasarkan user id dan status
+        // if (req.role === 'user') {
+        response = await Cart.findAll({
+            attributes: ['id', 'userId', 'productId', 'qty', 'subtotal_price', 'subtotal_disc'],
             where: {
                 [Op.and]: [{
                     userId: req.params.id,
                     status: 'checkin'
                 }]
-            }
+            },
+            include: [{
+                model: Users,
+                attributes: ['id', 'firstname', 'lastname', 'email', 'tlp', 'address']
+            }, {
+                model: Products,
+                attributes: ['product_name', 'image', 'url', 'price', 'discount']
+            }]
         });
+        // }
         // Jika keranjang tidak kosong
-        if (cart !== null) {
-            // if (req.role === 'user') {
-            response = await Cart.findAll({
-                attributes: ['id', 'userId', 'productId', 'qty', 'subtotal_price', 'subtotal_disc'],
-                where: {
-                    [Op.and]: [{
-                        userId: req.params.id,
-                        status: 'checkin'
-                    }]
-                },
-                include: [{
-                    model: Users,
-                    attributes: ['id', 'firstname', 'lastname', 'email', 'tlp', 'address']
-                }, {
-                    model: Products,
-                    attributes: ['product_name', 'image', 'url', 'price', 'discount']
-                }]
-            });
-            // }
+        if (response.length > 0) {
             res.status(200).json(response);
         } else { // Jika keranjang kosong
             res.status(422).json({ msg: "Cart is empty, please order some product" });
@@ -57,27 +47,27 @@ export const addToCart = async (req, res) => {
     let qty = 1;
     let subtotal_price = getProduct.price; // mengambil harga dari product yang dipesan
     let subtotal_disc = getProduct.discount; // mengambil diskon dari product yang dipesan
-    let productId = getProduct.id;
+    let prdctId = getProduct.id;
+
+    let cartUser = await Cart.findAll({
+        where: {
+            [Op.and]: [{ userId: 2 }, { productId: prdctId }, { status: 'checkin' }]
+        }
+    });
 
     try {
-        // cek apakah keranjang user kosong
-        const cartUser = await Cart.findAll({
-            where: {
-                userId: 1
-            }
-        });
-        if (cartUser.productId === productId) { // !Masih error Jika product yang baru ditambah ke cart
+        if (cartUser.length === 0) { // Check if no cart items were found
             await Cart.create({
-                userId: 1,
-                productId: productId,
+                userId: 2,
+                productId: prdctId,
                 qty: qty,
                 subtotal_price: subtotal_price,
                 subtotal_disc: subtotal_disc,
                 status: 'checkin'
             });
             res.status(200).json({ msg: "Products added to cart" });
-        } else { // Jika product yang ditambahkan sudah ada
-            res.status(500).json({ msg: 'Product sudah ada' });
+        } else { // If cart items were found
+            res.status(500).json({ msg: 'Product already in cart' });
         }
     } catch (error) {
         res.status(500).json({ msg: error.message });
