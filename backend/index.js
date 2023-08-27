@@ -10,6 +10,7 @@ import CategoriesRoute from './routes/CategoriesRoute.js'
 import ProductRoute from './routes/ProductRoute.js'
 import CartRoute from './routes/CartRoute.js'
 import TransactionsRoute from './routes/TransactionsRoute.js'
+import AuthRoute from './routes/AuthRoute.js'
 
 dotenv.config();
 
