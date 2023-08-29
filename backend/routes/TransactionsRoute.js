@@ -1,11 +1,14 @@
 import express from 'express';
 import {
-    confirmOrder
+    confirmOrder,
+    checkoutList
 } from '../controllers/TransactionController.js';
+import { verifyUser } from '../middleware/Auth.js';
 
 const router = express.Router();
 
-router.post('/confirm', confirmOrder);
+router.post('/confirm', verifyUser, confirmOrder);
+router.get('/checkoutList', verifyUser, checkoutList);
 // router.get('/product/:id', getProductById);
 // router.get('/products-category/:id', getProductBycategory);
 // router.post('/addProduct', createProduct);

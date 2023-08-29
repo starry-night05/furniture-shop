@@ -51,6 +51,7 @@ app.use(CategoriesRoute);
 app.use(ProductRoute);
 app.use(CartRoute);
 app.use(TransactionsRoute);
+app.use(AuthRoute);
 
 // Create a new session
 // store.sync();

@@ -48,3 +48,35 @@ Content-Type: application/json
 ###
 // get categories
 GET http://localhost:5000/products-category/6
+
+###
+// Login
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+    "email": "user2@gmail.com",
+    "password": "123456"
+}
+
+###
+// Logout
+DELETE http://localhost:5000/logout
+
+###
+//Profile
+GET http://localhost:5000/me
+
+###
+//Add to Cart
+POST http://localhost:5000/addToCart/1
+Content-Type: application/json
+
+###
+// Update cart qty
+PATCH http://localhost:5000/updateCart/33
+Content-Type: application/json
+
+{
+    "qty": 2
+}

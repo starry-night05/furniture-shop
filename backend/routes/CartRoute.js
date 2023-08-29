@@ -5,12 +5,13 @@ import {
     updateCartProduct,
     deleteCartProduct
 } from '../controllers/CartController.js';
+import { verifyUser } from '../middleware/Auth.js';
 
 const router = express.Router();
 
-router.get('/cart/:id', cartList);
-router.post('/addToCart/:id', addToCart);
-router.patch('/updateCart/:id', updateCartProduct);
-router.delete('/deleteCart/:id', deleteCartProduct);
+router.get('/cart/:id', verifyUser, cartList);
+router.post('/addToCart/:id', verifyUser, addToCart);
+router.patch('/updateCart/:id', verifyUser, updateCartProduct);
+router.delete('/deleteCart/:id', verifyUser, deleteCartProduct);
 
 export default router;
