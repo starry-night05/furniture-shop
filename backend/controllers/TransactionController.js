@@ -4,34 +4,51 @@ import Users from "../models/Users.js";
 import Products from "../models/Products.js";
 import { Op } from "sequelize";
 
+
+// User
 export const checkoutList = async (req, res) => {
     let response;
+    if (req.role == "admin") return res.status(422).json({ msg: 'Lu admin ngapa kepoin transaksi orang' })
     try {
-        let transactions = await Transaction.findAll({
-            attributes: ['id', 'cartId', 'userId', 'total_price', 'total_disc', 'total_qty', 'payment', 'address', 'status'],
-            where: {
-                [Op.and]: [{ userId: req.userId }, { status: 'pending' }]
-            }
+        let products = await Products.findAll({
+            attributes: ['id', 'product_name', 'image', 'url', 'price', 'discount']
         });
 
-        // Extract cartIds from transactions
-        const cartIds = transactions.map(transaction => transaction.cartId);
+        // Extract productIds from products
+        const productIds = products.map(product => product.id);
 
+        // Find the corresponding cart entries for the products
         let carts = await Cart.findAll({
             where: {
-                [Op.and]: [{ id: cartIds }, { userId: req.userId }]
+                [Op.and]: [{ productId: productIds }, { userId: req.userId }, { status: 'checkout' }]
             }
         });
 
-        // Extract productIds from carts
-        const productIds = carts.map(cart => cart.productId);
+        // Extract cartIds from carts
+        const cartIds = carts.map(cart => cart.id);
 
-        response = await Products.findAll({
+        // Find transactions associated with the cartIds
+        response = await Transaction.findAll({
             where: {
-                id: productIds
-            }
+                [Op.and]: [{ cartId: cartIds }, { userId: req.userId }]
+            },
+            include: [
+                {
+                    model: Users,
+                    attributes: ['id', 'firstname', 'lastname', 'email', 'tlp']
+                },
+                {
+                    model: Cart,
+                    attributes: ['id', 'subtotal_price', 'subtotal_disc'],
+                    include: [
+                        {
+                            model: Products,
+                            attributes: ['id', 'product_name', 'price', 'discount']
+                        }
+                    ]
+                }
+            ]
         });
-
         res.status(200).json(response);
     } catch (error) {
         res.status(422).json({ msg: error.message });
@@ -77,32 +94,110 @@ export const confirmOrder = async (req, res) => {
     }
 }
 
+export const cancelOrder = async (req, res) => {
+    try {
+        await Transaction.update({
+            status: 'cancel'
+        }, {
+            where: {
+                id: req.params.id
+            }
+        });
+        res.status(200).json({ msg: 'Pesanan telah dibatalkan' });
+    } catch (error) {
+        res.status(422).json({ msg: error.message });
+    }
+}
+
+// Admin
 export const getAllTransactions = async (req, res) => {
     let response;
     try {
-        let transactions = await Transaction.findAll({
-            attributes: ['id', 'cartId', 'userId', 'total_price', 'total_disc', 'total_qty', 'payment', 'address', 'status']
+        let products = await Products.findAll({
+            attributes: ['id', 'product_name', 'image', 'url', 'price', 'discount']
         });
 
-        // Extract cartIds from transactions
-        const cartIds = transactions.map(transaction => transaction.cartId);
+        // Extract productIds from products
+        const productIds = products.map(product => product.id);
 
+        // Find the corresponding cart entries for the products
         let carts = await Cart.findAll({
             where: {
-                id: cartIds
+                productId: productIds
             }
         });
 
-        // Extract productIds from carts
-        const productIds = carts.map(cart => cart.productId);
+        // Extract cartIds from carts
+        const cartIds = carts.map(cart => cart.id);
 
-        response = await Products.findAll({
+        // Find transactions associated with the cartIds
+        response = await Transaction.findAll({
             where: {
-                id: productIds
+                cartId: cartIds
+            },
+            include: [
+                {
+                    model: Users,
+                    attributes: ['id', 'firstname', 'lastname', 'email', 'tlp']
+                },
+                {
+                    model: Cart,
+                    attributes: ['id', 'subtotal_price', 'subtotal_disc', 'qty'],
+                    include: [
+                        {
+                            model: Products,
+                            attributes: ['id', 'product_name', 'price', 'discount']
+                        }
+                    ]
+                }
+            ]
+        });
+        res.status(200).json(response);
+    } catch (error) {
+        res.status(422).json({ msg: error.message });
+    }
+}
+
+export const confirm = async (req, res) => {
+    try {
+        await Transaction.update({
+            status: 'confirmed'
+        }, {
+            where: {
+                id: req.params.id
             }
         });
+        res.status(200).json({ msg: 'Pesanan telah dikonfirmasi' });
+    } catch (error) {
+        res.status(422).json({ msg: error.message });
+    }
+}
 
-        res.status(200).json(response);
+export const cancel = async (req, res) => {
+    try {
+        await Transaction.update({
+            status: 'cancel'
+        }, {
+            where: {
+                id: req.params.id
+            }
+        });
+        res.status(200).json({ msg: 'Pesanan telah dibatalkan' });
+    } catch (error) {
+        res.status(422).json({ msg: error.message });
+    }
+}
+
+export const shipping = async (req, res) => {
+    try {
+        await Transaction.update({
+            status: 'shipping'
+        }, {
+            where: {
+                id: req.params.id
+            }
+        });
+        res.status(200).json({ msg: 'Pesanan telah diantar ke alamat anda' });
     } catch (error) {
         res.status(422).json({ msg: error.message });
     }

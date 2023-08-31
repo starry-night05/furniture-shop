@@ -87,12 +87,12 @@ POST http://localhost:5000/confirm
 Content-Type: application/json
 
 {
-    "total_price": 3500000,
-    "total_disc": 25,
+    "total_price": 4000000,
+    "total_disc": 5,
     "total_qty": 2,
-    "payment": "Bank BCA",
-    "acc_num": "7136812",
-    "address": "Jakarta"
+    "payment": "Bank BRI",
+    "acc_num": "4123565",
+    "address": "Depok"
 }
 
 ###
@@ -102,3 +102,15 @@ GET http://localhost:5000/checkoutList
 ###
 // Transaction List Admin
 GET http://localhost:5000/Transactions
+
+###
+// confirmation order admin
+PATCH http://localhost:5000/confirm/6
+
+###
+// cancel order admin
+PATCH http://localhost:5000/cancel/6
+
+###
+// shipping order admin
+PATCH http://localhost:5000/shipping/6
