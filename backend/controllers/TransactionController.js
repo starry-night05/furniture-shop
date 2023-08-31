@@ -95,6 +95,13 @@ export const confirmOrder = async (req, res) => {
 }
 
 export const cancelOrder = async (req, res) => {
+    const cekStatus = await Transaction.findOne({
+        attributes: ['id', 'status'],
+        where: {
+            [Op.and]: [{ id: req.params.id, userId: req.userId }]
+        }
+    });
+    if (cekStatus.status === 'shipping') return res.status(422).json({ msg: 'Pesanan tidak dapat dibalkan karena pesanan sedang diantar' });
     try {
         await Transaction.update({
             status: 'cancel'
@@ -106,6 +113,29 @@ export const cancelOrder = async (req, res) => {
         res.status(200).json({ msg: 'Pesanan telah dibatalkan' });
     } catch (error) {
         res.status(422).json({ msg: error.message });
+    }
+}
+
+export const receiveOrder = async (req, res) => {
+    const cekStatus = await Transaction.findOne({
+        attributes: ['id', 'status'],
+        where: {
+            [Op.and]: [{ id: req.params.id, userId: req.userId }]
+        }
+    });
+    if (cekStatus.status === 'recieving') {
+        try {
+            await Transaction.update({
+                status: 'recieved',
+            }, {
+                where: {
+                    id: req.params.id
+                }
+            });
+            res.status(200).json({ msg: 'Pesanan telah diterima' });
+        } catch (error) {
+            res.status(422).json({ msg: error.message });
+        }
     }
 }
 
@@ -200,5 +230,28 @@ export const shipping = async (req, res) => {
         res.status(200).json({ msg: 'Pesanan telah diantar ke alamat anda' });
     } catch (error) {
         res.status(422).json({ msg: error.message });
+    }
+}
+
+export const receive = async (req, res) => {
+    const cekStatus = await Transaction.findOne({
+        attributes: ['id', 'status'],
+        where: {
+            id: req.params.id
+        }
+    });
+    if (cekStatus.status === 'shipping') {
+        try {
+            await Transaction.update({
+                status: 'recieving',
+            }, {
+                where: {
+                    id: req.params.id
+                }
+            });
+            res.status(200).json({ msg: 'Pesanan telah diterima pembeli' });
+        } catch (error) {
+            res.status(422).json({ msg: error.message });
+        }
     }
 }

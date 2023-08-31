@@ -11,6 +11,7 @@ import ProductRoute from './routes/ProductRoute.js'
 import CartRoute from './routes/CartRoute.js'
 import TransactionsRoute from './routes/TransactionsRoute.js'
 import AuthRoute from './routes/AuthRoute.js'
+import WishlistRoute from './routes/WishlistRoute.js'
 
 dotenv.config();
 
@@ -52,6 +53,7 @@ app.use(ProductRoute);
 app.use(CartRoute);
 app.use(TransactionsRoute);
 app.use(AuthRoute);
+app.use(WishlistRoute);
 
 // Create a new session
 // store.sync();
