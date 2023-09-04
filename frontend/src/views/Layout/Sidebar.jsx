@@ -33,7 +33,7 @@ const openedMixin = (theme) => ({
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen,
     }),
-    overflowX: 'hidden',
+    overflowX: 'hidden'
 });
 
 const closedMixin = (theme) => ({
@@ -52,6 +52,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
+    background: '#3b4664',
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
@@ -116,7 +117,7 @@ export default function MiniDrawer({ children }) {
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <AppBar position="fixed" open={open} sx={{ background: '#4D089A' }}>
+            <AppBar position="fixed" open={open} sx={{ background: 'linear-gradient(to left, #262d44, #3b4664)' }}>
                 <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <IconButton
                         color="inherit"
@@ -131,7 +132,7 @@ export default function MiniDrawer({ children }) {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" noWrap component="div" sx={{ mr: 'auto', color: '#FCD900', fontFamily: 'Lato', fontWeight: 'bold' }}>
+                    <Typography variant="h6" noWrap component="div" sx={{ mr: 'auto', color: '#FFFDE3', fontFamily: 'Lato', fontWeight: 'bold' }}>
                         Furniture Shop
                     </Typography>
                     <Box>
@@ -157,7 +158,7 @@ export default function MiniDrawer({ children }) {
                                     <Typography sx={{
                                         display: { xs: 'flex', md: 'flex' },
                                         justifyContent: { xs: 'center', md: 'space-between' },
-                                        color: '#FCD900'
+                                        color: '#FFFDE3'
                                     }}>
                                         <Home />
                                         <Typography
@@ -179,7 +180,7 @@ export default function MiniDrawer({ children }) {
                                     <Typography sx={{
                                         display: { xs: 'flex', md: 'flex' },
                                         justifyContent: { xs: 'center', md: 'space-between' },
-                                        color: '#FCD900',
+                                        color: '#FFFDE3',
                                         mt: 0.5
                                     }}>
                                         <BsBox2Fill />
@@ -202,7 +203,7 @@ export default function MiniDrawer({ children }) {
                                     <Typography sx={{
                                         display: { xs: 'flex', md: 'flex' },
                                         justifyContent: { xs: 'center', md: 'space-between' },
-                                        color: '#FCD900'
+                                        color: '#FFFDE3'
                                     }}>
                                         <ListAlt />
                                         <Typography
@@ -224,7 +225,7 @@ export default function MiniDrawer({ children }) {
                                     <Typography sx={{
                                         display: { xs: 'flex', md: 'flex' },
                                         justifyContent: { xs: 'center', md: 'space-between' },
-                                        color: '#FCD900'
+                                        color: '#FFFDE3'
                                     }}>
                                         <Person />
                                         <Typography
@@ -246,7 +247,7 @@ export default function MiniDrawer({ children }) {
                                     <Typography sx={{
                                         display: { xs: 'flex', md: 'flex' },
                                         justifyContent: { xs: 'center', md: 'space-between' },
-                                        color: '#FCD900',
+                                        color: '#FFFDE3',
                                         mt: 0.5
                                     }}>
                                         <BsCartFill />

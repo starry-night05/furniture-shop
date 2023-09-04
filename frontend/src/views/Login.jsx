@@ -31,14 +31,14 @@ const Login = () => {
     // }
 
     return (
-        <div style={{ background: '#F5F5F5', minHeight: '100vh' }}>
+        <div style={{ background: '#3b4664', minHeight: '100vh', backgroundRepeat: 'no-repeat' }}>
             <Container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
                 <Card sx={{ width: 980 }}>
                     <Box flexGrow={1} sx={{ display: { xs: 'none', md: 'flex' } }}>
                         <Grid container spacing={2} sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Grid md={6} sx={{ p: 3 }}>
+                            <Grid md={6} sx={{ p: 3, background: 'linear-gradient(to bottom, #262d44, #3b4664)', color: '#fff' }}>
                                 <CardContent>
-                                    <Typography gutterBottom variant="h5" sx={{ textAlign: 'center', mb: '2rem' }}>
+                                    <Typography gutterBottom variant="h5" sx={{ textAlign: 'center', mb: '2rem', fontFamily: 'Lato', fontWeight: 'bold' }}>
                                         Login
                                     </Typography>
                                     <Typography sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -47,22 +47,22 @@ const Login = () => {
                                         </Avatar>
                                     </Typography>
                                 </CardContent>
-                                <CardContent sx={{ mt: '2rem' }}>
+                                <CardContent sx={{ mt: '1rem' }}>
                                     <form>
                                         <FormGroup sx={{ mb: '1rem' }}>
-                                            <Typography variant="body1">Email :</Typography>
-                                            <TextField id="outlined-basic" variant="outlined" type='text' size='small' />
+                                            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>Email :</Typography>
+                                            <TextField id="outlined-basic" variant="outlined" type='text' size='small' sx={{ background: '#E9E4DA' }} />
                                         </FormGroup>
                                         <FormGroup sx={{ mb: '1rem' }}>
-                                            <Typography variant="body1">Password :</Typography>
-                                            <TextField id="outlined-basic" variant="outlined" type='password' size='small' />
+                                            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>Password :</Typography>
+                                            <TextField id="outlined-basic" variant="outlined" type='password' size='small' sx={{ background: '#E9E4DA' }} />
                                         </FormGroup>
                                         <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
                                             <FormGroup>
                                                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                                                     <Button type='submit' variant='contained' sx={{
-                                                        background: 'green',
-                                                        color: '#fff',
+                                                        background: '#d13f30',
+                                                        color: '#E9E4DA',
                                                         fontWeight: 'bold',
                                                         width: '100px'
                                                     }}>Login</Button>
@@ -72,9 +72,9 @@ const Login = () => {
                                     </form>
                                 </CardContent>
                             </Grid>
-                            <Grid md={6}>
+                            <Grid md={6} sx={{ background: '#E9E4DA' }}>
                                 <CardContent sx={{ display: 'grid', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
-                                    <Typography gutterBottom variant="h5" sx={{ mt: '8rem' }}>
+                                    <Typography gutterBottom variant="h5" sx={{ mt: '6rem', fontFamily: 'Lato', fontWeight: 'bold' }}>
                                         Furniture Shop
                                     </Typography>
                                     <Typography variant="body1">
@@ -84,11 +84,12 @@ const Login = () => {
                                         Belum punya akun?&nbsp;
                                         <a href="/register" style={{ textDecoration: 'none', color: '#000' }}>Daftar Gratis disini!</a>
                                     </Typography>
+                                    <img src="/furniture.png" alt='furniture' width={450} style={{ marginTop: '-7rem', marginBottom: '-8rem' }} />
                                 </CardContent>
                             </Grid>
                         </Grid>
                     </Box>
-                    <CardContent sx={{ display: { xs: 'grid', md: 'none' } }}>
+                    <CardContent sx={{ display: { xs: 'grid', md: 'none' }, background: 'linear-gradient(to bottom, #262d44, #3b4664)', color: '#fff' }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" sx={{ textAlign: 'center', mb: '2rem' }}>
                                 Login
@@ -99,22 +100,22 @@ const Login = () => {
                                 </Avatar>
                             </Typography>
                         </CardContent>
-                        <CardContent sx={{ mt: '2rem' }}>
+                        <CardContent sx={{ mt: '0.5rem' }}>
                             <form>
                                 <FormGroup sx={{ mb: '1rem' }}>
                                     <Typography variant="body1">Email :</Typography>
-                                    <TextField id="outlined-basic" variant="outlined" type='text' size='small' />
+                                    <TextField id="outlined-basic" variant="outlined" type='text' size='small' sx={{ background: '#E9E4DA' }} />
                                 </FormGroup>
                                 <FormGroup sx={{ mb: '1rem' }}>
                                     <Typography variant="body1">Password :</Typography>
-                                    <TextField id="outlined-basic" variant="outlined" type='password' size='small' />
+                                    <TextField id="outlined-basic" variant="outlined" type='password' size='small' sx={{ background: '#E9E4DA' }} />
                                 </FormGroup>
                                 <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
                                     <FormGroup>
                                         <div style={{ display: 'flex', justifyContent: 'center' }}>
                                             <Button type='submit' variant='contained' sx={{
-                                                background: 'green',
-                                                color: '#fff',
+                                                background: '#d13f30',
+                                                color: '#E9E4DA',
                                                 fontWeight: 'bold',
                                                 width: '100px'
                                             }}>Login</Button>
@@ -125,8 +126,8 @@ const Login = () => {
                         </CardContent>
                     </CardContent>
                 </Card>
-            </Container>
-        </div>
+            </Container >
+        </div >
     )
 }
 
