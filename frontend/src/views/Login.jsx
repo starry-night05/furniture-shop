@@ -38,7 +38,7 @@ const Login = () => {
                         <Grid container spacing={2} sx={{ display: 'flex', justifyContent: 'space-between' }}>
                             <Grid md={6} sx={{ p: 3, background: 'linear-gradient(to bottom, #262d44, #3b4664)', color: '#fff' }}>
                                 <CardContent>
-                                    <Typography gutterBottom variant="h5" sx={{ textAlign: 'center', mb: '2rem', fontFamily: 'Lato', fontWeight: 'bold' }}>
+                                    <Typography gutterBottom variant="h5" sx={{ textAlign: 'center', mb: '2rem', fontFamily: 'Lato', fontWeight: 'bold', letterSpacing: '.2rem' }}>
                                         Login
                                     </Typography>
                                     <Typography sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -75,7 +75,7 @@ const Login = () => {
                             <Grid md={6} sx={{ background: '#E9E4DA' }}>
                                 <CardContent sx={{ display: 'grid', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
                                     <Typography gutterBottom variant="h5" sx={{ mt: '6rem', fontFamily: 'Lato', fontWeight: 'bold' }}>
-                                        Furniture Shop
+                                        Amazing
                                     </Typography>
                                     <Typography variant="body1">
                                         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque ipsa ab minus itaque quo illo dignissimos deserunt rem quia assumenda asperiores impedit corporis architecto voluptates eligendi, hic laudantium veritatis alias minima id doloremque cum error. Rerum voluptate quibusdam, nam, ex placeat vitae repellendus, aspernatur vel nisi modi reprehenderit quasi suscipit!

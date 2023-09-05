@@ -133,7 +133,7 @@ export default function MiniDrawer({ children }) {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap component="div" sx={{ mr: 'auto', color: '#FFFDE3', fontFamily: 'Lato', fontWeight: 'bold' }}>
-                        Furniture Shop
+                        Amazing
                     </Typography>
                     <Box>
                         <Tooltip title="Account settings">
