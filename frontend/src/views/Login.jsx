@@ -31,7 +31,7 @@ const Login = () => {
     // }
 
     return (
-        <div style={{ background: '#3b4664', minHeight: '100vh', backgroundRepeat: 'no-repeat' }}>
+        <div style={{ background: '#F9FBE7', minHeight: '100vh', backgroundRepeat: 'no-repeat' }}>
             <Container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
                 <Card sx={{ width: 980 }}>
                     <Box flexGrow={1} sx={{ display: { xs: 'none', md: 'flex' } }}>

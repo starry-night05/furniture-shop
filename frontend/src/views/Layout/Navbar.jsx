@@ -16,12 +16,9 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Logout from '@mui/icons-material/Logout';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { List } from '@mui/material';
-import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
-
-const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 
 function ResponsiveAppBar() {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -190,7 +187,7 @@ function ResponsiveAppBar() {
                     </Toolbar>
                 </Container>
             </AppBar>
-            <AppBar sx={{ background: 'linear-gradient(to left, #262d44, #3b4664)', display: { xs: 'flex', md: 'none' } }}>
+            <AppBar position='fixed' sx={{ background: 'linear-gradient(to left, #262d44, #3b4664)', display: { xs: 'flex', md: 'none' } }}>
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
                         {/* responsive */}
@@ -208,6 +205,9 @@ function ResponsiveAppBar() {
                                 <ListItemIcon>
                                     <Typography variant="body1" component="a" href='/cart' sx={{ textDecoration: 'none', color: '#fff', pt: '5px', px: '5px' }}>
                                         <ShoppingCartOutlinedIcon />
+                                    </Typography>
+                                    <Typography variant="body1" component="a" href='/wishlist' sx={{ textDecoration: 'none', color: '#fff', pt: '5px', px: '5px' }}>
+                                        <FavoriteBorderOutlinedIcon />
                                     </Typography>
                                 </ListItemIcon>
                             </List>
