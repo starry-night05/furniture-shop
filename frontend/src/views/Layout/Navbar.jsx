@@ -1,4 +1,6 @@
 import * as React from 'react';
+// function
+// material ui
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -13,12 +15,14 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Divider from '@mui/material/Divider';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import Logout from '@mui/icons-material/Logout';
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { List } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
+// icons
+import Logout from '@mui/icons-material/Logout';
+import SearchIcon from '@mui/icons-material/Search';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import ReceiptOutlinedIcon from '@mui/icons-material/ReceiptOutlined';
 
 function ResponsiveAppBar() {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -72,7 +76,7 @@ function ResponsiveAppBar() {
 
     return (
         <Box sx={{ display: 'flex' }}>
-            <AppBar position="static" sx={{ background: 'linear-gradient(to left, #262d44, #3b4664)', display: { xs: 'none', md: 'grid' } }}>
+            <AppBar position="static" sx={{ background: '#F6F6F6', display: { xs: 'none', md: 'grid' }, color: '#7986C7' }}>
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
                         <Typography
@@ -83,7 +87,7 @@ function ResponsiveAppBar() {
                             sx={{
                                 mr: 2,
                                 display: { xs: 'none', md: 'flex' },
-                                fontFamily: 'Lato',
+                                fontFamily: 'Poppins',
                                 fontWeight: 700,
                                 letterSpacing: '.3rem',
                                 color: 'inherit',
@@ -91,11 +95,11 @@ function ResponsiveAppBar() {
                             }}
                         >
                             <img src="/furniture.png" alt='furniture' width={60} style={{ marginRight: '.5rem' }}></img>
-                            Amazing
+                            iCraft
                         </Typography>
                         <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex', justifyContent: 'center' } }}>
                             <Button
-                                sx={{ mr: '1rem', color: 'white', display: 'block', fontFamily: 'Lato' }}
+                                sx={{ mr: '1rem', color: '#7986C7', display: 'block', fontFamily: 'Poppins' }}
                             >
                                 Kategori
                             </Button>
@@ -110,16 +114,19 @@ function ResponsiveAppBar() {
                             </Search>
                         </Box>
                         <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, ml: 'auto' }}>
-                            <Button
-                                sx={{ color: 'white', display: 'block', fontFamily: 'Lato' }}
+                            <IconButton
+                                size='small'
+                                sx={{ width: 32, height: 32, color: '#7986C7', display: 'block', fontFamily: 'Poppins', textAlign: 'center' }}
+                                href='/wishlist'>
+                                <FavoriteBorderOutlinedIcon />
+                            </IconButton>
+                            <IconButton
+                                size='small'
+                                sx={{ width: 32, height: 32, ml: '15px', color: '#7986C7', display: 'block', fontFamily: 'Poppins', textAlign: 'center' }}
+                                href='/cart'
                             >
-                                Keranjang
-                            </Button>
-                            <Button
-                                sx={{ color: 'white', display: 'block', fontFamily: 'Lato' }}
-                            >
-                                Transaksi
-                            </Button>
+                                <ShoppingCartOutlinedIcon />
+                            </IconButton>
                         </Box>
                         <Box>
                             <Tooltip title="Account settings">
@@ -144,7 +151,7 @@ function ResponsiveAppBar() {
                                 elevation: 0,
                                 sx: {
                                     width: 150,
-                                    height: { xs: 125, md: 110 },
+                                    height: { xs: 125, md: 'content' },
                                     overflow: 'visible',
                                     filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
                                     mt: 1.5,
@@ -173,24 +180,31 @@ function ResponsiveAppBar() {
                             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                         >
-                            <MenuItem onClick={handleClose}>
-                                <Avatar /> Profil
-                            </MenuItem>
+                            <Typography component='a' href='/profile' sx={{ textDecoration: 'none', color: '#61677A' }}>
+                                <MenuItem onClick={handleClose}>
+                                    <Avatar /> Profil
+                                </MenuItem>
+                            </Typography>
+                            <Typography component='a' href='/transaksi' sx={{ textDecoration: 'none', color: '#61677A' }}>
+                                <MenuItem onClick={handleClose}>
+                                    <ReceiptOutlinedIcon />&nbsp; Transaksi
+                                </MenuItem>
+                            </Typography>
                             <Divider />
-                            <MenuItem onClick={handleClose}>
-                                <ListItemIcon>
-                                    <Logout />
-                                </ListItemIcon>
-                                Logout
-                            </MenuItem>
+                            <Typography component='a' href='/logout' sx={{ textDecoration: 'none', color: '#61677A' }}>
+                                <MenuItem onClick={handleClose}>
+                                    <Logout />&nbsp;
+                                    Logout
+                                </MenuItem>
+                            </Typography>
                         </Menu>
                     </Toolbar>
                 </Container>
             </AppBar>
-            <AppBar position='fixed' sx={{ background: 'linear-gradient(to left, #262d44, #3b4664)', display: { xs: 'flex', md: 'none' } }}>
+            {/* responsive */}
+            <AppBar position='fixed' sx={{ background: '#F6F6F6', display: { xs: 'flex', md: 'none' }, color: '#7986C7' }}>
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
-                        {/* responsive */}
                         <Search>
                             <SearchIconWrapper>
                                 <SearchIcon />
@@ -203,10 +217,10 @@ function ResponsiveAppBar() {
                         <Box sx={{ display: 'flex', ml: 'auto' }}>
                             <List>
                                 <ListItemIcon>
-                                    <Typography variant="body1" component="a" href='/cart' sx={{ textDecoration: 'none', color: '#fff', pt: '5px', px: '5px' }}>
+                                    <Typography variant="body1" component="a" href='/cart' sx={{ textDecoration: 'none', color: '#7986C7', pt: '5px', px: '5px' }}>
                                         <ShoppingCartOutlinedIcon />
                                     </Typography>
-                                    <Typography variant="body1" component="a" href='/wishlist' sx={{ textDecoration: 'none', color: '#fff', pt: '5px', px: '5px' }}>
+                                    <Typography variant="body1" component="a" href='/wishlist' sx={{ textDecoration: 'none', color: '#7986C7', pt: '5px', px: '5px' }}>
                                         <FavoriteBorderOutlinedIcon />
                                     </Typography>
                                 </ListItemIcon>

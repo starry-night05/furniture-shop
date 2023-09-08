@@ -19,9 +19,9 @@ const BottomNav = () => {
             onChange={handleChange}
             showLabels // Show labels below icons
         >
-            <BottomNavigationAction label="Home" icon={<HomeIcon />} href='/home' />
-            <BottomNavigationAction label="Profile" icon={<PersonIcon />} />
-            <BottomNavigationAction label="Transaksi" icon={<ReceiptLongOutlinedIcon />} />
+            <BottomNavigationAction label="Home" icon={<HomeIcon />} sx={{ color: '#7986C7' }} href='/home' />
+            <BottomNavigationAction label="Profile" icon={<PersonIcon />} sx={{ color: '#7986C7' }} />
+            <BottomNavigationAction label="Transaksi" icon={<ReceiptLongOutlinedIcon />} sx={{ color: '#7986C7' }} />
         </BottomNavigation>
     )
 }
