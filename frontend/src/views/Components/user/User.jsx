@@ -1,19 +1,24 @@
 import React, { useState } from 'react'
 // Componen
 import Navbar from '../../Layout/Navbar'
-// material ui
-import { Carousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import { Box, Card, CardContent, Container, Divider, Typography } from '@mui/material'
 import BottomNav from '../../Layout/BottomNav'
+// swiper
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Pagination, Autoplay } from 'swiper/modules'
+import 'swiper/css'
+import 'swiper/css/pagination'
+import './style/styles.css'
+// material
+import { Box, Card, CardContent, Container, Divider, Typography } from '@mui/material'
 import Grid from '@mui/material/Unstable_Grid2'
-import CardMedia from '@mui/material/CardMedia';
+import CardMedia from '@mui/material/CardMedia'
 // icons
 import CategoryIcon from '@mui/icons-material/CategoryOutlined'
 import ProductIcon from '@mui/icons-material/Inventory2Outlined'
 import WishlistIcon from '@mui/icons-material/FavoriteBorderOutlined'
 import WishlistIconFill from '@mui/icons-material/FavoriteOutlined'
 import CartIcon from '@mui/icons-material/ShoppingCartOutlined'
+import Footer from '../../Layout/Footer'
 
 const User = () => {
     const [isFilled, setIsFilled] = useState(false); // Initially, it's not filled
@@ -28,18 +33,22 @@ const User = () => {
             <Container sx={{ maxWidth: { xs: 'xl', md: 'lg' } }}>
                 <Box sx={{ flexGrow: 1, p: 0, mt: { xs: 10, md: 3 }, ml: { xs: 0, md: 2 } }}>
                     {/* Banner */}
-                    <Card sx={{ width: '100%', mb: '2rem', background: 'transparent' }}>
-                        <CardContent sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '15rem' }}>
-                            <Carousel autoPlay={true} showThumbs={false} showArrows={true} showStatus={false} infiniteLoop={true}>
-                                <div>
-                                    <img src="banner.jpeg" alt="banner" style={{ width: 'cover', height: '50%' }} />
-                                </div>
-                                <div>
-                                    <img src="banner2.jpeg" alt="banner2" style={{ width: 'cover', height: '50%' }} />
-                                </div>
-                            </Carousel>
-                        </CardContent>
-                    </Card>
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <Swiper slidesPerView={1} pagination={true} modules={[Pagination, Autoplay]} autoplay={true} className="mySwiper">
+                            <SwiperSlide>
+                                <img src="/Newbanner.png" alt="Newbanner" />
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <img src="/new_banner2.png" alt="new_banner2" />
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <img src="/Newbanner.png" alt="Newbanner" />
+                            </SwiperSlide>
+                            <SwiperSlide>
+                                <img src="/new_banner2.png" alt="new_banner2" />
+                            </SwiperSlide>
+                        </Swiper>
+                    </div>
                     {/* Kategori */}
                     <Typography variant='h5' sx={{ fontFamily: 'Poppins', fontWeight: '400', mt: '2.5rem' }}><CategoryIcon />&nbsp;Kategori</Typography>
                     <Divider />
@@ -68,7 +77,6 @@ const User = () => {
                                 <a href='/viewProduct' style={{ textDecoration: 'none' }}>
                                     <CardMedia
                                         component="img"
-                                        height="150"
                                         image="/banner.jpeg"
                                         alt="furniture"
                                     >
@@ -119,6 +127,7 @@ const User = () => {
                 </Box>
             </Container>
             <BottomNav />
+            <Footer />
         </Box>
     )
 }

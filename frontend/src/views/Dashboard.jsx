@@ -6,8 +6,8 @@ import User from './Components/user/User'
 const Dashboard = () => {
     return (
         <Layout>
-            {/* <Admin></Admin> */}
-            <User></User>
+            <Admin></Admin>
+            {/* <User></User> */}
         </Layout>
     )
 }
