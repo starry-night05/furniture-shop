@@ -150,11 +150,12 @@ export default function MiniDrawer({ children }) {
                         </Tooltip>
                     </Box>
                 </Toolbar>
+                {/* Responsive */}
                 <Toolbar sx={{ display: { xs: 'flex', md: 'none' } }}>
                     <Box sx={{ flexGrow: 1 }}>
                         <Grid container spacing={2} sx={{ display: 'flex', justifyContent: 'space-between' }}>
                             <Grid xs={2}>
-                                <a href="/" style={{ textDecoration: 'none' }}>
+                                <a>
                                     <Typography sx={{
                                         display: { xs: 'flex', md: 'flex' },
                                         justifyContent: { xs: 'center', md: 'space-between' },
@@ -268,6 +269,7 @@ export default function MiniDrawer({ children }) {
                         </Grid>
                     </Box>
                 </Toolbar>
+                {/* End Responsive */}
                 <Menu
                     anchorEl={anchorEl}
                     id="account-menu"
@@ -322,118 +324,128 @@ export default function MiniDrawer({ children }) {
             <Drawer variant="permanent" open={open} sx={{ display: { xs: 'none', md: 'flex' } }}>
                 <DrawerHeader>
                     <IconButton onClick={handleDrawerClose}>
-                        {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+                        {theme.direction === 'rtl' ? <ChevronRightIcon sx={{ color: '#fff' }} /> : <ChevronLeftIcon sx={{ color: '#fff' }} />}
                     </IconButton>
                 </DrawerHeader>
                 <Divider />
                 <List>
-                    <ListItem disablePadding sx={{ display: 'block' }} href='/'>
-                        <ListItemButton
-                            sx={{
-                                minHeight: 48,
-                                justifyContent: open ? 'initial' : 'center',
-                                px: 2.5,
-                            }}
-                        >
-                            <ListItemIcon
+                    <Typography variant="body1" component='a' href='/home' sx={{ color: '#61677A', textDecoration: 'none' }}>
+                        <ListItem disablePadding sx={{ display: 'block' }}>
+                            <ListItemButton
                                 sx={{
-                                    minWidth: 0,
-                                    mr: open ? 3 : 'auto',
-                                    justifyContent: 'center',
+                                    minHeight: 48,
+                                    justifyContent: open ? 'initial' : 'center',
+                                    px: 2.5,
                                 }}
                             >
-                                <Home></Home>
-                            </ListItemIcon>
-                            <ListItemText primary={'Dashboard'} sx={{ opacity: open ? 1 : 0 }} />
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem disablePadding sx={{ display: 'block' }} href='/productsList'>
-                        <ListItemButton
-                            sx={{
-                                minHeight: 48,
-                                justifyContent: open ? 'initial' : 'center',
-                                px: 2.5,
-                            }}
-                        >
-                            <ListItemIcon
+                                <ListItemIcon
+                                    sx={{
+                                        minWidth: 0,
+                                        mr: open ? 3 : 'auto',
+                                        justifyContent: 'center',
+                                    }}
+                                >
+                                    <Home></Home>
+                                </ListItemIcon>
+                                <ListItemText primary={'Dashboard'} sx={{ opacity: open ? 1 : 0 }} />
+                            </ListItemButton>
+                        </ListItem>
+                    </Typography>
+                    <Typography variant="body1" component='a' href='/list-produk' sx={{ color: '#61677A', textDecoration: 'none' }}>
+                        <ListItem disablePadding sx={{ display: 'block' }}>
+                            <ListItemButton
                                 sx={{
-                                    minWidth: 0,
-                                    mr: open ? 3.5 : 1,
-                                    ml: open ? 0.5 : 1,
-                                    justifyContent: 'center',
+                                    minHeight: 48,
+                                    justifyContent: open ? 'initial' : 'center',
+                                    px: 2.5,
                                 }}
                             >
-                                <BsBox2Fill></BsBox2Fill>
-                            </ListItemIcon>
-                            <ListItemText primary={'Produk'} sx={{ opacity: open ? 1 : 0 }} />
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem disablePadding sx={{ display: 'block' }} href='/categories'>
-                        <ListItemButton
-                            sx={{
-                                minHeight: 48,
-                                justifyContent: open ? 'initial' : 'center',
-                                px: 2.5,
-                            }}
-                        >
-                            <ListItemIcon
+                                <ListItemIcon
+                                    sx={{
+                                        minWidth: 0,
+                                        mr: open ? 3.5 : 1,
+                                        ml: open ? 0.5 : 1,
+                                        justifyContent: 'center',
+                                    }}
+                                >
+                                    <BsBox2Fill></BsBox2Fill>
+                                </ListItemIcon>
+                                <ListItemText primary={'Produk'} sx={{ opacity: open ? 1 : 0 }} />
+                            </ListItemButton>
+                        </ListItem>
+                    </Typography>
+                    <Typography variant="body1" component='a' href='/list-kategori' sx={{ color: '#61677A', textDecoration: 'none' }}>
+                        <ListItem disablePadding sx={{ display: 'block' }}>
+                            <ListItemButton
                                 sx={{
-                                    minWidth: 0,
-                                    mr: open ? 3 : 'auto',
-                                    justifyContent: 'center',
+                                    minHeight: 48,
+                                    justifyContent: open ? 'initial' : 'center',
+                                    px: 2.5,
                                 }}
                             >
-                                <ListAlt></ListAlt>
-                            </ListItemIcon>
-                            <ListItemText primary={'Categori'} sx={{ opacity: open ? 1 : 0 }} />
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem disablePadding sx={{ display: 'block' }} href='/users'>
-                        <ListItemButton
-                            sx={{
-                                minHeight: 48,
-                                justifyContent: open ? 'initial' : 'center',
-                                px: 2.5,
-                            }}
-                        >
-                            <ListItemIcon
+                                <ListItemIcon
+                                    sx={{
+                                        minWidth: 0,
+                                        mr: open ? 3 : 'auto',
+                                        justifyContent: 'center',
+                                    }}
+                                >
+                                    <ListAlt></ListAlt>
+                                </ListItemIcon>
+                                <ListItemText primary={'Kategori'} sx={{ opacity: open ? 1 : 0 }} />
+                            </ListItemButton>
+                        </ListItem>
+                    </Typography>
+                    <Typography variant="body1" component='a' href='/list-user' sx={{ color: '#61677A', textDecoration: 'none' }}>
+                        <ListItem disablePadding sx={{ display: 'block' }}>
+                            <ListItemButton
                                 sx={{
-                                    minWidth: 0,
-                                    mr: open ? 3 : 'auto',
-                                    justifyContent: 'center',
+                                    minHeight: 48,
+                                    justifyContent: open ? 'initial' : 'center',
+                                    px: 2.5,
                                 }}
                             >
-                                <Person></Person>
-                            </ListItemIcon>
-                            <ListItemText primary={'User'} sx={{ opacity: open ? 1 : 0 }} />
-                        </ListItemButton>
-                    </ListItem>
+                                <ListItemIcon
+                                    sx={{
+                                        minWidth: 0,
+                                        mr: open ? 3 : 'auto',
+                                        justifyContent: 'center',
+                                    }}
+                                >
+                                    <Person></Person>
+                                </ListItemIcon>
+                                <ListItemText primary={'User'} sx={{ opacity: open ? 1 : 0 }} />
+                            </ListItemButton>
+                        </ListItem>
+                    </Typography>
                 </List>
                 <Divider />
                 <List>
-                    <ListItem disablePadding sx={{ display: 'block' }} href='/TransactionList'>
-                        <ListItemButton
-                            sx={{
-                                minHeight: 48,
-                                justifyContent: open ? 'initial' : 'center',
-                                px: 2.5,
-                            }}
-                        >
-                            <ListItemIcon
+                    <Typography variant="body1" component='a' href='/daftar-transaksi' sx={{ color: '#61677A', textDecoration: 'none' }}>
+                        <ListItem disablePadding sx={{ display: 'block' }}>
+                            <ListItemButton
                                 sx={{
-                                    minWidth: 0,
-                                    mr: open ? 3 : 'auto',
-                                    justifyContent: 'center',
+                                    minHeight: 48,
+                                    justifyContent: open ? 'initial' : 'center',
+                                    px: 2.5,
                                 }}
                             >
-                                <BsCartFill />
-                            </ListItemIcon>
-                            <ListItemText primary={'Daftar Transaksi'} sx={{ opacity: open ? 1 : 0 }} />
-                        </ListItemButton>
-                    </ListItem>
+                                <ListItemIcon
+                                    sx={{
+                                        minWidth: 0,
+                                        mr: open ? 3 : 'auto',
+                                        justifyContent: 'center',
+                                    }}
+                                >
+                                    <BsCartFill />
+                                </ListItemIcon>
+                                <ListItemText primary={'Daftar Transaksi'} sx={{ opacity: open ? 1 : 0 }} />
+                            </ListItemButton>
+                        </ListItem>
+                    </Typography>
                 </List>
             </Drawer>
-            <main style={{ background: '#F5F5F5', minHeight: '100vh' }}>
+            <main style={{ background: '#F5F5F5', minHeight: '100vh', minWidth: open ? '84.2%' : '95.7%' }}>
                 {children}
             </main>
         </Box>

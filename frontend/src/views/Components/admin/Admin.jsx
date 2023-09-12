@@ -1,16 +1,98 @@
 import React from 'react'
+// component.render
 import Sidebar from '../../Layout/Sidebar'
+// mui.component
 import { Box, Typography } from '@mui/material'
+import Grid from '@mui/material/Unstable_Grid2'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Divider from '@mui/material/Divider'
+// icon.component
+import PersonIcon from '@mui/icons-material/PersonOutlineOutlined'
+import ProductIcon from '@mui/icons-material/Inventory2Outlined'
+import CategoryIcon from '@mui/icons-material/CategoryOutlined'
+import TransactionIcon from '@mui/icons-material/ReceiptLongOutlined'
+
 export const Admin = () => {
     return (
         <Sidebar>
-            <Box component="main" sx={{ flexGrow: 1, p: 3, mt: { xs: 15, md: 9 }, ml: { xs: 0, md: 2 } }}>
-                <Typography variant='h5' sx={{ fontFamily: 'Lato', mb: '1.5rem' }}>
-                    Welcome...
-                </Typography>
-                <Typography paragraph>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam doloremque autem beatae expedita est ad tempore aperiam inventore hic velit quo, cumque, non quibusdam aliquam debitis omnis fuga iusto corrupti dignissimos? Autem voluptas ex, odio natus magni eum iure, repellendus labore eveniet amet ipsa cum sapiente pariatur illum eligendi magnam impedit ducimus. Rem deserunt sunt aliquam facilis repellat ex cupiditate reprehenderit numquam recusandae mollitia esse porro dolorem a nihil ab tempore, nesciunt veritatis dolor doloribus. Dolorem, nihil libero pariatur rerum magnam autem obcaecati voluptates iusto itaque, deleniti eum magni totam est minima et sed! Praesentium quaerat ab modi at, temporibus obcaecati libero omnis corporis repellendus natus eveniet, quasi nobis aliquid recusandae aliquam veniam doloribus enim amet sint necessitatibus totam. Quibusdam, culpa ut maiores rem vitae consectetur repudiandae non officia hic! Itaque placeat recusandae quo. Doloremque voluptates natus aspernatur culpa voluptas ipsa blanditiis similique eligendi tempore neque, itaque eius quaerat animi laboriosam inventore at porro ipsum quisquam alias nemo. Consequuntur totam perspiciatis suscipit soluta. Laboriosam, non. Nostrum repellat libero, explicabo magnam, accusantium esse blanditiis, velit eos deleniti vel repudiandae tenetur quas necessitatibus. Eveniet placeat, vitae in mollitia impedit minus ut similique quidem quia dignissimos obcaecati labore magnam cumque porro necessitatibus fuga?
-                </Typography>
+            <Box component="main" sx={{ flexGrow: 1, p: 3, mt: { xs: 13, md: 9 }, ml: { xs: 0, md: 2 } }}>
+                <div style={{ width: '100%' }}>
+                    <Grid container spacing={2}>
+                        <Grid md={3} xs={6}>
+                            <Card sx={{ background: '#F6F6F6', color: '#61677A' }}>
+                                <CardContent sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                                    <Typography variant='body2'>
+                                        <PersonIcon />
+                                    </Typography>
+                                    <Typography variant='overline'>
+                                        User
+                                    </Typography>
+                                </CardContent>
+                                <Divider />
+                                <CardContent>
+                                    <Typography variant="body2" color="text.secondary">
+                                        200
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid md={3} xs={6}>
+                            <Card sx={{ background: '#F6F6F6', color: '#61677A' }}>
+                                <CardContent sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                                    <Typography variant='body2'>
+                                        <ProductIcon />
+                                    </Typography>
+                                    <Typography variant='overline'>
+                                        Produk
+                                    </Typography>
+                                </CardContent>
+                                <Divider />
+                                <CardContent>
+                                    <Typography variant="body2" color="text.secondary">
+                                        200
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid md={3} xs={6}>
+                            <Card sx={{ background: '#F6F6F6', color: '#61677A' }}>
+                                <CardContent sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                                    <Typography variant='body2'>
+                                        <CategoryIcon />
+                                    </Typography>
+                                    <Typography variant='overline'>
+                                        Kategori
+                                    </Typography>
+                                </CardContent>
+                                <Divider />
+                                <CardContent>
+                                    <Typography variant="body2" color="text.secondary">
+                                        200
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid md={3} xs={6}>
+                            <Card sx={{ background: '#F6F6F6', color: '#61677A' }}>
+                                <CardContent sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                                    <Typography variant='body2'>
+                                        <TransactionIcon />
+                                    </Typography>
+                                    <Typography variant='overline'>
+                                        Transaksi
+                                    </Typography>
+                                </CardContent>
+                                <Divider />
+                                <CardContent>
+                                    <Typography variant="body2" color="text.secondary">
+                                        200
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                    </Grid>
+                </div>
             </Box>
         </Sidebar>
     )
