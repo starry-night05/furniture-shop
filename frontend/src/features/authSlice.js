@@ -9,7 +9,7 @@ const initialState = {
     message: ""
 }
 
-export const Login = createAsyncThunk("user/Login", async (user, thunkAPI) => {
+export const LoginUser = createAsyncThunk("user/LoginUser", async (user, thunkAPI) => {
     try {
         const response = await axios.post('http://localhost:5000/login', {
             email: user.email,
@@ -47,21 +47,21 @@ export const authSlice = createSlice({
         reset: (state) => initialState
     },
     extraReducers: (builder) => {
-        builder.addCase(Login.pending, (state) => {
+        builder.addCase(LoginUser.pending, (state) => {
             state.isLoading = true;
         });
-        builder.addCase(Login.fulfilled, (state, action) => {
+        builder.addCase(LoginUser.fulfilled, (state, action) => {
             state.isLoading = false;
             state.isSuccess = true;
             state.user = action.payload;
         });
-        builder.addCase(Login.rejected, (state, action) => {
+        builder.addCase(LoginUser.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.message = action.payload;
         });
 
-        // Get User Login
+        // Get User LoginUser
         builder.addCase(Profile.pending, (state) => {
             state.isLoading = true;
         });

@@ -11,8 +11,8 @@ import { verifyUser, adminOnly } from '../middleware/Auth.js';
 
 const router = express.Router();
 
-router.get('/products', verifyUser, getProducts);
-router.get('/product/:id', verifyUser, getProductById);
+router.get('/products', getProducts);
+router.get('/product/:id', getProductById);
 router.get('/products-category/:id', verifyUser, getProductBycategory);
 router.post('/addProduct', adminOnly, createProduct);
 router.patch('/updateProduct/:id', adminOnly, updateProduct);

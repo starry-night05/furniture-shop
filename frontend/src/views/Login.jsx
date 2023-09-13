@@ -1,5 +1,8 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 // login app
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { LoginUser, reset } from "../features/authSlice"
 // material ui
 import Container from '@mui/material/Container'
 import Box from '@mui/material/Box'
@@ -16,6 +19,23 @@ import Avatar from '@mui/material/Avatar'
 import Person from '@mui/icons-material/Person'
 
 const Login = () => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { user, isError, isSuccess, isLoading, message } = useSelector((state) => state.auth);
+
+    useEffect(() => {
+        if (user || isSuccess) {
+            navigate("/home");
+        }
+        dispatch(reset());
+    }, [user, isSuccess, dispatch, navigate]);
+
+    const Auth = (e) => {
+        e.preventDefault();
+        dispatch(LoginUser({ email, password }));
+    }
     return (
         <div style={{ background: 'linear-gradient(to left, #F9FBE7, #FFEA85)', minHeight: '100vh', backgroundRepeat: 'no-repeat' }}>
             <div style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/background.svg)`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}>
@@ -40,14 +60,14 @@ const Login = () => {
                                         </Typography>
                                     </CardContent>
                                     <CardContent sx={{ mt: '1rem' }}>
-                                        <form>
+                                        <form onSubmit={Auth}>
                                             <FormGroup sx={{ mb: '1rem' }}>
                                                 <Typography variant="body1" sx={{ fontWeight: '400', fontFamily: 'Poppins' }}>Email :</Typography>
-                                                <TextField id="outlined-basic" variant="outlined" type='text' size='small' sx={{ background: '#E9E4DA' }} />
+                                                <TextField id="outlined-basic" variant="outlined" type='text' size='small' sx={{ background: '#E9E4DA' }} value={email} onChange={(e) => setEmail(e.target.value)} placeholder='Email' required />
                                             </FormGroup>
                                             <FormGroup sx={{ mb: '1rem' }}>
                                                 <Typography variant="body1" sx={{ fontWeight: '400', fontFamily: 'Poppins' }}>Password :</Typography>
-                                                <TextField id="outlined-basic" variant="outlined" type='password' size='small' sx={{ background: '#E9E4DA' }} />
+                                                <TextField id="outlined-basic" variant="outlined" type='password' size='small' sx={{ background: '#E9E4DA' }} value={password} onChange={(e) => setPassword(e.target.value)} placeholder='*****' required />
                                             </FormGroup>
                                             <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
                                                 <FormGroup>
@@ -62,7 +82,9 @@ const Login = () => {
                                                             '&:hover': {
                                                                 background: '#D71313'
                                                             }
-                                                        }}>Login</Button>
+                                                        }}>
+                                                            {isLoading ? 'Loading...' : 'Login'}
+                                                        </Button>
                                                     </div>
                                                 </FormGroup>
                                             </CardActions>

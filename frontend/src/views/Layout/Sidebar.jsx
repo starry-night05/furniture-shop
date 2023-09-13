@@ -52,7 +52,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    background: '#3b4664',
+    background: '#122D42',
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
@@ -117,7 +117,7 @@ export default function MiniDrawer({ children }) {
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <AppBar position="fixed" open={open} sx={{ background: 'linear-gradient(to left, #262d44, #3b4664)' }}>
+            <AppBar position="fixed" open={open} sx={{ background: '#122D42' }}>
                 <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <IconButton
                         color="inherit"
@@ -132,8 +132,8 @@ export default function MiniDrawer({ children }) {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" noWrap component="div" sx={{ mr: 'auto', color: '#FFFDE3', fontFamily: 'Lato', fontWeight: 'bold' }}>
-                        Amazing
+                    <Typography variant="h6" noWrap component="div" sx={{ mr: 'auto', color: '#FFC436', fontFamily: 'Lato', fontWeight: 'bold' }}>
+                        iDecor
                     </Typography>
                     <Box>
                         <Tooltip title="Account settings">
@@ -155,120 +155,70 @@ export default function MiniDrawer({ children }) {
                     <Box sx={{ flexGrow: 1 }}>
                         <Grid container spacing={2} sx={{ display: 'flex', justifyContent: 'space-between' }}>
                             <Grid xs={2}>
-                                <a>
-                                    <Typography sx={{
+                                <Typography
+                                    component='a'
+                                    href='/home'
+                                    sx={{
                                         display: { xs: 'flex', md: 'flex' },
                                         justifyContent: { xs: 'center', md: 'space-between' },
                                         color: '#FFFDE3'
                                     }}>
-                                        <Home />
-                                        <Typography
-                                            variant='overline'
-                                            sx={{
-                                                color: '#fff',
-                                                fontFamily: 'Lato',
-                                                fontWeight: 700,
-                                                textDecoration: 'none',
-                                                display: { xs: 'block', md: 'none' }
-                                            }}
-                                        >
-                                        </Typography>
-                                    </Typography>
-                                </a>
+                                    <Home />
+                                </Typography>
                             </Grid>
                             <Grid xs={2}>
-                                <a href="/productList" style={{ textDecoration: 'none' }}>
-                                    <Typography sx={{
+                                <Typography
+                                    component='a'
+                                    href='/list-produk'
+                                    sx={{
                                         display: { xs: 'flex', md: 'flex' },
                                         justifyContent: { xs: 'center', md: 'space-between' },
                                         color: '#FFFDE3',
                                         mt: 0.5
                                     }}>
-                                        <BsBox2Fill />
-                                        <Typography
-                                            variant='overline'
-                                            sx={{
-                                                color: '#fff',
-                                                fontFamily: 'Lato',
-                                                fontWeight: 700,
-                                                textDecoration: 'none',
-                                                display: { xs: 'block', md: 'none' }
-                                            }}
-                                        >
-                                        </Typography>
-                                    </Typography>
-                                </a>
+                                    <BsBox2Fill />
+                                </Typography>
                             </Grid>
                             <Grid xs={2}>
-                                <a href="/categoryList" style={{ textDecoration: 'none' }}>
-                                    <Typography sx={{
+                                <Typography
+                                    component='a'
+                                    href='/list-kategori'
+                                    sx={{
                                         display: { xs: 'flex', md: 'flex' },
                                         justifyContent: { xs: 'center', md: 'space-between' },
                                         color: '#FFFDE3'
                                     }}>
-                                        <ListAlt />
-                                        <Typography
-                                            variant='overline'
-                                            sx={{
-                                                color: '#fff',
-                                                fontFamily: 'Lato',
-                                                fontWeight: 700,
-                                                textDecoration: 'none',
-                                                display: { xs: 'block', md: 'none' }
-                                            }}
-                                        >
-                                        </Typography>
-                                    </Typography>
-                                </a>
+                                    <ListAlt />
+                                </Typography>
                             </Grid>
                             <Grid xs={2}>
-                                <a href="/users" style={{ textDecoration: 'none' }}>
-                                    <Typography sx={{
+                                <Typography
+                                    component='a'
+                                    href='/list-user'
+                                    sx={{
                                         display: { xs: 'flex', md: 'flex' },
                                         justifyContent: { xs: 'center', md: 'space-between' },
                                         color: '#FFFDE3'
                                     }}>
-                                        <Person />
-                                        <Typography
-                                            variant='overline'
-                                            sx={{
-                                                color: '#fff',
-                                                fontFamily: 'Lato',
-                                                fontWeight: 700,
-                                                textDecoration: 'none',
-                                                display: { xs: 'block', md: 'none' }
-                                            }}
-                                        >
-                                        </Typography>
-                                    </Typography>
-                                </a>
+                                    <Person />
+                                </Typography>
                             </Grid>
                             <Grid xs={2}>
-                                <a href="/TransactionList" style={{ textDecoration: 'none' }}>
-                                    <Typography sx={{
+                                <Typography
+                                    component='a'
+                                    href='/daftar-transaksi'
+                                    sx={{
                                         display: { xs: 'flex', md: 'flex' },
                                         justifyContent: { xs: 'center', md: 'space-between' },
                                         color: '#FFFDE3',
                                         mt: 0.5
                                     }}>
-                                        <BsCartFill />
-                                        <Typography
-                                            variant='overline'
-                                            sx={{
-                                                color: '#fff',
-                                                fontFamily: 'Lato',
-                                                fontWeight: 700,
-                                                textDecoration: 'none',
-                                                display: { xs: 'block', md: 'none' }
-                                            }}
-                                        >
-                                        </Typography>
-                                    </Typography>
-                                </a>
+                                    <BsCartFill />
+                                </Typography>
                             </Grid>
                         </Grid>
-                    </Box>
-                </Toolbar>
+                    </Box >
+                </Toolbar >
                 {/* End Responsive */}
                 <Menu
                     anchorEl={anchorEl}
@@ -305,12 +255,13 @@ export default function MiniDrawer({ children }) {
                                 zIndex: 0,
                             },
                         },
-                    }}
+                    }
+                    }
                     transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                 >
                     <MenuItem onClick={handleClose}>
-                        <Avatar /> Profil
+                        <Avatar /> Profile
                     </MenuItem>
                     <Divider />
                     <MenuItem onClick={handleClose}>
@@ -320,7 +271,7 @@ export default function MiniDrawer({ children }) {
                         Logout
                     </MenuItem>
                 </Menu>
-            </AppBar>
+            </AppBar >
             <Drawer variant="permanent" open={open} sx={{ display: { xs: 'none', md: 'flex' } }}>
                 <DrawerHeader>
                     <IconButton onClick={handleDrawerClose}>
@@ -448,6 +399,6 @@ export default function MiniDrawer({ children }) {
             <main style={{ background: '#F5F5F5', minHeight: '100vh', minWidth: open ? '84.2%' : '95.7%' }}>
                 {children}
             </main>
-        </Box>
+        </Box >
     );
 }

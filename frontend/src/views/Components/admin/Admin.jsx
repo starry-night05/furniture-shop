@@ -93,6 +93,19 @@ export const Admin = () => {
                         </Grid>
                     </Grid>
                 </div>
+                <div style={{ width: '100%', marginTop: '3rem' }}>
+                    <Grid container spacing={2}>
+                        <Grid md={12} xs={12}>
+                            <Card sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', background: '#F6F6F6', color: '#61677A', height: { xs: '30vh', md: '60vh', boxShadow: '2px 2px 4px 2px rgba(0, 0, 0, 0.2)' } }}>
+                                <CardContent>
+                                    <Typography variant='overline'>
+                                        Chart
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                    </Grid>
+                </div>
             </Box>
         </Sidebar>
     )
