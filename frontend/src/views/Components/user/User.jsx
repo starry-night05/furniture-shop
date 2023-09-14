@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 // Componen
 import Navbar from '../../Layout/Navbar'
 import BottomNav from '../../Layout/BottomNav'
+import Footer from '../../Layout/Footer'
 // swiper
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination, Autoplay } from 'swiper/modules'
@@ -18,7 +19,6 @@ import ProductIcon from '@mui/icons-material/Inventory2Outlined'
 import WishlistIcon from '@mui/icons-material/FavoriteBorderOutlined'
 import WishlistIconFill from '@mui/icons-material/FavoriteOutlined'
 import CartIcon from '@mui/icons-material/ShoppingCartOutlined'
-import Footer from '../../Layout/Footer'
 
 const User = () => {
     const [isFilled, setIsFilled] = useState(false); // Initially, it's not filled
@@ -33,7 +33,7 @@ const User = () => {
             <Container sx={{ maxWidth: { xs: 'xl', md: 'lg' } }}>
                 <Box sx={{ flexGrow: 1, p: 0, mt: { xs: 10, md: 3 }, ml: { xs: 0, md: 2 } }}>
                     {/* Banner */}
-                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: { xs: '100%' } }}>
                         <Swiper slidesPerView={1} pagination={true} modules={[Pagination, Autoplay]} autoplay={true} className="mySwiper">
                             <SwiperSlide>
                                 <img src="/Newbanner.png" alt="Newbanner" />
@@ -48,7 +48,7 @@ const User = () => {
                                 <img src="/new_banner2.png" alt="new_banner2" />
                             </SwiperSlide>
                         </Swiper>
-                    </div>
+                    </Box>
                     {/* Kategori */}
                     <Typography variant='h5' sx={{ fontFamily: 'Poppins', fontWeight: '400', mt: '2.5rem' }}><CategoryIcon />&nbsp;Kategori</Typography>
                     <Divider />
@@ -125,9 +125,9 @@ const User = () => {
                         </Grid>
                     </Grid>
                 </Box>
+                <Footer />
             </Container>
             <BottomNav />
-            <Footer />
         </Box>
     )
 }

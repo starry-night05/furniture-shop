@@ -7,7 +7,7 @@ import Divider from '@mui/material/Divider'
 // mui icons
 import InstagramIcon from '@mui/icons-material/Instagram'
 import TwitterIcon from '@mui/icons-material/Twitter'
-import FacebookIcon from '@mui/icons-material/FacebookOutlined';
+import FacebookIcon from '@mui/icons-material/FacebookOutlined'
 
 const Footer = () => {
     return (

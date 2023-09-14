@@ -1,5 +1,8 @@
 import * as React from 'react';
 // function
+import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Logout, reset } from "../../features/authSlice"
 // material ui
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
@@ -18,11 +21,13 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import { List } from '@mui/material';
 import InputBase from '@mui/material/InputBase';
 // icons
-import Logout from '@mui/icons-material/Logout';
+import LogoutIcon from '@mui/icons-material/Logout';
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import ReceiptOutlinedIcon from '@mui/icons-material/ReceiptOutlined';
+import LoginIcon from '@mui/icons-material/LoginOutlined';
+import RegIcon from '@mui/icons-material/AppRegistrationOutlined';
 
 function ResponsiveAppBar() {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -74,6 +79,17 @@ function ResponsiveAppBar() {
         },
     }));
 
+    // cek sudah login atau belum
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { user } = useSelector((state) => state.auth);
+
+    // logout
+    const logout = () => {
+        dispatch(Logout());
+        dispatch(reset());
+        navigate("/home");
+    }
     return (
         <Box sx={{ display: 'flex' }}>
             <AppBar position="static" sx={{ background: '#F6F6F6', display: { xs: 'none', md: 'grid' }, color: '#7986C7' }}>
@@ -151,7 +167,7 @@ function ResponsiveAppBar() {
                                 elevation: 0,
                                 sx: {
                                     width: 150,
-                                    height: { xs: 125, md: 'content' },
+                                    height: { xs: 125, md: user && user.role === 'user' ? 'content' : 95 },
                                     overflow: 'visible',
                                     filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
                                     mt: 1.5,
@@ -180,23 +196,41 @@ function ResponsiveAppBar() {
                             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                         >
-                            <Typography component='a' href='/profile' sx={{ textDecoration: 'none', color: '#61677A' }}>
-                                <MenuItem onClick={handleClose}>
-                                    <Avatar /> Profil
-                                </MenuItem>
-                            </Typography>
-                            <Typography component='a' href='/transaksi' sx={{ textDecoration: 'none', color: '#61677A' }}>
-                                <MenuItem onClick={handleClose}>
-                                    <ReceiptOutlinedIcon />&nbsp; Transaksi
-                                </MenuItem>
-                            </Typography>
-                            <Divider />
-                            <Typography component='a' href='/logout' sx={{ textDecoration: 'none', color: '#61677A' }}>
-                                <MenuItem onClick={handleClose}>
-                                    <Logout />&nbsp;
-                                    Logout
-                                </MenuItem>
-                            </Typography>
+                            {user && user.role === "user" && (
+                                <div>
+                                    <Typography component='a' href='/profile' sx={{ textDecoration: 'none', color: '#61677A' }}>
+                                        <MenuItem onClick={handleClose}>
+                                            <Avatar /> Profil
+                                        </MenuItem>
+                                    </Typography>
+                                    <Typography component='a' href='/transaksi' sx={{ textDecoration: 'none', color: '#61677A' }}>
+                                        <MenuItem onClick={handleClose}>
+                                            <ReceiptOutlinedIcon />&nbsp; Transaksi
+                                        </MenuItem>
+                                    </Typography>
+                                    <Divider />
+                                    <Typography component='a' onClick={logout} sx={{ textDecoration: 'none', color: '#61677A' }}>
+                                        <MenuItem onClick={handleClose}>
+                                            <LogoutIcon />&nbsp;
+                                            Logout
+                                        </MenuItem>
+                                    </Typography>
+                                </div>
+                            )}
+                            {!user && (
+                                <div>
+                                    <Typography component='a' href='/' sx={{ textDecoration: 'none', color: '#61677A' }}>
+                                        <MenuItem onClick={handleClose}>
+                                            <LoginIcon />&nbsp; Masuk
+                                        </MenuItem>
+                                    </Typography>
+                                    <Typography component='a' href='/daftar' sx={{ textDecoration: 'none', color: '#61677A' }}>
+                                        <MenuItem onClick={handleClose}>
+                                            <RegIcon />&nbsp; Daftar
+                                        </MenuItem>
+                                    </Typography>
+                                </div>
+                            )}
                         </Menu>
                     </Toolbar>
                 </Container>
@@ -229,7 +263,7 @@ function ResponsiveAppBar() {
                     </Toolbar>
                 </Container>
             </AppBar>
-        </Box>
+        </Box >
     );
 }
 export default ResponsiveAppBar;

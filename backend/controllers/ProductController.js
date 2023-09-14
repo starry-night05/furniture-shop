@@ -70,7 +70,7 @@ export const getProductById = async (req, res) => {
 // Create a new Product
 export const createProduct = async (req, res) => {
     if (req.files === null) return res.status(400).json({ msg: 'No File added' }); // if file didn't exist
-    const { categoryId, userId, product_name, description, stock, price, discount } = req.body;
+    const { categoryId, product_name, description, stock, price, discount } = req.body;
     const file = req.files.file;
     const size = file.data.length;
     const ext = path.extname(file.name);
@@ -87,7 +87,7 @@ export const createProduct = async (req, res) => {
         try {
             await Products.create({
                 categoryId: categoryId,
-                userId: userId,
+                userId: req.userId,
                 product_name: product_name,
                 description: description,
                 stock: stock,

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 // login app
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { LoginUser, reset } from "../features/authSlice"
+import { LoginUser, Profile, reset } from "../features/authSlice"
 // material ui
 import Container from '@mui/material/Container'
 import Box from '@mui/material/Box'
@@ -15,6 +15,8 @@ import CardContent from '@mui/material/CardContent'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import Avatar from '@mui/material/Avatar'
+import Alert from '@mui/material/Alert'
+import AlertTitle from '@mui/material/AlertTitle'
 // icons & img
 import Person from '@mui/icons-material/Person'
 
@@ -23,12 +25,13 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { user, isError, isSuccess, isLoading, message } = useSelector((state) => state.auth);
+    const { user, isError, isSuccess, isLoading, pesan } = useSelector((state) => state.auth);
 
     useEffect(() => {
         if (user || isSuccess) {
             navigate("/home");
         }
+        dispatch(Profile());
         dispatch(reset());
     }, [user, isSuccess, dispatch, navigate]);
 
@@ -48,6 +51,15 @@ const Login = () => {
                                 <Typography variant='overline' sx={{ fontFamily: 'Poppins', textAlign: 'center', pb: '6rem' }}>Membuat rumah menjadi mewah dengan iCraft</Typography>
                             </Grid>
                             <Grid xs={12} md={3} sx={{ ml: { xs: '0', md: '15rem' } }}>
+                                {isError ? (
+                                    <Alert severity="warning" sx={{ mb: '.5rem' }}>
+                                        <AlertTitle>Error</AlertTitle>
+                                        <strong>{pesan}</strong>
+                                    </Alert>
+                                ) : (
+                                    ''
+                                )
+                                }
                                 <Card sx={{ background: '#F7F5F2', boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)' }}>
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" sx={{ textAlign: 'center', mb: '2rem', fontFamily: 'Poppins', fontWeight: '400', letterSpacing: '.2rem' }}>
@@ -104,7 +116,7 @@ const Login = () => {
                     </Box>
                 </Container>
             </div>
-        </div>
+        </div >
     )
 }
 

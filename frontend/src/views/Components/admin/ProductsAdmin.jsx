@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 // component.render
 import Sidebar from '../../Layout/Sidebar'
 // mui.component
@@ -15,36 +16,28 @@ import Typography from '@mui/material/Typography'
 // icon.component
 import AddIcon from '@mui/icons-material/Add'
 
+
 // functions
 const columns = [
+    { id: 'no', label: 'No.', minWidth: 170 },
     { id: 'img', label: 'Gambar Produk', minWidth: 170 },
     { id: 'product_name', label: 'Nama Produk', minWidth: 100 },
     { id: 'categories', label: 'Kategori', minWidth: 100 },
+    { id: 'stock', label: 'Stok', minWidth: 100 },
     { id: 'discount', label: 'Diskon (%)', minWidth: 100 },
     { id: 'Newprice', label: 'Harga (Rp.)', minWidth: 100 },
-];
-
-function createData(img, product_name, categories, discount, price) {
-    const Newprice = price - price * (discount / 100);
-    return { img, product_name, categories, discount, Newprice };
-}
-const rows = [
-    createData('furniture.png', 'Meja Belajar', 'meja', 50, 2000000),
-    createData('banner.jpeg', 'Meja Kerja', 'meja', 10, 4000000),
-    createData('furniture.png', 'Meja Makan', 'meja', 26, 5400000),
-    createData('banner.jpeg', 'Kursi Gaming', 'kursi', 5, 2300000),
-    createData('furniture.png', 'Lemari Hias', 'lemari', 15, 12000000),
-    createData('banner.jpeg', 'Kursi Kantor', 'kursi', 5, 800000),
+    { id: 'aksi', label: 'Edit/Hapus', minWidth: 100 },
 ];
 
 const ProductsAdmin = () => {
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
-    const [searchQuery, setSearchQuery] = React.useState('');
+    const [product, setProducts] = useState([]);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(20);
+    const [searchQuery, setSearchQuery] = useState('');
 
     // Filter
-    const filteredRows = rows.filter((row) => {
-        const cellValue = row['product_name'].toString().toLowerCase();
+    const filteredRows = product.filter((product) => {
+        const cellValue = product['product_name'].toString().toLowerCase();
         return cellValue.includes(searchQuery.toLowerCase());
     });
 
@@ -57,6 +50,21 @@ const ProductsAdmin = () => {
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
+
+    // Mendapatkan semua data produk
+    useEffect(() => {
+        getProduct();
+    }, []);
+
+    const getProduct = async () => {
+        const response = await axios.get('http://localhost:5000/products');
+        setProducts(response.data);
+    }
+
+    const deleteProduct = async (productId) => {
+        await axios.delete(`http://localhost:5000/removeProduct/${productId}`);
+        getProduct();
+    }
 
     return (
         <Sidebar>
@@ -102,7 +110,6 @@ const ProductsAdmin = () => {
                                                 key={column.id}
                                                 align='justify'
                                                 style={{
-                                                    minWidth: column.minWidth,
                                                     background: '#122D42',
                                                     color: '#fff',
                                                     fontFamily: 'Poppins',
@@ -115,26 +122,41 @@ const ProductsAdmin = () => {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {filteredRows
-                                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                        .map((row) => {
-                                            return (
-                                                <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                                                    {columns.map((column) => {
-                                                        return (
-                                                            <TableCell key={column.id} align='justify' style={{ paddingLeft: '2rem' }}>
-                                                                {column.id === 'img' ? (
-                                                                    <img src={row.img} alt={row.product_name} style={{ maxWidth: '100px' }} />
-                                                                ) : (
-                                                                    row[column.id]
-                                                                )}
-                                                            </TableCell>
-                                                        );
-                                                    })}
-                                                </TableRow>
-                                            );
-                                        })}
-
+                                    {filteredRows.map((product, index) => {
+                                        return (
+                                            <TableRow hover role="checkbox" key={product.id}>
+                                                <TableCell key={product.id} style={{ paddingLeft: '2rem' }}>
+                                                    {index + 1}
+                                                </TableCell>
+                                                <TableCell key={product.id} style={{ paddingLeft: '2rem' }}>
+                                                    <img src={product.url} alt={product.product_name} style={{ width: '50px' }} />
+                                                </TableCell>
+                                                <TableCell key={product.id} style={{ paddingLeft: '2rem' }}>
+                                                    {product.product_name}
+                                                </TableCell>
+                                                <TableCell key={product.id} style={{ paddingLeft: '2rem' }}>
+                                                    {product.category.category}
+                                                </TableCell>
+                                                <TableCell key={product.id} style={{ paddingLeft: '2rem' }}>
+                                                    {product.stock}
+                                                </TableCell>
+                                                <TableCell key={product.id} style={{ paddingLeft: '2rem' }}>
+                                                    {`${(
+                                                        product.discount
+                                                    )}%`}
+                                                </TableCell>
+                                                <TableCell key={product.id} style={{ paddingLeft: '2rem' }}>
+                                                    {`Rp. ${(
+                                                        product.price - (product.discount / 100) * product.price
+                                                    ).toLocaleString('id-ID')}`}
+                                                </TableCell>
+                                                <TableCell key={product.id} style={{ paddingLeft: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', minHeight: '12vh' }}>
+                                                    <Typography variant="body2" component='a' href='/edit-produk' sx={{ background: '#7986C7', color: '#fff', p: '5px', textDecoration: 'none', fontFamily: 'Poppins', borderRadius: '10px' }}>Edit</Typography>
+                                                    <Typography variant="body2" component='a' onClick={() => deleteProduct(product.id)} sx={{ background: '#F73F52', color: '#fff', p: '5px', textDecoration: 'none', fontFamily: 'Poppins', borderRadius: '10px' }}>Hapus</Typography>
+                                                </TableCell>
+                                            </TableRow>
+                                        )
+                                    })}
                                 </TableBody>
                             </Table>
                         </TableContainer>

@@ -1,4 +1,9 @@
 import * as React from 'react';
+// function
+import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Logout, reset } from "../../features/authSlice"
+// mui.component
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -9,21 +14,22 @@ import Grid from '@mui/material/Unstable_Grid2'
 import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import ListItemIcon from '@mui/material/ListItemIcon';
 import { Tooltip, Menu, MenuItem } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import Avatar from '@mui/material/Avatar'
+// icon.component
+import { BsBox2Fill, BsCartFill } from 'react-icons/bs'
 import Home from '@mui/icons-material/Home';
 import Person from '@mui/icons-material/Person';
 import ListAlt from '@mui/icons-material/ListAlt';
-import Logout from '@mui/icons-material/Logout';
-import { BsBox2Fill, BsCartFill } from 'react-icons/bs'
-import Avatar from '@mui/material/Avatar'
+import LogoutIcon from '@mui/icons-material/Logout';
+import MenuIcon from '@mui/icons-material/Menu';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 const drawerWidth = 240;
 
@@ -114,6 +120,17 @@ export default function MiniDrawer({ children }) {
         setAnchorEl(null);
     };
 
+    // cek sudah login atau belum
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { user } = useSelector((state) => state.auth);
+
+    // logout
+    const logout = () => {
+        dispatch(Logout());
+        dispatch(reset());
+        navigate("/home");
+    }
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
@@ -260,16 +277,22 @@ export default function MiniDrawer({ children }) {
                     transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                 >
-                    <MenuItem onClick={handleClose}>
-                        <Avatar /> Profile
-                    </MenuItem>
-                    <Divider />
-                    <MenuItem onClick={handleClose}>
-                        <ListItemIcon>
-                            <Logout />
-                        </ListItemIcon>
-                        Logout
-                    </MenuItem>
+                    {user && user.role === "admin" && (
+                        <div>
+                            <Typography component='a' href='/profile' sx={{ textDecoration: 'none', color: '#61677A' }}>
+                                <MenuItem onClick={handleClose}>
+                                    <Avatar /> Profil
+                                </MenuItem>
+                            </Typography>
+                            <Divider />
+                            <Typography component='a' onClick={logout} sx={{ textDecoration: 'none', color: '#61677A' }}>
+                                <MenuItem onClick={handleClose}>
+                                    <LogoutIcon />&nbsp;
+                                    Logout
+                                </MenuItem>
+                            </Typography>
+                        </div>
+                    )}
                 </Menu>
             </AppBar >
             <Drawer variant="permanent" open={open} sx={{ display: { xs: 'none', md: 'flex' } }}>
