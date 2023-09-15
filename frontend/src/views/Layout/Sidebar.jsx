@@ -150,7 +150,7 @@ export default function MiniDrawer({ children }) {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap component="div" sx={{ mr: 'auto', color: '#FFC436', fontFamily: 'Lato', fontWeight: 'bold' }}>
-                        iDecor
+                        DekorKita
                     </Typography>
                     <Box>
                         <Tooltip title="Account settings">
@@ -247,7 +247,7 @@ export default function MiniDrawer({ children }) {
                         elevation: 0,
                         sx: {
                             width: 150,
-                            height: { xs: 125, md: 110 },
+                            height: { xs: 125, md: 93 },
                             overflow: 'visible',
                             filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
                             mt: 1.5,

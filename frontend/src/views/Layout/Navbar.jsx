@@ -167,7 +167,7 @@ function ResponsiveAppBar() {
                                 elevation: 0,
                                 sx: {
                                     width: 150,
-                                    height: { xs: 125, md: user && user.role === 'user' ? 'content' : 95 },
+                                    height: { xs: 125, md: user && user.role === 'user' ? 'content' : 88 },
                                     overflow: 'visible',
                                     filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
                                     mt: 1.5,

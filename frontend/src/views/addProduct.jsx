@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react'
+// component
 import Layout from './Layout/Layout'
-import { Admin } from './Components/admin/Admin'
-import User from './Components/user/User'
+import NewProduct from './Components/admin/NewProduct'
+// component.props
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { Profile } from '../features/authSlice'
 
-const Dashboard = () => {
+const AddProduct = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { isError } = useSelector((state => state.auth));
@@ -23,17 +24,11 @@ const Dashboard = () => {
     }, [isError, navigate]);
     return (
         <Layout>
-            {user && user.role === "admin" && (
-                <Admin></Admin>
-            )}
-            {user && user.role === "user" && (
-                <User></User>
-            )}
-            {!user && (
-                <User></User>
-            )}
+            {/* admin */}
+            <NewProduct />
+            {/* user || !login */}
         </Layout>
     )
 }
 
-export default Dashboard
+export default AddProduct
