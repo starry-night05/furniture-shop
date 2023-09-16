@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Component } from 'react'
 import axios from 'axios'
 // component.render
 import Sidebar from '../../Layout/Sidebar'
@@ -13,7 +13,9 @@ import ImageList from '@mui/material/ImageList'
 import TextField from '@mui/material/TextField'
 import Autocomplete from '@mui/material/Autocomplete'
 import Stack from '@mui/material/Stack'
-
+// textarea.component
+import { CKEditor } from '@ckeditor/ckeditor5-react'
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 // icon.component
 
 const NewProduct = () => {
@@ -46,14 +48,15 @@ const NewProduct = () => {
         getOptionLabel: (option) => option.category,
     };
 
+    // textarea properties
     return (
         <Sidebar>
             <Box component="main" sx={{ flexGrow: 1, p: 3, mt: { xs: 13, md: 15 }, ml: { xs: 0, md: 2 } }}>
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <Card sx={{ width: { xs: '100%', md: '60%' } }}>
+                    <Card sx={{ width: { xs: '100%', md: '100%' } }}>
                         <form>
                             <Grid container spacing={2}>
-                                <Grid md={6} xs={12} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <Grid md={4} xs={12} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                     <CardContent>
                                         {/* <p style={{ background: 'red', color: '#fff', fontWeight: 'bold' }}>{msg}</p> */}
                                         <FormGroup sx={{ mb: { xs: '-1rem', md: '1.3rem' } }}>
@@ -96,7 +99,19 @@ const NewProduct = () => {
                                         </FormGroup>
                                     </CardContent>
                                 </Grid>
-                                <Grid md={6} xs={12}>
+                                <Grid md={4} xs={12} sx={{ display: { md: 'none', xs: 'grid' }, mb: '-2.5rem' }}>
+                                    <CardContent>
+                                        <FormGroup>
+                                            <Typography variant="body2" color="initial" sx={{
+                                                fontFamily: 'Poppins'
+                                            }}>
+                                                Deskripsi Produk :
+                                            </Typography>
+                                            <TextField type="text" name="description" id="description" placeholder='Deskripsi produk...' size='small' sx={{ width: { md: '350px', xs: '235px' } }} required />
+                                        </FormGroup>
+                                    </CardContent>
+                                </Grid>
+                                <Grid md={4} xs={12}>
                                     <CardContent>
                                         <FormGroup>
                                             <Typography variant="body2" color="initial" sx={{
@@ -104,7 +119,7 @@ const NewProduct = () => {
                                             }}>
                                                 Nama Produk :
                                             </Typography>
-                                            <TextField type="text" name="product_name" id="product_name" placeholder='Nama produk...' size='small' sx={{ width: { md: '350px', xs: '235px' } }} />
+                                            <TextField type="text" name="product_name" id="product_name" placeholder='Nama produk...' size='small' sx={{ width: { md: '350px', xs: '235px' } }} required />
                                         </FormGroup>
                                         <FormGroup sx={{ mt: '1rem' }}>
                                             <Typography variant="body2" color="initial" sx={{
@@ -127,9 +142,54 @@ const NewProduct = () => {
                                             <Typography variant="body2" color="initial" sx={{
                                                 fontFamily: 'Poppins'
                                             }}>
+                                                Stok :
+                                            </Typography>
+                                            <TextField type="number" name="stock" id="stok" placeholder='Jumlah stok produk...' size='small' sx={{ width: { md: '350px', xs: '235px' } }} required />
+                                        </FormGroup>
+                                        <FormGroup sx={{ mt: '1rem' }}>
+                                            <Typography variant="body2" color="initial" sx={{
+                                                fontFamily: 'Poppins'
+                                            }}>
                                                 Harga :
                                             </Typography>
-                                            <TextField type="number" name="price" id="harga" placeholder='Rp...' size='small' sx={{ width: { md: '350px', xs: '235px' } }} />
+                                            <TextField type="number" name="price" id="harga" placeholder='Rp...' size='small' sx={{ width: { md: '350px', xs: '235px' } }} required />
+                                        </FormGroup>
+                                        <FormGroup sx={{ mt: '1rem' }}>
+                                            <Typography variant="body2" color="initial" sx={{
+                                                fontFamily: 'Poppins'
+                                            }}>
+                                                Diskon :
+                                            </Typography>
+                                            <TextField type="number" name="discount" id="diskon" placeholder='...%' size='small' sx={{ width: { md: '350px', xs: '235px' } }} required />
+                                        </FormGroup>
+                                    </CardContent>
+                                </Grid>
+                                <Grid md={4} xs={12} sx={{ display: { md: 'grid', xs: 'none' } }}>
+                                    <CardContent>
+                                        <FormGroup>
+                                            <Typography variant="body2" color="initial" sx={{
+                                                fontFamily: 'Poppins'
+                                            }}>
+                                                Deskripsi Produk :
+                                            </Typography>
+                                            <div className="App" style={{
+                                                width: '430px'
+                                            }}>
+                                                <CKEditor
+                                                    editor={ClassicEditor}
+                                                    data="<p>Hello from CKEditor&nbsp;5!</p>"
+                                                    onChange={(event, editor) => {
+                                                        const data = editor.getData();
+                                                        console.log({ event, editor, data });
+                                                    }}
+                                                    onBlur={(event, editor) => {
+                                                        console.log('Blur.', editor);
+                                                    }}
+                                                    onFocus={(event, editor) => {
+                                                        console.log('Focus.', editor);
+                                                    }}
+                                                />
+                                            </div>
                                         </FormGroup>
                                     </CardContent>
                                 </Grid>
