@@ -11,7 +11,7 @@ const AddProduct = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { isError } = useSelector((state => state.auth));
-    const { user } = useSelector((state) => state.auth);
+    // const { user } = useSelector((state) => state.auth);
 
     useEffect(() => {
         dispatch(Profile());
