@@ -26,7 +26,7 @@ const NewProduct = () => {
     const [price, setPrice] = useState('');
     const [discount, setDiscount] = useState('');
     const [description, setDescription] = useState('');
-    const [categoryId, setCategories] = useState([]);
+    const [categoryId, setCategoryId] = useState(null);
     const [file, setFile] = useState('');
     const [preview, setPreview] = useState('');
     const [msg, setMsg] = useState('');
@@ -40,7 +40,7 @@ const NewProduct = () => {
     const getCategories = async () => {
         try {
             const response = await axios.get('http://localhost:5000/categories');
-            setCategories(response.data);
+            setCategoryId(response.data);
         } catch (error) {
             console.error('Error fetching categories:', error);
         }
@@ -62,7 +62,7 @@ const NewProduct = () => {
         e.preventDefault();
         try {
             await axios.post('http://localhost:5000/addProduct', {
-                categoryId: categoryId,
+                categoryId: categoryId.id,
                 product_name: product_name,
                 description: description,
                 stock: stock,
@@ -74,7 +74,7 @@ const NewProduct = () => {
                     "Content-Type": 'multipart/form-data'
                 }
             });
-            navigate('/list-product');
+            navigate('/list-produk');
         } catch (error) {
             if (error.response) {
                 setMsg(error.response.data.msg);
@@ -87,9 +87,9 @@ const NewProduct = () => {
             <Box component="main" sx={{ flexGrow: 1, p: 3, mt: { xs: 13, md: 15 }, ml: { xs: 0, md: 2 } }}>
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <Card sx={{ width: { xs: '100%', md: '100%' } }}>
-                        <Grid container spacing={2}>
-                            <Grid md={4} xs={12} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                <CardContent>
+                        <CardContent>
+                            <Grid container spacing={2}>
+                                <Grid md={4} xs={12} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                     <form onSubmit={saveProduct}>
                                         {/* <p style={{ background: 'red', color: '#fff', fontWeight: 'bold' }}>{msg}</p> */}
                                         <FormGroup sx={{ mb: { xs: '-1rem', md: '1.3rem' } }}>
@@ -144,7 +144,18 @@ const NewProduct = () => {
                                             }}>
                                                 Kategori :
                                             </Typography>
-                                            <TextField type="number" name="categoryId" id="stok" placeholder='Jumlah stok produk...' size='small' value={categoryId} onChange={(e) => setCategories(e.target.value)} sx={{ width: { md: '350px', xs: '235px' } }} required />
+                                            <Stack spacing={1} sx={{ width: { xs: '235px', md: '350px' } }}>
+                                                <Autocomplete
+                                                    {...defaultProps}
+                                                    id="clear-on-escape"
+                                                    clearOnEscape
+                                                    value={categoryId}
+                                                    onChange={(event, newValue) => setCategoryId(newValue)}
+                                                    renderInput={(params) => (
+                                                        <TextField {...params} placeholder='Pilih kategori...' variant="standard" name='categoryId' />
+                                                    )}
+                                                />
+                                            </Stack>
                                         </FormGroup>
                                         <FormGroup sx={{ mt: '1rem' }}>
                                             <Typography variant="body2" color="initial" sx={{
@@ -176,7 +187,24 @@ const NewProduct = () => {
                                             }}>
                                                 Deskripsi :
                                             </Typography>
-                                            <TextField type="text" name="description" id="diskon" placeholder='...%' size='small' value={description} onChange={(e) => setDescription(e.target.value)} sx={{ width: { md: '350px', xs: '235px' } }} required />
+                                            <Box className="App" sx={{
+                                                width: '430px'
+                                            }}>
+                                                <CKEditor
+                                                    data={description}
+                                                    onChange={(event, editor) => {
+                                                        const data = editor.getData();
+                                                        setDescription(data); // Save the editor data to the state
+                                                    }}
+                                                    editor={ClassicEditor}
+                                                    onBlur={(event, editor) => {
+                                                        console.log('Blur.', editor);
+                                                    }}
+                                                    onFocus={(event, editor) => {
+                                                        console.log('Focus.', editor);
+                                                    }}
+                                                />
+                                            </Box>
                                         </FormGroup>
                                         <FormGroup sx={{ display: { xs: 'grid', md: 'grid' } }}>
                                             <Button type="submit" variant='contained' sx={{
@@ -196,9 +224,10 @@ const NewProduct = () => {
                                             </Button>
                                         </FormGroup>
                                     </form>
-                                </CardContent>
+                                </Grid>
                             </Grid>
-                            {/* <Grid md={4} xs={12} sx={{ display: { md: 'none', xs: 'grid' }, mb: '-2.5rem' }}>
+                        </CardContent>
+                        {/* <Grid md={4} xs={12} sx={{ display: { md: 'none', xs: 'grid' }, mb: '-2.5rem' }}>
                                     <CardContent>
                                         <FormGroup>
                                             <Typography variant="body2" color="initial" sx={{
@@ -343,7 +372,6 @@ const NewProduct = () => {
                                         </FormGroup>
                                     </CardContent>
                                 </Grid> */}
-                        </Grid>
                     </Card>
                 </div>
             </Box>

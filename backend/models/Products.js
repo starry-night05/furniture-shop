@@ -26,7 +26,7 @@ const Products = db.define('products', {
     image: DataTypes.TEXT,
     url: DataTypes.TEXT,
     price: DataTypes.INTEGER,
-    discount: DataTypes.INTEGER
+    discount: DataTypes.STRING
 }, {
     freezeTableName: true
 });
