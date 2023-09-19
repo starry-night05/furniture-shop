@@ -4,6 +4,8 @@ import Login from "./views/Login";
 import ProductList from "./views/ProductList";
 import AddProduct from "./views/addProduct";
 import CategoryList from "./views/CategoryList";
+import AddCategories from "./views/AddCategories";
+import EditProduct from "./views/EditProduct";
 
 function App() {
   return (
@@ -16,8 +18,10 @@ function App() {
           {/* Produk */}
           <Route path="/list-produk" element={<ProductList />} />
           <Route path="/tambah-produk" element={<AddProduct />} />
+          <Route path="/edit-produk/:id" element={<EditProduct />} />
           {/* kategori */}
           <Route path="/list-kategori" element={<CategoryList />} />
+          <Route path="/tambah-kategori" element={<AddCategories />} />
           {/* user */}
           {/* admin */}
         </Routes>

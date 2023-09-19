@@ -108,30 +108,42 @@ export const updateProduct = async (req, res) => {
             id: req.params.id
         }
     });
-    if (!product) return res.status(404).json({ msg: "Product didn`t found" });
-    let fileName = "";
-    if (req.files === null) {
-        fileName = Products.image;
-    } else {
+
+    if (!product) return res.status(404).json({ msg: "Product didn't found" });
+
+    let fileName = product.image; // Use the existing image filename
+
+    if (req.files !== null) {
         const file = req.files.file;
         const size = file.data.length;
-        const ext = path.extname(file.product_name);
-        fileName = file.md5 + ext;
-        const allowedType = ['.jpeg', '.jpg', '.png'];
+        const ext = path.extname(file.name);
+        const baseName = path.basename(file.name, ext);
 
-        if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ msg: "Invalid image" });
+        // Generate a unique filename if the file already exists
+        let counter = 1;
+        let newFileName = fileName;
+        while (fs.existsSync(`./public/images/products/${newFileName}`)) {
+            newFileName = `${baseName}_${counter}${ext}`;
+            counter++;
+        }
+
+        fileName = newFileName;
+
+        const allowedTypes = ['.jpeg', '.jpg', '.png'];
+
+        if (!allowedTypes.includes(ext.toLowerCase())) return res.status(422).json({ msg: "Invalid image" });
 
         if (size > 200000000) return res.status(422).json({ msg: "Image must be less than 200MB" });
 
         const filePath = `./public/images/products/${product.image}`;
         fs.unlinkSync(filePath);
 
-        file.mv(`./public/images/${fileName}`, (err) => {
+        file.mv(`./public/images/products/${fileName}`, (err) => {
             if (err) return res.status(500).json({ msg: err.message });
         });
     }
 
-    const { categoryId, product_name, description, price, discount } = req.body;
+    const { categoryId, product_name, description, stock, price, discount } = req.body;
     const url = `${req.protocol}://${req.get("host")}/images/products/${fileName}`;
 
     try {
@@ -139,7 +151,8 @@ export const updateProduct = async (req, res) => {
             categoryId: categoryId,
             product_name: product_name,
             description: description,
-            image: fileName,
+            stock: stock,
+            image: fileName, // Update the image filename
             url: url,
             price: price,
             discount: discount
@@ -153,6 +166,7 @@ export const updateProduct = async (req, res) => {
         console.log(error.message);
     }
 }
+
 export const deleteProduct = async (req, res) => {
     const product = await Products.findOne({
         where: {

@@ -1,46 +1,49 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
-// component.render
-import Sidebar from '../../Layout/Sidebar'
-// mui.component
-import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
-import Card from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
-import Grid from '@mui/material/Unstable_Grid2'
-import FormGroup from '@mui/material/FormControl'
-import ImageList from '@mui/material/ImageList'
-import TextField from '@mui/material/TextField'
-import Autocomplete from '@mui/material/Autocomplete'
-import Stack from '@mui/material/Stack'
-import { Button } from '@mui/material'
-// textarea.component
-import { CKEditor } from '@ckeditor/ckeditor5-react'
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
-// icon.component
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useNavigate, useParams } from 'react-router-dom';
+import Sidebar from '../../Layout/Sidebar';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Grid from '@mui/material/Unstable_Grid2';
+import FormGroup from '@mui/material/FormControl';
+import ImageList from '@mui/material/ImageList';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
+import Stack from '@mui/material/Stack';
+import { Button } from '@mui/material';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
-const NewProduct = () => {
+const UpdateProduct = () => {
     const [product_name, setProductName] = useState('');
     const [stock, setStock] = useState('');
     const [price, setPrice] = useState('');
     const [discount, setDiscount] = useState('');
     const [description, setDescription] = useState('');
-    const [categoryId, setCategoryId] = useState(null);
+    const [categoryId, setCategoryId] = useState(null); // Store category ID
+    const [categories, setCategories] = useState([]); // Store categories
     const [file, setFile] = useState('');
     const [preview, setPreview] = useState('');
     const [msg, setMsg] = useState('');
     const navigate = useNavigate();
+    const { id } = useParams();
 
-    // Mendapatkan semua data produk
     useEffect(() => {
+        // Fetch categories when the component mounts
         getCategories();
     }, []);
+
+    useEffect(() => {
+        // Fetch product data when the component mounts
+        getProductById();
+    }, [id]); // Trigger the update when the 'id' parameter changes
 
     const getCategories = async () => {
         try {
             const response = await axios.get('http://localhost:5000/categories');
-            setCategoryId(response.data);
+            setCategories(response.data); // Store categories in state
         } catch (error) {
             console.error('Error fetching categories:', error);
         }
@@ -53,16 +56,32 @@ const NewProduct = () => {
     }
 
     const defaultProps = {
-        options: categoryId,
+        options: categories, // Use the categories from state
         getOptionLabel: (option) => option.category,
     };
 
-    // save product
-    const saveProduct = async (e) => {
+    const getProductById = async () => {
+        try {
+            const response = await axios.get(`http://localhost:5000/product/${id}`);
+            setProductName(response.data.product_name);
+            setCategoryId(response.data.categoryId);
+            setStock(response.data.stock);
+            setPrice(response.data.price);
+            setDiscount(response.data.discount);
+            setDescription(response.data.description);
+            setFile(response.data.url);
+        } catch (error) {
+            if (error.response) {
+                setMsg(error.response.data.msg);
+            }
+        }
+    }
+
+    const updateProduct = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:5000/addProduct', {
-                categoryId: categoryId.id,
+            await axios.patch(`http://localhost:5000/updateProduct/${id}`, {
+                categoryId: categoryId, // Use the selected category ID
                 product_name: product_name,
                 description: description,
                 stock: stock,
@@ -81,13 +100,14 @@ const NewProduct = () => {
             }
         }
     }
+
     return (
         <Sidebar>
             <Box component="main" sx={{ flexGrow: 1, p: 3, mt: { xs: 13, md: 15 }, ml: { xs: 0, md: 2 } }}>
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <Card sx={{ width: { xs: '100%', md: '100%' } }}>
                         <CardContent>
-                            <form onSubmit={saveProduct}>
+                            <form onSubmit={updateProduct}>
                                 <Grid container spacing={2}>
                                     <Grid md={4} xs={12}>
                                         <FormGroup sx={{
@@ -105,18 +125,14 @@ const NewProduct = () => {
                                                     </Box>
                                                 </ImageList>
                                             ) : (
-                                                <Typography sx={{
-                                                    fontFamily: 'Poppins',
-                                                    display: 'flex',
-                                                    justifyContent: 'center',
-                                                    alignItems: 'center',
-                                                    border: '2px solid #000',
-                                                    marginTop: '1rem',
-                                                    padding: '5px',
-                                                    borderRadius: '2%',
-                                                    width: { xs: '150px', md: '320px' },
-                                                    height: { xs: '150px', md: '320px' },
-                                                }}>Preview Image</Typography>
+                                                <ImageList sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                                    <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                                                        <img src={file} alt="file" loading="lazy" style={{ width: '320px', height: '320px', marginTop: '1rem' }} />
+                                                    </Box>
+                                                    <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+                                                        <img src={file} alt="file" loading="lazy" style={{ width: '150px', height: '150px', marginTop: '1rem' }} />
+                                                    </Box>
+                                                </ImageList>
                                             )}
                                             <label style={{
                                                 display: 'flex',
@@ -243,7 +259,7 @@ const NewProduct = () => {
                                                     border: '1px solid #ff6b6b'
                                                 }
                                             }}>
-                                                Tambah
+                                                Edit
                                             </Button>
                                         </FormGroup>
                                     </Grid>
@@ -291,7 +307,7 @@ const NewProduct = () => {
                                                     border: '1px solid #ff6b6b'
                                                 }
                                             }}>
-                                                Tambah
+                                                Edit
                                             </Button>
                                         </FormGroup>
                                     </Grid>
@@ -305,4 +321,4 @@ const NewProduct = () => {
     )
 }
 
-export default NewProduct
+export default UpdateProduct

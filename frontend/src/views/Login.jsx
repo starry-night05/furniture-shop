@@ -51,9 +51,9 @@ const Login = () => {
                                 <Typography variant='overline' sx={{ fontFamily: 'Poppins', textAlign: 'center', pb: '6rem' }}>Membuat rumah menjadi mewah dengan iCraft</Typography>
                             </Grid>
                             <Grid xs={12} md={3} sx={{ ml: { xs: '0', md: '15rem' } }}>
-                                {isError ? (
+                                {pesan ? (
                                     <Alert severity="warning" sx={{ mb: '.5rem' }}>
-                                        <AlertTitle>Error</AlertTitle>
+                                        <AlertTitle>Warning</AlertTitle>
                                         <strong>{pesan}</strong>
                                     </Alert>
                                 ) : (

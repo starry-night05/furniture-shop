@@ -128,9 +128,9 @@ const CategoryAdmin = () => {
                                                 <TableCell key={categories.id} style={{ paddingLeft: '2rem' }}>
                                                     {categories.category}
                                                 </TableCell>
-                                                <TableCell key={categories.id} style={{ paddingLeft: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', minHeight: '12vh' }}>
+                                                <TableCell key={categories.id} style={{ paddingLeft: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', minHeight: '15vh' }}>
                                                     <Typography variant="body2" component='a' href='/edit-kategori' sx={{ background: '#7986C7', color: '#fff', p: '5px', textDecoration: 'none', fontFamily: 'Poppins', borderRadius: '10px' }}>Edit</Typography>
-                                                    <Typography variant="body2" component='a' onClick={() => deleteCategory(categories.id)} sx={{ background: '#F73F52', color: '#fff', p: '5px', textDecoration: 'none', fontFamily: 'Poppins', borderRadius: '10px' }}>Hapus</Typography>
+                                                    <Typography variant="body2" component='a' onClick={() => deleteCategory(categories.id)} sx={{ background: '#F73F52', color: '#fff', p: '5px', textDecoration: 'none', fontFamily: 'Poppins', borderRadius: '10px', marginLeft: '5px' }}>Hapus</Typography>
                                                 </TableCell>
                                             </TableRow>
                                         )

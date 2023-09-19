@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 // component.render
 import Sidebar from '../../Layout/Sidebar'
@@ -13,6 +14,7 @@ import TableHead from '@mui/material/TableHead'
 import TablePagination from '@mui/material/TablePagination'
 import TableRow from '@mui/material/TableRow'
 import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
 // icon.component
 import AddIcon from '@mui/icons-material/Add'
 
@@ -34,6 +36,7 @@ const ProductsAdmin = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(20);
     const [searchQuery, setSearchQuery] = useState('');
+    const navigate = useNavigate();
 
     // Filter
     const filteredRows = product.filter((product) => {
@@ -59,6 +62,11 @@ const ProductsAdmin = () => {
     const getProduct = async () => {
         const response = await axios.get('http://localhost:5000/products');
         setProducts(response.data);
+    }
+
+    const updateProduct = async (productId) => {
+        await axios.get(`http://localhost:5000/product/${productId}`);
+        navigate(`/edit-produk/${productId}`);
     }
 
     const deleteProduct = async (productId) => {
@@ -150,9 +158,29 @@ const ProductsAdmin = () => {
                                                         product.price - (product.discount / 100) * product.price
                                                     ).toLocaleString('id-ID')}`}
                                                 </TableCell>
-                                                <TableCell key={product.id} style={{ paddingLeft: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', minHeight: '12vh' }}>
-                                                    <Typography variant="body2" component='a' href='/edit-produk' sx={{ background: '#7986C7', color: '#fff', p: '5px', textDecoration: 'none', fontFamily: 'Poppins', borderRadius: '10px' }}>Edit</Typography>
-                                                    <Typography variant="body2" component='a' onClick={() => deleteProduct(product.id)} sx={{ background: '#F73F52', color: '#fff', p: '5px', textDecoration: 'none', fontFamily: 'Poppins', borderRadius: '10px' }}>Hapus</Typography>
+                                                <TableCell key={product.id} style={{ paddingLeft: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', minHeight: '15vh' }}>
+                                                    <Button type='submit' variant='contained' onClick={() => updateProduct(product.id)} sx={{
+                                                        fontFamily: 'Poppins',
+                                                        background: '#7986C7',
+                                                        color: '#fff',
+                                                        "&:hover": {
+                                                            background: '#fff',
+                                                            color: '#7986C7'
+                                                        }
+                                                    }}>
+                                                        Edit
+                                                    </Button>
+                                                    <Button type='submit' variant='contained' onClick={() => deleteProduct(product.id)} sx={{
+                                                        fontFamily: 'Poppins',
+                                                        background: '#F73F52',
+                                                        color: '#fff',
+                                                        "&:hover": {
+                                                            background: '#fff',
+                                                            color: '#F73F52'
+                                                        }
+                                                    }}>
+                                                        Hapus
+                                                    </Button>
                                                 </TableCell>
                                             </TableRow>
                                         )
