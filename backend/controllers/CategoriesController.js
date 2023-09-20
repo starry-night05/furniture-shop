@@ -53,12 +53,13 @@ export const addCategory = async (req, res) => {
     });
 }
 export const updateCategory = async (req, res) => {
-    const category = await Categories.findOne({
+    const { category } = req.body;
+    const categoryById = await Categories.findOne({
         where: {
             id: req.params.id
         }
     });
-    if (!category) return res.status(404).json({ msg: "Not found" });
+    if (!categoryById) return res.status(404).json({ msg: "Not found" });
     let fileName = "";
     if (req.files === null) {
         fileName = Categories.image;
@@ -73,20 +74,18 @@ export const updateCategory = async (req, res) => {
 
         if (size > 200000000) return res.status(422).json({ msg: "Image must be less than 200MB" });
 
-        const filePath = `./public/images/categories/${category.img}`;
+        const filePath = `./public/images/categories/${categoryById.img}`;
         fs.unlinkSync(filePath);
 
         file.mv(`./public/images/categories/${fileName}`, (err) => {
             if (err) return res.status(500).json({ msg: err.message });
         });
     }
-
-    const { categoryName } = req.body;
     const url = `${req.protocol}://${req.get("host")}/images/categories/${fileName}`;
 
     try {
         await Categories.update({
-            category: categoryName,
+            category: category,
             img: fileName,
             url: url
         }, {

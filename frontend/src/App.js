@@ -6,6 +6,7 @@ import AddProduct from "./views/addProduct";
 import CategoryList from "./views/CategoryList";
 import AddCategories from "./views/AddCategories";
 import EditProduct from "./views/EditProduct";
+import EditCategory from "./views/EditCategory";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           {/* kategori */}
           <Route path="/list-kategori" element={<CategoryList />} />
           <Route path="/tambah-kategori" element={<AddCategories />} />
+          <Route path="/edit-kategori/:id" element={<EditCategory />} />
           {/* user */}
           {/* admin */}
         </Routes>

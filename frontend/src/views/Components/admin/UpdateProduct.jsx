@@ -175,8 +175,14 @@ const UpdateProduct = () => {
                                                     {...defaultProps}
                                                     id="clear-on-escape"
                                                     clearOnEscape
-                                                    value={categoryId}
-                                                    onChange={(event, newValue) => setCategoryId(newValue)}
+                                                    value={categories.find(cat => cat.id === categoryId)} // Set the initial value based on categoryId
+                                                    onChange={(event, newValue) => {
+                                                        if (newValue) {
+                                                            setCategoryId(newValue.id); // Update categoryId when a new category is selected
+                                                        } else {
+                                                            setCategoryId(null); // Clear categoryId when no category is selected
+                                                        }
+                                                    }}
                                                     renderInput={(params) => (
                                                         <TextField {...params} placeholder='Pilih kategori...' variant="standard" name='categoryId' />
                                                     )}

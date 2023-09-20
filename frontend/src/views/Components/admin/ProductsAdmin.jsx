@@ -19,6 +19,7 @@ import Button from '@mui/material/Button'
 import AddIcon from '@mui/icons-material/Add'
 
 
+
 // functions
 const columns = [
     { id: 'no', label: 'No.', minWidth: 170 },
@@ -154,9 +155,16 @@ const ProductsAdmin = () => {
                                                     )}%`}
                                                 </TableCell>
                                                 <TableCell key={product.id} style={{ paddingLeft: '2rem' }}>
-                                                    {`Rp. ${(
-                                                        product.price - (product.discount / 100) * product.price
-                                                    ).toLocaleString('id-ID')}`}
+                                                    <Typography variant="body2" color="text.secondary" sx={{ fontFamily: 'Poppins', textAlign: 'center', textDecoration: 'line-through' }}>
+                                                        {`Rp. ${(
+                                                            product.price
+                                                        ).toLocaleString('id-ID')}`}
+                                                    </Typography>
+                                                    <Typography variant="body2" color="text.secondary" sx={{ fontFamily: 'Poppins', textAlign: 'center' }}>
+                                                        {`Rp. ${(
+                                                            product.price - (product.discount / 100) * product.price
+                                                        ).toLocaleString('id-ID')}`}
+                                                    </Typography>
                                                 </TableCell>
                                                 <TableCell key={product.id} style={{ paddingLeft: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', minHeight: '15vh' }}>
                                                     <Button type='submit' variant='contained' onClick={() => updateProduct(product.id)} sx={{

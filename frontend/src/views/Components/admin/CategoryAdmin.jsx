@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 // component.render
 import Sidebar from '../../Layout/Sidebar'
@@ -13,6 +14,7 @@ import TableHead from '@mui/material/TableHead'
 import TablePagination from '@mui/material/TablePagination'
 import TableRow from '@mui/material/TableRow'
 import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
 // icon.component
 import AddIcon from '@mui/icons-material/Add'
 
@@ -28,6 +30,7 @@ const CategoryAdmin = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(20);
     const [searchQuery, setSearchQuery] = useState('');
+    const navigate = useNavigate();
 
     // Filter
     const filteredRows = categories.filter((categories) => {
@@ -53,6 +56,11 @@ const CategoryAdmin = () => {
     const getCategories = async () => {
         const response = await axios.get('http://localhost:5000/categories');
         setCategories(response.data);
+    }
+
+    const editCategory = async (categoryId) => {
+        await axios.get(`http://localhost:5000/category/${categoryId}`);
+        navigate(`/edit-kategori/${categoryId}`);
     }
 
     const deleteCategory = async (categoryId) => {
@@ -129,8 +137,28 @@ const CategoryAdmin = () => {
                                                     {categories.category}
                                                 </TableCell>
                                                 <TableCell key={categories.id} style={{ paddingLeft: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', minHeight: '15vh' }}>
-                                                    <Typography variant="body2" component='a' href='/edit-kategori' sx={{ background: '#7986C7', color: '#fff', p: '5px', textDecoration: 'none', fontFamily: 'Poppins', borderRadius: '10px' }}>Edit</Typography>
-                                                    <Typography variant="body2" component='a' onClick={() => deleteCategory(categories.id)} sx={{ background: '#F73F52', color: '#fff', p: '5px', textDecoration: 'none', fontFamily: 'Poppins', borderRadius: '10px', marginLeft: '5px' }}>Hapus</Typography>
+                                                    <Button type='submit' variant='contained' onClick={() => editCategory(categories.id)} sx={{
+                                                        fontFamily: 'Poppins',
+                                                        background: '#7986C7',
+                                                        color: '#fff',
+                                                        "&:hover": {
+                                                            background: '#fff',
+                                                            color: '#7986C7'
+                                                        }
+                                                    }}>
+                                                        Edit
+                                                    </Button>
+                                                    <Button type='submit' variant='contained' onClick={() => deleteCategory(categories.id)} sx={{
+                                                        fontFamily: 'Poppins',
+                                                        background: '#F73F52',
+                                                        color: '#fff',
+                                                        "&:hover": {
+                                                            background: '#fff',
+                                                            color: '#F73F52'
+                                                        }
+                                                    }}>
+                                                        Hapus
+                                                    </Button>
                                                 </TableCell>
                                             </TableRow>
                                         )
