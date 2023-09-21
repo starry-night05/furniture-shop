@@ -74,7 +74,8 @@ export const createProduct = async (req, res) => {
     const file = req.files.file;
     const size = file.data.length;
     const ext = path.extname(file.name);
-    const fileName = file.md5 + ext;
+    const uniqueIdentifier = Date.now(); // Generate a unique identifier (timestamp)
+    const fileName = `${file.md5}_${uniqueIdentifier}${ext}`; // Append the unique identifier to the file name
     const url = `${req.protocol}://${req.get("host")}/images/products/${fileName}`;
     const allowedType = ['.jpeg', '.jpg', '.png'];
 
@@ -102,6 +103,8 @@ export const createProduct = async (req, res) => {
         }
     });
 }
+
+// update product
 export const updateProduct = async (req, res) => {
     const product = await Products.findOne({
         where: {
@@ -167,6 +170,7 @@ export const updateProduct = async (req, res) => {
     }
 }
 
+// delete product
 export const deleteProduct = async (req, res) => {
     const product = await Products.findOne({
         where: {

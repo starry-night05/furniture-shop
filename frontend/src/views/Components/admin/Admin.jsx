@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 // component.render
 import Sidebar from '../../Layout/Sidebar'
 // mui.component
@@ -14,6 +15,37 @@ import CategoryIcon from '@mui/icons-material/CategoryOutlined'
 import TransactionIcon from '@mui/icons-material/ReceiptLongOutlined'
 
 export const Admin = () => {
+    const [products, setProducts] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [users, setUsers] = useState([]);
+
+    useEffect(() => {
+        countProducts();
+    }, []);
+
+    useEffect(() => {
+        countCategories();
+    }, []);
+
+    useEffect(() => {
+        countUsers();
+    }, []);
+
+    const countProducts = async () => {
+        const response = await axios.get('http://localhost:5000/products');
+        setProducts(response.data);
+    }
+
+    const countCategories = async () => {
+        const response = await axios.get('http://localhost:5000/categories');
+        setCategories(response.data);
+    }
+
+    const countUsers = async () => {
+        const response = await axios.get('http://localhost:5000/users');
+        setUsers(response.data);
+    }
+
     return (
         <Sidebar>
             <Box component="main" sx={{ flexGrow: 1, p: 3, mt: { xs: 13, md: 9 }, ml: { xs: 0, md: 2 } }}>
@@ -32,7 +64,7 @@ export const Admin = () => {
                                 <Divider />
                                 <CardContent>
                                     <Typography variant="body2" color="text.secondary">
-                                        200
+                                        {users.length}
                                     </Typography>
                                 </CardContent>
                             </Card>
@@ -50,7 +82,7 @@ export const Admin = () => {
                                 <Divider />
                                 <CardContent>
                                     <Typography variant="body2" color="text.secondary">
-                                        200
+                                        {products.length}
                                     </Typography>
                                 </CardContent>
                             </Card>
@@ -68,7 +100,7 @@ export const Admin = () => {
                                 <Divider />
                                 <CardContent>
                                     <Typography variant="body2" color="text.secondary">
-                                        200
+                                        {categories.length}
                                     </Typography>
                                 </CardContent>
                             </Card>

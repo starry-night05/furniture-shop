@@ -7,6 +7,7 @@ import CategoryList from "./views/CategoryList";
 import AddCategories from "./views/AddCategories";
 import EditProduct from "./views/EditProduct";
 import EditCategory from "./views/EditCategory";
+import ListUsers from "./views/ListUsers";
 
 function App() {
   return (
@@ -25,7 +26,7 @@ function App() {
           <Route path="/tambah-kategori" element={<AddCategories />} />
           <Route path="/edit-kategori/:id" element={<EditCategory />} />
           {/* user */}
-          {/* admin */}
+          <Route path="/list-user" element={<ListUsers />} />
         </Routes>
       </BrowserRouter>
     </div>
