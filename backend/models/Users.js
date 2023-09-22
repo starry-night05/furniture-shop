@@ -27,8 +27,14 @@ const Users = db.define('users', {
             notEmpty: true
         }
     },
-    image: DataTypes.TEXT,
-    url: DataTypes.TEXT,
+    image: {
+        type: DataTypes.TEXT,
+        allowNull: true
+    },
+    url: {
+        type: DataTypes.TEXT,
+        allowNull: true
+    },
     email: {
         type: DataTypes.STRING,
         allowNull: false,

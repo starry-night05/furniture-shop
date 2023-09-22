@@ -73,7 +73,6 @@ export const regUser = async (req, res) => {
 }
 
 export const createUser = async (req, res) => {
-    if (req.files === null) return res.status(400).json({ msg: 'No File added' }); // if file didn't exist
     const { firstname, lastname, password, confPassword, email, tlp, role } = req.body; // request parameters
     // image
     const file = req.files.file;
@@ -85,16 +84,9 @@ export const createUser = async (req, res) => {
     const allowedType = ['.jpeg', '.jpg', '.png'];
 
     if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ msg: "Invalid image" }); // if the image is not in the allowed
-    if (err) return res.status(500).json({ msg: err.message });
 
     if (password !== confPassword) return res.status(400).json({ msg: 'password dan konfirmasi password tidak sama' }); // if password not match with confimPassword
     const hashPassword = await argon2.hash(password); // Hash password
-    const emailUser = await Users.findOne({
-        where: {
-            email: req.body.email
-        }
-    });
-    if (emailUser.length === 1) return res.status(422).json({ msg: 'Email sudah digunakan, gunakan email lain!' }); // if email has already been added
     if (size > 200000000) return res.status(422).json({ msg: "Image must be less than 200MB" }); // if size is more than 200MB
     file.mv(`./public/images/profile/${fileName}`, async (err) => {
         if (err) return res.status(500).json({ msg: err.message });

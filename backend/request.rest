@@ -1,16 +1,15 @@
 // Create a new user
-POST http://localhost:5000/create-users
+POST http://localhost:5000/create-user
 Content-Type: application/json
 
 {
-    "firstname": "Ryo",
-    "lastname": "Yamada",
-    "username": "yamada",
+    "firstname": "Bryant",
+    "lastname": "Sulthan",
     "password": "123456",
     "confPassword": "123456",
-    "email": "ryo@gmail.com",
-    "tlp": "8462587712",
-    "role": "user"
+    "email": "bryant@gmail.com",
+    "tlp": "0823456872",
+    "role": "admin"
 }
 
 ###
@@ -34,15 +33,14 @@ PATCH http://localhost:5000/users/3
 Content-Type: application/json
 
 {
-    "firstname": "user 2",
-    "lastname": "keren",
-    "username": "user 2",
+    "firstname": "Bryant",
+    "lastname": "Sulthan",
     "password": "123456",
     "confPassword": "123456",
-    "email": "user2@gmail.com",
-    "tlp": "98234235",
+    "email": "bryant@gmail.com",
+    "tlp": "0887634567",
     "address": "Bogor",
-    "role": "user"
+    "role": "admin"
 }
 
 ###
@@ -59,7 +57,7 @@ POST http://localhost:5000/login
 Content-Type: application/json
 
 {
-    "email": "user2@gmail.com",
+    "email": "bryant@gmail.com",
     "password": "123456"
 }
 
