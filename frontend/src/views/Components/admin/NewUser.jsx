@@ -15,36 +15,19 @@ import TextField from '@mui/material/TextField'
 import Autocomplete from '@mui/material/Autocomplete'
 import Stack from '@mui/material/Stack'
 import { Button } from '@mui/material'
-// textarea.component
-import { CKEditor } from '@ckeditor/ckeditor5-react'
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
-// icon.component
 
-const NewProduct = () => {
-    const [product_name, setProductName] = useState('');
-    const [stock, setStock] = useState('');
-    const [price, setPrice] = useState('');
-    const [discount, setDiscount] = useState('');
-    const [description, setDescription] = useState('');
-    const [categoryId, setCategoryId] = useState(null);
+const NewUser = () => {
+    const [firstname, setFirstname] = useState('');
+    const [lastname, setLastname] = useState('');
+    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const [tlp, setTlp] = useState('');
+    const [address, setAddress] = useState('');
+    const [role, setRole] = useState(null);
     const [file, setFile] = useState('');
     const [preview, setPreview] = useState('');
     const [msg, setMsg] = useState('');
     const navigate = useNavigate();
-
-    // Mendapatkan semua data kategori
-    useEffect(() => {
-        getCategories();
-    }, []);
-
-    const getCategories = async () => {
-        try {
-            const response = await axios.get('http://localhost:5000/categories');
-            setCategoryId(response.data);
-        } catch (error) {
-            console.error('Error fetching categories:', error);
-        }
-    };
 
     const loadImage = (e) => {
         const image = e.target.files[0];
@@ -52,29 +35,22 @@ const NewProduct = () => {
         setPreview(URL.createObjectURL(image));
     }
 
-    const defaultProps = {
-        options: categoryId,
-        getOptionLabel: (option) => option.category,
-    };
-
-    // save product
-    const saveProduct = async (e) => {
+    const addUser = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:5000/addProduct', {
-                categoryId: categoryId.id,
-                product_name: product_name,
-                description: description,
-                stock: stock,
+            await axios.post('http://localhost:5000/create-user', {
+                firstname: firstname,
+                lastname: lastname,
+                password: password,
                 file: file,
-                price: price,
-                discount: discount
+                tlp: tlp,
+                role: role
             }, {
                 headers: {
                     "Content-Type": 'multipart/form-data'
                 }
             });
-            navigate('/list-produk');
+            navigate('/list-user');
         } catch (error) {
             if (error.response) {
                 setMsg(error.response.data.msg);
@@ -87,7 +63,7 @@ const NewProduct = () => {
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <Card sx={{ width: { xs: '100%', md: '100%' } }}>
                         <CardContent>
-                            <form onSubmit={saveProduct}>
+                            <form onSubmit={addUser}>
                                 <Grid container spacing={2}>
                                     <Grid md={4} xs={12}>
                                         <FormGroup sx={{
@@ -105,18 +81,14 @@ const NewProduct = () => {
                                                     </Box>
                                                 </ImageList>
                                             ) : (
-                                                <Typography sx={{
-                                                    fontFamily: 'Poppins',
-                                                    display: 'flex',
-                                                    justifyContent: 'center',
-                                                    alignItems: 'center',
-                                                    border: '2px solid #000',
-                                                    marginTop: '1rem',
-                                                    padding: '5px',
-                                                    borderRadius: '2%',
-                                                    width: { xs: '150px', md: '320px' },
-                                                    height: { xs: '150px', md: '320px' },
-                                                }}>Preview Image</Typography>
+                                                <ImageList sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                                    <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                                                        <img src='../../../../public/logo192.png' alt="file" loading="lazy" style={{ width: '320px', height: '320px', marginTop: '1rem' }} />
+                                                    </Box>
+                                                    <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+                                                        <img src='../../../../public/logo192.png' alt="file" loading="lazy" style={{ width: '150px', height: '150px', marginTop: '1rem' }} />
+                                                    </Box>
+                                                </ImageList>
                                             )}
                                             <label style={{
                                                 display: 'flex',
@@ -141,9 +113,9 @@ const NewProduct = () => {
                                                     fontWeight: '400'
                                                 }}
                                             >
-                                                Nama Produk :
+                                                Nama Depan :
                                             </Typography>
-                                            <TextField type="text" name="product_name" id="product_name" placeholder='Nama produk...' size='small' value={product_name} onChange={(e) => setProductName(e.target.value)} sx={{ width: { md: '350px', xs: '235px' } }} required />
+                                            <TextField type="text" name="firstname" id="firstname" placeholder='Nama produk...' size='small' value={firstname} onChange={(e) => setFirstname(e.target.value)} sx={{ width: { md: '350px', xs: '235px' } }} required />
                                         </FormGroup>
                                         <FormGroup sx={{ mt: '1rem' }}>
                                             <Typography variant="body2"
@@ -154,18 +126,7 @@ const NewProduct = () => {
                                             >
                                                 Kategori :
                                             </Typography>
-                                            <Stack spacing={1} sx={{ width: { xs: '235px', md: '350px' } }}>
-                                                <Autocomplete
-                                                    {...defaultProps}
-                                                    id="clear-on-escape"
-                                                    clearOnEscape
-                                                    value={categoryId}
-                                                    onChange={(event, newValue) => setCategoryId(newValue)}
-                                                    renderInput={(params) => (
-                                                        <TextField {...params} placeholder='Pilih kategori...' variant="standard" name='categoryId' />
-                                                    )}
-                                                />
-                                            </Stack>
+                                            <TextField type="text" name="lastname" id="lastname" placeholder='Nama produk...' size='small' value={lastname} onChange={(e) => setLastname(e.target.value)} sx={{ width: { md: '350px', xs: '235px' } }} required />
                                         </FormGroup>
                                         <FormGroup sx={{ mt: '1rem', display: { xs: 'grid', md: 'none' } }}>
                                             <Typography variant="body2"
@@ -174,27 +135,11 @@ const NewProduct = () => {
                                                     fontWeight: '400'
                                                 }}
                                             >
-                                                Deskripsi Produk :
+                                                Email :
                                             </Typography>
-                                            <Box className="App" sx={{
-                                                width: '235px'
-                                            }}>
-                                                <CKEditor
-                                                    data={description}
-                                                    onChange={(event, editor) => {
-                                                        const data = editor.getData();
-                                                        setDescription(data);
-                                                    }}
-                                                    editor={ClassicEditor}
-                                                    onBlur={(event, editor) => {
-                                                        console.log('Blur.', editor);
-                                                    }}
-                                                    onFocus={(event, editor) => {
-                                                        console.log('Focus.', editor);
-                                                    }}
-                                                />
-                                            </Box>
+                                            <TextField type="text" name="email" id="email" placeholder='Nama produk...' size='small' value={email} onChange={(e) => setEmail(e.target.value)} sx={{ width: { md: '350px', xs: '235px' } }} required />
                                         </FormGroup>
+                                        {/* sisa pw dst */}
                                         <FormGroup sx={{ mt: '1rem' }}>
                                             <Typography variant="body2"
                                                 sx={{
@@ -228,7 +173,7 @@ const NewProduct = () => {
                                             </Typography>
                                             <TextField type="number" name="discount" id="diskon" placeholder='...%' size='small' value={discount} onChange={(e) => setDiscount(e.target.value)} sx={{ width: { md: '350px', xs: '235px' } }} required />
                                         </FormGroup>
-                                        <FormGroup sx={{ display: { xs: 'grid', md: 'none' } }}>
+                                        <FormGroup sx={{ display: { xs: 'grid', md: 'grid' } }}>
                                             <Button type="submit" variant='contained' sx={{
                                                 fontFamily: 'Poppins',
                                                 fontWeight: 'bold',
@@ -237,54 +182,6 @@ const NewProduct = () => {
                                                 mt: '2rem',
                                                 ml: 'auto',
                                                 mr: { md: '3rem', xs: '5rem' },
-                                                '&:hover': {
-                                                    background: '#f7fff7',
-                                                    color: '#ff6b6b',
-                                                    border: '1px solid #ff6b6b'
-                                                }
-                                            }}>
-                                                Tambah
-                                            </Button>
-                                        </FormGroup>
-                                    </Grid>
-                                    <Grid md={4} xs={12} sx={{ display: { xs: 'none', md: 'grid' } }}>
-                                        <FormGroup sx={{ mt: '1rem' }}>
-                                            <Typography variant="body2"
-                                                sx={{
-                                                    fontFamily: 'Poppins',
-                                                    fontWeight: '400'
-                                                }}
-                                            >
-                                                Deskripsi Produk :
-                                            </Typography>
-                                            <Box className="App" sx={{
-                                                width: '430px'
-                                            }}>
-                                                <CKEditor
-                                                    data={description}
-                                                    onChange={(event, editor) => {
-                                                        const data = editor.getData();
-                                                        setDescription(data);
-                                                    }}
-                                                    editor={ClassicEditor}
-                                                    onBlur={(event, editor) => {
-                                                        console.log('Blur.', editor);
-                                                    }}
-                                                    onFocus={(event, editor) => {
-                                                        console.log('Focus.', editor);
-                                                    }}
-                                                />
-                                            </Box>
-                                        </FormGroup>
-                                        <FormGroup>
-                                            <Button type="submit" variant='contained' sx={{
-                                                fontFamily: 'Poppins',
-                                                fontWeight: 'bold',
-                                                color: '#f7fff7',
-                                                background: '#ff6b6b',
-                                                mt: '.5rem',
-                                                ml: 'auto',
-                                                mr: { md: '1rem', xs: '4rem' },
                                                 '&:hover': {
                                                     background: '#f7fff7',
                                                     color: '#ff6b6b',
@@ -305,4 +202,4 @@ const NewProduct = () => {
     )
 }
 
-export default NewProduct
+export default NewUser
