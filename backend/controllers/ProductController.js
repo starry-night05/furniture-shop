@@ -10,11 +10,7 @@ export const getProducts = async (req, res) => {
         const response = await Products.findAll({
             attributes: ['id', 'product_name', 'description', 'stock', 'image', 'url', 'price', 'discount'],
             include: [{
-                model: Users,
-                attributes: ['firstname', 'lastname', 'username']
-            }, {
-                model: Categories,
-                attributes: ['category', 'img', 'url']
+                model: Categories
             }]
         });
         res.json(response);
