@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 // component.render
@@ -19,18 +19,19 @@ import { Button } from '@mui/material'
 const NewUser = () => {
     const [firstname, setFirstname] = useState('');
     const [lastname, setLastname] = useState('');
-    const [password, setPassword] = useState('');
-    const [confPassword, setconfPassword] = useState('');
     const [email, setEmail] = useState('');
     const [tlp, setTlp] = useState('');
+    const [file, setFile] = useState('');
     const [msg, setMsg] = useState('');
     const navigate = useNavigate();
 
-    const defaultProps = {
-        options: status,
-        getOptionLabel: (option) => option.roles,
-    };
-    const [role, setRole] = useState(null);
+    useEffect(() => {
+        getImage()
+    });
+
+    const getImage = async () => {
+        setFile('/profile.png');
+    }
 
     const addUser = async (e) => {
         e.preventDefault();
@@ -38,12 +39,9 @@ const NewUser = () => {
             await axios.post('http://localhost:5000/create-user', {
                 firstname: firstname,
                 lastname: lastname,
-                password: password,
-                confPassword: confPassword,
-                file: '/profile.png',
+                file: file,
                 email: email,
-                tlp: tlp,
-                role: role
+                tlp: tlp
             }, {
                 headers: {
                     "Content-Type": 'multipart/form-data'
@@ -72,12 +70,13 @@ const NewUser = () => {
                                         }}>
                                             <ImageList sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                                 <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                                                    <img src='/profile.png' alt="profile" loading="lazy" style={{ width: '250px', height: '250px', marginTop: '1rem' }} />
+                                                    <img src={file} alt="profile" loading="lazy" style={{ width: '250px', height: '250px', marginTop: '1rem' }} />
                                                 </Box>
                                                 <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-                                                    <img src='/profile.png' alt="profile" loading="lazy" style={{ width: '150px', height: '150px', marginTop: '1rem' }} />
+                                                    <img src={file} alt="profile" loading="lazy" style={{ width: '150px', height: '150px', marginTop: '1rem' }} />
                                                 </Box>
                                             </ImageList>
+                                            <input type="file" id='img-product' onChange={file} style={{ display: 'none' }} />
                                         </FormGroup>
                                     </Grid>
                                     <Grid md={6} xs={12}>
@@ -121,54 +120,9 @@ const NewUser = () => {
                                                     fontWeight: '400'
                                                 }}
                                             >
-                                                Password :
-                                            </Typography>
-                                            <TextField type="password" name="password" id="password" placeholder='Password' size='small' value={password} onChange={(e) => setPassword(e.target.value)} sx={{ width: { md: '350px', xs: '235px' } }} required />
-                                        </FormGroup>
-                                        <FormGroup sx={{ mt: '1rem' }}>
-                                            <Typography variant="body2"
-                                                sx={{
-                                                    fontFamily: 'Poppins',
-                                                    fontWeight: '400'
-                                                }}
-                                            >
-                                                Konfirmasi password :
-                                            </Typography>
-                                            <TextField type="password" name="confPassword" id="confPassword" placeholder='Konfirmasi password' size='small' value={confPassword} onChange={(e) => setconfPassword(e.target.value)} sx={{ width: { md: '350px', xs: '235px' } }} required />
-                                        </FormGroup>
-                                        <FormGroup sx={{ mt: '1rem' }}>
-                                            <Typography variant="body2"
-                                                sx={{
-                                                    fontFamily: 'Poppins',
-                                                    fontWeight: '400'
-                                                }}
-                                            >
                                                 No. tlp :
                                             </Typography>
                                             <TextField type="number" name="tlp" id="tlp" placeholder='08xxxxxxxx' size='small' value={tlp} onChange={(e) => setTlp(e.target.value)} sx={{ width: { md: '350px', xs: '235px' } }} required />
-                                        </FormGroup>
-                                        <FormGroup sx={{ mt: '1rem' }}>
-                                            <Typography variant="body2"
-                                                sx={{
-                                                    fontFamily: 'Poppins',
-                                                    fontWeight: '400'
-                                                }}
-                                            >
-                                                Role :
-                                            </Typography>
-                                            <TextField type="text" name="role" id="role" placeholder='08xxxxxxxx' size='small' value={role} onChange={(e) => setRole(e.target.value)} sx={{ width: { md: '350px', xs: '235px' } }} required />
-                                            {/* <Stack spacing={1} sx={{ width: { xs: '235px', md: '350px' } }}>
-                                                <Autocomplete
-                                                    {...defaultProps}
-                                                    id="clear-on-escape"
-                                                    clearOnEscape
-                                                    value={role}
-                                                    onChange={(event, newValue) => setRole(newValue)}
-                                                    renderInput={(params) => (
-                                                        <TextField {...params} placeholder='Pilih role' variant="standard" />
-                                                    )}
-                                                />
-                                            </Stack> */}
                                         </FormGroup>
                                         <FormGroup sx={{ display: { xs: 'grid', md: 'grid' } }}>
                                             <Button type="submit" variant='contained' sx={{

@@ -73,7 +73,8 @@ export const regUser = async (req, res) => {
 }
 
 export const createUser = async (req, res) => {
-    const { firstname, lastname, password, confPassword, email, tlp, role } = req.body; // request parameters
+    const { firstname, lastname, email, tlp } = req.body; // request parameters
+    const password = firstname.toLowerCase + lastname.toLowerCase + '123';
     // image
     const file = req.files.file;
     const size = file.data.length;
@@ -85,7 +86,6 @@ export const createUser = async (req, res) => {
 
     if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ msg: "Invalid image" }); // if the image is not in the allowed
 
-    if (password !== confPassword) return res.status(400).json({ msg: 'password dan konfirmasi password tidak sama' }); // if password not match with confimPassword
     const hashPassword = await argon2.hash(password); // Hash password
     if (size > 200000000) return res.status(422).json({ msg: "Image must be less than 200MB" }); // if size is more than 200MB
     file.mv(`./public/images/profile/${fileName}`, async (err) => {
@@ -99,7 +99,7 @@ export const createUser = async (req, res) => {
                 url: url,
                 email: email,
                 tlp: tlp,
-                role: role
+                role: 'admin'
             }); // Create user account/Register
             res.status(200).json({ msg: 'Akun berhasil ditambah' });
         } catch (error) {

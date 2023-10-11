@@ -142,7 +142,7 @@ const UserList = () => {
                                                     {users.tlp}
                                                 </TableCell>
                                                 <TableCell key={users.id} style={{ paddingLeft: '2rem' }}>
-                                                    {users.address}
+                                                    {users.address == null ? '---' : users.address}
                                                 </TableCell>
                                                 <TableCell key={users.id} style={{ paddingLeft: '2rem' }}>
                                                     {users.role}
