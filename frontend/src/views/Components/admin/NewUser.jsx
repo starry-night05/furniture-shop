@@ -12,9 +12,6 @@ import Grid from '@mui/material/Unstable_Grid2'
 import FormGroup from '@mui/material/FormControl'
 import ImageList from '@mui/material/ImageList'
 import TextField from '@mui/material/TextField'
-import Autocomplete from '@mui/material/Autocomplete'
-import Stack from '@mui/material/Stack'
-import { Button } from '@mui/material'
 
 const NewUser = () => {
     const [firstname, setFirstname] = useState('');
@@ -24,14 +21,6 @@ const NewUser = () => {
     const [file, setFile] = useState('');
     const [msg, setMsg] = useState('');
     const navigate = useNavigate();
-
-    useEffect(() => {
-        getImage()
-    });
-
-    const getImage = async () => {
-        setFile('/profile.png');
-    }
 
     const addUser = async (e) => {
         e.preventDefault();
