@@ -137,7 +137,7 @@ const UpdateCategory = () => {
                                                     border: '1px solid #ff6b6b'
                                                 }
                                             }}>
-                                                Tambah
+                                                Edit
                                             </Button>
                                         </FormGroup>
                                     </Grid>

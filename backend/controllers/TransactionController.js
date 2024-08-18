@@ -3,12 +3,13 @@ import Cart from "../models/Cart.js";
 import Users from "../models/Users.js";
 import Products from "../models/Products.js";
 import { Op } from "sequelize";
+// import { response } from "express";
 
 
 // User
 export const checkoutList = async (req, res) => {
     let response;
-    if (req.role == "admin") return res.status(422).json({ msg: 'Lu admin ngapa kepoin transaksi orang' })
+    if (req.role == "admin") return res.status(422).json({ msg: 'Tidak dapat diakses' })
     try {
         let products = await Products.findAll({
             attributes: ['id', 'product_name', 'image', 'url', 'price', 'discount']
@@ -49,48 +50,72 @@ export const checkoutList = async (req, res) => {
                 }
             ]
         });
-        res.status(200).json(response);
+        if (response.length > 0) {
+            res.status(200).json(response);
+        } else {
+            res.status(400).json({ msg: 'Tidak ada transaksi' });
+        }
     } catch (error) {
         res.status(422).json({ msg: error.message });
     }
 }
 
 export const confirmOrder = async (req, res) => {
-    const { total_price, total_disc, total_qty, payment, acc_num, address } = req.body;
+    const { payment, acc_num, address } = req.body;
 
-    const cart = await Cart.findAll({
-        attributes: ['id'],
-        where: {
-            userId: req.userId,
-            status: 'checkin'
-        }
-    });
     try {
-        for (const cartItem of cart) {
-            const totalItem = cartItem.id;
-            await Transaction.create({
-                cartId: totalItem,
+        const cartItems = await Cart.findAll({
+            where: {
                 userId: req.userId,
-                total_price: total_price,
-                total_disc: total_disc,
-                total_qty: total_qty,
-                payment: payment,
-                acc_num: acc_num,
-                address: address,
-                status: 'pending'
+                status: 'checkin'
+            }
+        });
+
+        // Menghitung total harga, diskon, dan kuantitas
+        const total_price = cartItems.reduce((sum, item) => sum + item.subtotal_price, 0);
+        const total_disc = cartItems.reduce((sum, item) => sum + item.subtotal_disc, 0);
+        const total_qty = cartItems.reduce((sum, item) => sum + item.qty, 0);
+
+        // Loop untuk setiap item di keranjang
+        for (const cartItem of cartItems) {
+            // Mengurangi stok produk berdasarkan qty di keranjang
+            const product = await Products.findOne({
+                where: { id: cartItem.productId }
             });
-            await Cart.update(
-                { status: 'checkout' },
-                {
-                    where: {
-                        id: totalItem
-                    }
-                }
-            );
+
+            if (product) {
+                const updatedStock = product.stock - cartItem.qty;
+                await Products.update(
+                    { stock: updatedStock },
+                    { where: { id: product.id } }
+                );
+
+                // Membuat transaksi untuk item ini
+                await Transaction.create({
+                    cartId: cartItem.id,
+                    userId: req.userId,
+                    total_price: total_price,
+                    total_disc: total_disc,
+                    total_qty: total_qty,
+                    payment: payment,
+                    acc_num: acc_num,
+                    address: address,
+                    status: 'pending'
+                });
+
+                // Update status keranjang menjadi 'checkout'
+                await Cart.update(
+                    { status: 'checkout' },
+                    { where: { id: cartItem.id } }
+                );
+            } else {
+                throw new Error(`Produk dengan ID ${cartItem.productId} tidak ditemukan.`);
+            }
         }
-        res.status(200).json({ msg: 'Pembelian berhasil dipesan, mohon tunggu konfirmasi dari kami' });
+
+        res.status(200).json({ msg: 'Pembelian berhasil dipesan, mohon tunggu konfirmasi' });
     } catch (error) {
-        res.status(500).json({ msg: 'Pembelian gagal' });
+        res.status(500).json({ msg: `Pembelian gagal: ${error.message}` });
     }
 }
 
@@ -123,7 +148,7 @@ export const receiveOrder = async (req, res) => {
             [Op.and]: [{ id: req.params.id, userId: req.userId }]
         }
     });
-    if (cekStatus.status === 'recieving') {
+    if (cekStatus.status === 'shipping') {
         try {
             await Transaction.update({
                 status: 'recieved',
@@ -189,9 +214,15 @@ export const getAllTransactions = async (req, res) => {
 }
 
 export const confirm = async (req, res) => {
+    const invalid_id = await Transaction.findOne({
+        where: {
+            id: req.params.id
+        }
+    });
+    if (!invalid_id) return res.status(404).json({ msg: "Pesanan tidak valid" });
     try {
         await Transaction.update({
-            status: 'confirmed'
+            status: 'confirm'
         }, {
             where: {
                 id: req.params.id
@@ -204,12 +235,26 @@ export const confirm = async (req, res) => {
 }
 
 export const cancel = async (req, res) => {
+    const invalid_id = await Transaction.findOne({
+        where: {
+            id: req.params.id
+        }
+    });
+    if (!invalid_id) return res.status(404).json({ msg: "Pesanan tidak valid" }); // Pesanan tidak ditemukan
+    const CekStatus = await Transaction.findOne({
+        where: {
+            id: req.params.id
+        }
+    });
+    if (CekStatus.status === 'confirm' || CekStatus.status === 'shipping' || CekStatus.status === 'cancel' || CekStatus.status === 'recieved') {
+        return res.status(404).json({ msg: "Pesanan tidak dapat dibatalkan" }); // pembatalan tidak valid
+    }
     try {
         await Transaction.update({
             status: 'cancel'
         }, {
             where: {
-                id: req.params.id
+                [Op.and]: [{ id: req.params.id }, { status: 'pending' }]
             }
         });
         res.status(200).json({ msg: 'Pesanan telah dibatalkan' });
@@ -243,7 +288,7 @@ export const receive = async (req, res) => {
     if (cekStatus.status === 'shipping') {
         try {
             await Transaction.update({
-                status: 'recieving',
+                status: 'recieved',
             }, {
                 where: {
                     id: req.params.id

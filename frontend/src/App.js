@@ -9,6 +9,7 @@ import EditProduct from "./views/EditProduct";
 import EditCategory from "./views/EditCategory";
 import ListUsers from "./views/ListUsers";
 import AddUser from "./views/AddUser";
+import Register from "./views/Register";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           {/* user */}
           <Route path="/list-user" element={<ListUsers />} />
           <Route path="/tambah-user" element={<AddUser />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </BrowserRouter>
     </div>

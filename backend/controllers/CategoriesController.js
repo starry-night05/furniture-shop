@@ -25,7 +25,7 @@ export const getCategoryById = async (req, res) => {
 }
 
 export const addCategory = async (req, res) => {
-    if (req.files === null) return res.status(400).json({ msg: 'No File added' });
+    if (req.files === null) return res.status(400).json({ msg: 'Gambar belum ditambahkan' });
     const { category } = req.body;
     const file = req.files.file;
     const size = file.data.length;
@@ -34,9 +34,9 @@ export const addCategory = async (req, res) => {
     const url = `${req.protocol}://${req.get("host")}/images/categories/${fileName}`;
     const allowedType = ['.jpeg', '.jpg', '.png'];
 
-    if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ msg: "Invalid image" });
+    if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ msg: "Ekstensi gambar tidak sesuai" });
 
-    if (size > 200000000) return res.status(422).json({ msg: "Image must be less than 200MB" });
+    if (size > 5000000) return res.status(422).json({ msg: "Ukuran gambar maksimal 5MB" });
 
     file.mv(`./public/images/categories/${fileName}`, async (err) => {
         if (err) return res.status(500).json({ msg: err.message });
@@ -46,7 +46,7 @@ export const addCategory = async (req, res) => {
                 img: fileName,
                 url: url
             });
-            res.status(201).json({ msg: "Category added successfully" });
+            res.status(201).json({ msg: "Kategori barang berhasil ditambahkan" });
         } catch (error) {
             res.status(500).json({ msg: error.message });
         }
@@ -59,10 +59,12 @@ export const updateCategory = async (req, res) => {
             id: req.params.id
         }
     });
-    if (!categoryById) return res.status(404).json({ msg: "Not found" });
+    if (!categoryById) return res.status(404).json({ msg: "Kategori barang tidak valid" });
     let fileName = "";
+    let url = "";
     if (req.files === null) {
         fileName = Categories.image;
+        url = Categories.url;
     } else {
         const file = req.files.file;
         const size = file.data.length;
@@ -70,9 +72,9 @@ export const updateCategory = async (req, res) => {
         fileName = file.md5 + ext;
         const allowedType = ['.jpeg', '.jpg', '.png', '.mp4', '.mp3'];
 
-        if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ msg: "Invalid image" });
+        if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ msg: "Ekstensi gambar tidak sesuai" });
 
-        if (size > 200000000) return res.status(422).json({ msg: "Image must be less than 200MB" });
+        if (size > 5000000) return res.status(422).json({ msg: "Ukuran gambar maksimal 5MB" });
 
         const filePath = `./public/images/categories/${categoryById.img}`;
         fs.unlinkSync(filePath);
@@ -81,7 +83,7 @@ export const updateCategory = async (req, res) => {
             if (err) return res.status(500).json({ msg: err.message });
         });
     }
-    const url = `${req.protocol}://${req.get("host")}/images/categories/${fileName}`;
+    url = `${req.protocol}://${req.get("host")}/images/categories/${fileName}`;
 
     try {
         await Categories.update({
@@ -93,7 +95,7 @@ export const updateCategory = async (req, res) => {
                 id: req.params.id
             }
         });
-        res.status(200).json({ msg: "Category updated successfully" });
+        res.status(200).json({ msg: "Kategori barang berhasil diperbarui" });
     } catch (error) {
         console.log(error.message);
     }
@@ -104,7 +106,7 @@ export const removeCategory = async (req, res) => {
             id: req.params.id
         }
     });
-    if (!categories) return res.status(404).json({ msg: "Not found" });
+    if (!categories) return res.status(404).json({ msg: "Kategori barang tidak valid" });
 
     try {
         const filePath = `./public/images/categories/${categories.img}`;
@@ -114,7 +116,7 @@ export const removeCategory = async (req, res) => {
                 id: req.params.id
             }
         })
-        res.status(200).json({ msg: "Category has been removed" });
+        res.status(200).json({ msg: "Kategori barang berhasil dihapus" });
     } catch (error) {
         console.log(error.message);
     }

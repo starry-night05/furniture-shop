@@ -12,6 +12,7 @@ import CartRoute from './routes/CartRoute.js'
 import TransactionsRoute from './routes/TransactionsRoute.js'
 import AuthRoute from './routes/AuthRoute.js'
 import WishlistRoute from './routes/WishlistRoute.js'
+import ReviewsRoute from './routes/ReviewsRoute.js'
 
 dotenv.config();
 
@@ -19,7 +20,7 @@ const app = express();
 
 // Create tables
 // (async () => {
-//     await db.sync();
+//     await db.sync({ alter: true });
 // })();
 
 const sessionStore = SequelizeStore(session.Store);
@@ -54,6 +55,7 @@ app.use(CartRoute);
 app.use(TransactionsRoute);
 app.use(AuthRoute);
 app.use(WishlistRoute);
+app.use(ReviewsRoute);
 
 // Create a new session
 // store.sync();

@@ -3,13 +3,10 @@ POST http://localhost:5000/create-user
 Content-Type: application/json
 
 {
-    "firstname": "Bryant",
-    "lastname": "Sulthan",
-    "password": "123456",
-    "confPassword": "123456",
-    "email": "bryant@gmail.com",
-    "tlp": "0823456872",
-    "role": "admin"
+    "firstname": "Valerie",
+    "lastname": "Putra",
+    "email": "valerie@gmail.com",
+    "tlp": "0823456872"
 }
 
 ###
@@ -18,27 +15,26 @@ POST http://localhost:5000/registration
 Content-Type: application/json
 
 {
-    "firstname": "Ryan",
-    "lastname": "Sulthan",
-    "username": "starry05",
-    "password": "123456",
-    "confPassword": "123456",
-    "email": "starry05@gmail.com",
-    "tlp": "6290283428"
+    "firstname": "King",
+    "lastname": "Daffa",
+    "password": "KingD@ffa123",
+    "confPassword": "KingD@ffa123",
+    "email": "king@gmail.com",
+    "tlp": "0828290978"
 }
 
 ###
 // Update user profile
-PATCH http://localhost:5000/users/3
+PATCH http://localhost:5000/editUser/1
 Content-Type: application/json
 
 {
     "firstname": "Bryant",
-    "lastname": "Sulthan",
-    "password": "123456",
-    "confPassword": "123456",
-    "email": "bryant@gmail.com",
-    "tlp": "0887634567",
+    "lastname": "Sulthan N",
+    "password": "bRyant#123",
+    "confPassword": "bRyant#123",
+    "email": "bryant22@gmail.com",
+    "tlp": "082297020445",
     "address": "Bogor",
     "role": "admin"
 }
@@ -57,8 +53,8 @@ POST http://localhost:5000/login
 Content-Type: application/json
 
 {
-    "email": "bryant@gmail.com",
-    "password": "123456"
+    "email": "bryant22@gmail.com",
+    "password": "bRyant#123"
 }
 
 ###
@@ -71,7 +67,12 @@ GET http://localhost:5000/me
 
 ###
 //Add to Cart
-POST http://localhost:5000/addToCart/2
+POST http://localhost:5000/addToCart/3
+Content-Type: application/json
+
+###
+// cek cart
+GET http://localhost:5000/carts
 Content-Type: application/json
 
 ###
@@ -89,9 +90,6 @@ POST http://localhost:5000/confirm
 Content-Type: application/json
 
 {
-    "total_price": 4000000,
-    "total_disc": 5,
-    "total_qty": 2,
     "payment": "Bank BRI",
     "acc_num": "4123565",
     "address": "Depok"
@@ -107,19 +105,18 @@ GET http://localhost:5000/Transactions
 
 ###
 // confirmation order admin
-PATCH http://localhost:5000/confirm/6
+PATCH http://localhost:5000/confirm/20
 
 ###
 // cancel order admin
-PATCH http://localhost:5000/cancel/6
-
+PATCH http://localhost:5000/cancel/1
 ###
 // cancel order user
 PATCH http://localhost:5000/cancelOrder/6
 
 ###
 // shipping order admin
-PATCH http://localhost:5000/shipping/6
+PATCH http://localhost:5000/shipping/20
 
 ###
 // receive order admin
@@ -140,3 +137,7 @@ POST http://localhost:5000/addToWishlist/1
 ###
 // remove product from wishlist
 DELETE http://localhost:5000/removeFromWishlist/3
+
+###
+// reviews
+GET http://localhost:5000/reviews/1

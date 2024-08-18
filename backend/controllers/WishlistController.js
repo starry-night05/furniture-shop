@@ -19,7 +19,11 @@ export const WishList = async (req, res) => {
                 }]
             }]
         });
-        res.status(200).json(response);
+        if (response.length > 0) {
+            res.status(200).json(response);
+        } else {
+            res.status(400).json({ msg: 'Wishlist kosong' });
+        }
     } catch (error) {
         res.status(422).json({ msg: error.message });
     }

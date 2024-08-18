@@ -13,8 +13,8 @@ import FormGroup from '@mui/material/FormControl'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import ImageList from '@mui/material/ImageList'
-
-
+import Alert from '@mui/material/Alert'
+import AlertTitle from '@mui/material/AlertTitle'
 
 const NewCategories = () => {
     const [category, setCategory] = useState('');
@@ -52,6 +52,18 @@ const NewCategories = () => {
             <Box component="main" sx={{ flexGrow: 1, p: 3, mt: { xs: 13, md: 15 }, ml: { xs: 0, md: 2 } }}>
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <Card sx={{ width: { xs: '100%', md: '60%' } }}>
+                        {msg ? (
+                            <Alert severity="warning" sx={{ mb: '.5rem' }}>
+                                <AlertTitle>Warning</AlertTitle>
+                                <strong>{msg}</strong>
+                            </Alert>
+                        ) : (
+                            <Alert severity="info" sx={{ mb: '.5rem' }}>
+                                <AlertTitle>Info</AlertTitle>
+                                <strong>Ukuran gambar maksimal 5MB</strong>
+                            </Alert>
+                        )
+                        }
                         <CardContent>
                             <form onSubmit={newCategory}>
                                 <Grid container spacing={2}>

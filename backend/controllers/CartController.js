@@ -45,6 +45,8 @@ export const addToCart = async (req, res) => {
             id: req.params.id
         },
     });
+
+    if (getProduct.stock === 0) return res.status(400).json({ msg: "Stok tidak tersedia" });
     let qty; // quantity defualt ketika user memesan product
     let subtotal_price = getProduct.price; // mengambil harga dari product yang dipesan
     let subtotal_disc = getProduct.discount; // mengambil diskon dari product yang dipesan
@@ -68,7 +70,7 @@ export const addToCart = async (req, res) => {
                     subtotal_disc: subtotal_disc,
                     status: 'checkin'
                 });
-                res.status(200).json({ msg: "Produk ditambahkan ke keranjang" });
+                res.status(200).json({ msg: "Pesanan ditambahkan ke keranjang" });
             } else { // jika sudah ada produk di keranjang
                 const updateQty = await Cart.findOne({
                     where: {
@@ -76,6 +78,15 @@ export const addToCart = async (req, res) => {
                     }
                 });
                 qty = updateQty.qty + 1;
+                const product = await Products.findOne({
+                    attributes: ['stock'],
+                    where: {
+                        id: prdctId
+                    }
+                });
+                if (qty > product.stock) {
+                    return res.status(422).json({ msg: "Jumlah melebihi dari stok yang tersedia" });
+                }
                 await Cart.update({
                     qty: qty,
                     subtotal_price: subtotal_price * qty
@@ -84,7 +95,7 @@ export const addToCart = async (req, res) => {
                         [Op.and]: [{ userId: req.userId }, { productId: prdctId }, { status: 'checkin' }]
                     }
                 });
-                res.status(200).json({ msg: "Jumlah produk diperbarui" });
+                res.status(200).json({ msg: "Jumlah pesanan diperbarui" });
             }
         }
     } catch (error) {
@@ -105,7 +116,7 @@ export const updateCartProduct = async (req, res) => {
             id: cart.productId
         }
     });
-    const { qty } = req.body;
+    const qty = req.body;
     const subtotal_price = cart.subtotal_price;
     if (qty > product.stock) return res.status(422).json({ msg: 'Jumlah pesanan melebihi stok yang tersedia' })
     try {
@@ -117,7 +128,7 @@ export const updateCartProduct = async (req, res) => {
                 id: cart.id
             }
         });
-        res.status(200).json({ msg: 'Cart updated successfully' });
+        res.status(200).json({ msg: 'Psanan telah diperbarui' });
     } catch (error) {
         res.status(500).json({ msg: error.message });
     }
@@ -136,7 +147,7 @@ export const deleteCartProduct = async (req, res) => {
                 [Op.and]: [{ id: cart.id }, { userId: req.userId }]
             }
         });
-        res.status(200).json({ msg: "Product removed from cart" });
+        res.status(200).json({ msg: "Pesanan berhasil dihapus" });
     } catch (error) {
         res.status(500).json(error.message);
     }

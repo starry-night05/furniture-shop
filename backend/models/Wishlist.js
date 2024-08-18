@@ -24,7 +24,7 @@ const Wishlist = db.define('wishlist', {
     freezeTableName: true
 });
 
-Users.hasOne(Wishlist);
+Users.hasOne(Wishlist)
 Wishlist.belongsTo(Users, { foreignKey: 'userId' });
 
 Products.hasMany(Wishlist);
