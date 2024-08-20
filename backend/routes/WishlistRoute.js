@@ -9,7 +9,7 @@ import { verifyUser } from '../middleware/Auth.js';
 const router = express.Router();
 
 router.get('/wishlist', verifyUser, WishList);
-router.post('/addToWishlist/:id', verifyUser, addToWishlist);
-router.delete('/removeFromWishlist/:id', verifyUser, removeFromWishlist);
+router.post('/wishlist/:id', verifyUser, addToWishlist);
+router.delete('/wishlist/:id', verifyUser, removeFromWishlist);
 
 export default router;
