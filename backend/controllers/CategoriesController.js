@@ -2,6 +2,7 @@ import Categories from "../models/Categories.js";
 import path from "path"
 import fs from "fs"
 
+// Menampilkan kategori yang ada
 export const categoryList = async (req, res) => {
     try {
         const response = await Categories.findAll();
@@ -11,6 +12,7 @@ export const categoryList = async (req, res) => {
     }
 }
 
+// menampilkan kategori berdasarkan id_kategori
 export const getCategoryById = async (req, res) => {
     try {
         const response = await Categories.findOne({
@@ -24,9 +26,17 @@ export const getCategoryById = async (req, res) => {
     }
 }
 
+// menambahkan kategori
 export const addCategory = async (req, res) => {
-    if (req.files === null) return res.status(400).json({ msg: 'Gambar belum ditambahkan' });
+    if (req.files === null) return res.status(400).json({ msg: 'Gambar belum ditambahkan' }); // jika gambar untuk kategori tidak ada
     const { category } = req.body;
+    const cekCategory = await Categories.findOne({ // jika kategori sudah ada
+        attributes: ['category'],
+        where: {
+            category: category
+        }
+    });
+    if (cekCategory) return res.status(422).json({ msg: 'Kategori sudah ada dalam database' });
     const file = req.files.file;
     const size = file.data.length;
     const ext = path.extname(file.name);
@@ -38,7 +48,7 @@ export const addCategory = async (req, res) => {
 
     if (size > 5000000) return res.status(422).json({ msg: "Ukuran gambar maksimal 5MB" });
 
-    file.mv(`./public/images/categories/${fileName}`, async (err) => {
+    file.mv(`./public/images/categories/${fileName}`, async (err) => { // memindahkan file gambar ke folder images/categories
         if (err) return res.status(500).json({ msg: err.message });
         try {
             await Categories.create({
@@ -52,6 +62,8 @@ export const addCategory = async (req, res) => {
         }
     });
 }
+
+// Memperbarui kategori
 export const updateCategory = async (req, res) => {
     const { category } = req.body;
     const categoryById = await Categories.findOne({
@@ -100,6 +112,8 @@ export const updateCategory = async (req, res) => {
         console.log(error.message);
     }
 }
+
+// Menghapus kategori
 export const removeCategory = async (req, res) => {
     const categories = await Categories.findOne({
         where: {

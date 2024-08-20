@@ -1,16 +1,33 @@
-// Create a new user
-POST http://localhost:5000/create-user
+###
+// Login
+POST http://localhost:5000/login
 Content-Type: application/json
 
 {
-    "firstname": "Valerie",
-    "lastname": "Putra",
-    "email": "valerie@gmail.com",
-    "tlp": "0823456872"
+    "email": "bryant22@gmail.com",
+    "password": "bRyant#123"
 }
 
+// Profile
 ###
+GET http://localhost:5000/me
+
+// Logout
+###
+DELETE http://localhost:5000/logout
+
+// Semua Role \\
+// Mendapatkan semua data produk
+###
+GET http://localhost:5000/products
+
+// Mendapatkan semua data kategori
+###
+GET http://localhost:5000/categories
+
+// User \\
 // Register user
+###
 POST http://localhost:5000/registration
 Content-Type: application/json
 
@@ -23,8 +40,26 @@ Content-Type: application/json
     "tlp": "0828290978"
 }
 
+// Admin \\
+// -- Pengaturan user --
+// Tambah user baru
 ###
-// Update user profile
+POST http://localhost:5000/create-user
+Content-Type: application/json
+
+{
+    "firstname": "Valerie",
+    "lastname": "Putra",
+    "email": "valerie@gmail.com",
+    "tlp": "0823456872"
+}
+
+// Menampilkan user berdasarkan id_user
+###
+GET http://localhost:5000/user/1
+
+// Update data pengguna
+###
 PATCH http://localhost:5000/editUser/1
 Content-Type: application/json
 
@@ -39,31 +74,13 @@ Content-Type: application/json
     "role": "admin"
 }
 
-###
 // delete user
+###
 DELETE http://localhost:5000/removeUser/3
 
 ###
 // get categories
 GET http://localhost:5000/products-category/6
-
-###
-// Login
-POST http://localhost:5000/login
-Content-Type: application/json
-
-{
-    "email": "bryant22@gmail.com",
-    "password": "bRyant#123"
-}
-
-###
-// Logout
-DELETE http://localhost:5000/logout
-
-###
-//Profile
-GET http://localhost:5000/me
 
 ###
 //Add to Cart
@@ -94,10 +111,6 @@ Content-Type: application/json
     "acc_num": "4123565",
     "address": "Depok"
 }
-
-###
-// Checkout List
-GET http://localhost:5000/checkoutList
 
 ###
 // Transaction List Admin

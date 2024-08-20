@@ -7,7 +7,6 @@ import {
     cancel,
     cancelOrder,
     shipping,
-    receive,
     receiveOrder
 } from '../controllers/TransactionController.js';
 import { verifyUser, adminOnly } from '../middleware/Auth.js';
@@ -24,6 +23,5 @@ router.get('/Transactions', adminOnly, verifyUser, getAllTransactions);
 router.patch('/confirm/:id', adminOnly, verifyUser, confirm);
 router.patch('/cancel/:id', adminOnly, verifyUser, cancel);
 router.patch('/shipping/:id', adminOnly, verifyUser, shipping);
-router.patch('/receive/:id', adminOnly, verifyUser, receive);
 
 export default router;

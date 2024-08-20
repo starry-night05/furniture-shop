@@ -5,7 +5,8 @@ import {
     regUser,
     createUser,
     editUser,
-    deleteUser
+    deleteUser,
+    editProfile
 } from "../controllers/UsersController.js";
 import { verifyUser, adminOnly } from '../middleware/Auth.js';
 
@@ -16,7 +17,8 @@ router.get('/users', adminOnly, getUsers);
 router.get('/user/:id', verifyUser, getUserById);
 router.post('/registration', regUser);
 router.post('/create-user', adminOnly, createUser);
+router.patch('/editProfile', verifyUser, editProfile);
 router.patch('/editUser/:id', verifyUser, editUser);
-router.delete('/removeUser/:id', verifyUser, deleteUser);
+router.delete('/removeUser/:id', adminOnly, deleteUser);
 
 export default router;

@@ -3,7 +3,7 @@ import Products from "../models/Products.js";
 import Users from "../models/Users.js";
 import { Op } from "sequelize";
 
-// Get all products
+// Menampilkan semua produk di keranjang
 export const cartList = async (req, res) => {
     try {
         let response;
@@ -38,7 +38,7 @@ export const cartList = async (req, res) => {
     }
 }
 
-// add product to cart
+// Menambah produk ke dalam keranjang
 export const addToCart = async (req, res) => {
     const getProduct = await Products.findOne({
         where: {
@@ -47,7 +47,7 @@ export const addToCart = async (req, res) => {
     });
 
     if (getProduct.stock === 0) return res.status(400).json({ msg: "Stok tidak tersedia" });
-    let qty; // quantity defualt ketika user memesan product
+    let qty; // jumlah awal ketika user memesan product
     let subtotal_price = getProduct.price; // mengambil harga dari product yang dipesan
     let subtotal_disc = getProduct.discount; // mengambil diskon dari product yang dipesan
     let prdctId = getProduct.id; // mendapat dari productId yang dipesan
@@ -60,7 +60,7 @@ export const addToCart = async (req, res) => {
 
     try {
         if (req.role === 'user') {
-            if (cartUser.length === 0) { // Check if no cart items were found
+            if (cartUser.length === 0) { // Jika produk tidak ada di keranjang
                 qty = 1;
                 await Cart.create({
                     userId: req.userId,
@@ -84,7 +84,7 @@ export const addToCart = async (req, res) => {
                         id: prdctId
                     }
                 });
-                if (qty > product.stock) {
+                if (qty > product.stock) { // jika menambah produk yang sama, namun jumlah pesanan melebihi yang tersedia
                     return res.status(422).json({ msg: "Jumlah melebihi dari stok yang tersedia" });
                 }
                 await Cart.update({
@@ -103,7 +103,7 @@ export const addToCart = async (req, res) => {
     }
 }
 
-// Update quantity
+// Memperbarui jumlah pesanan
 export const updateCartProduct = async (req, res) => {
     const cart = await Cart.findOne({
         where: {
@@ -118,7 +118,7 @@ export const updateCartProduct = async (req, res) => {
     });
     const qty = req.body;
     const subtotal_price = cart.subtotal_price;
-    if (qty > product.stock) return res.status(422).json({ msg: 'Jumlah pesanan melebihi stok yang tersedia' })
+    if (qty > product.stock) return res.status(422).json({ msg: 'Jumlah pesanan melebihi stok yang tersedia' }) // jumlah melebihi stok yang tersedia
     try {
         await Cart.update({
             qty: qty,
@@ -134,7 +134,7 @@ export const updateCartProduct = async (req, res) => {
     }
 }
 
-// delete product from cart
+// Menghapus produk dari keranjang
 export const deleteCartProduct = async (req, res) => {
     try {
         const cart = await Cart.findOne({

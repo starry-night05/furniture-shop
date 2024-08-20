@@ -73,11 +73,9 @@ const Transaction = db.define('transactions', {
     freezeTableName: true
 });
 
-// Relation between cart and transaction
 Cart.hasOne(Transaction);
 Transaction.belongsTo(Cart, { foreignKey: 'cartId' });
 
-// Relation between user and transaction
 Users.hasMany(Transaction);
 Transaction.belongsTo(Users, { foreignKey: 'userId' });
 

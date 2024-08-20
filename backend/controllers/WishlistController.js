@@ -3,6 +3,7 @@ import Products from '../models/Products.js'
 import Categories from '../models/Categories.js';
 import { Op } from 'sequelize';
 
+// Menampilkan semua wishlist
 export const WishList = async (req, res) => {
     let response;
     try {
@@ -29,6 +30,7 @@ export const WishList = async (req, res) => {
     }
 }
 
+// Menambahkan produk ke wishlist
 export const addToWishlist = async (req, res) => {
     const product = await Products.findOne({
         where: {
@@ -53,19 +55,15 @@ export const addToWishlist = async (req, res) => {
     }
 }
 
+// Menghapus produk dari wishlist
 export const removeFromWishlist = async (req, res) => {
     try {
-        const wishlist = await Wishlist.findOne({
-            where: {
-                id: req.params.id
-            }
-        });
         await Wishlist.destroy({
             where: {
-                [Op.and]: [{ id: wishlist.id }, { userId: req.userId }]
+                [Op.and]: [{ productId: req.params.id }, { userId: req.userId }]
             }
         });
-        res.status(200).json({ msg: 'berhasil menghapus wishlist' });
+        res.status(200).json({ msg: 'Berhasil menghapus produk dari wishlist' });
     } catch (error) {
         res.status(500).json({ msg: error.message });
     }

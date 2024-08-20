@@ -7,7 +7,7 @@ import { Op } from "sequelize";
 import path from 'path';
 import fs from 'fs';
 
-// user
+// Menampilkan ulasan dari setiap produk
 export const reviewsByProduct = async (req, res) => {
     try {
         const reviews = await Reviews.findAll({
@@ -36,11 +36,12 @@ export const reviewsByProduct = async (req, res) => {
     }
 }
 
+// Review produk
 export const review = async (req, res) => {
     try {
-        const { prId, rate, review } = req.body; // Ubah reviewColom menjadi review
+        const { prId, rate, review } = req.body;
 
-        // Mencari transaksi berdasarkan userId dan status dengan join ke tabel Cart untuk memeriksa productId
+        // Mencari transaksi berdasarkan pengguna dan status pesanan yang sudah sampai (recieved)
         const findTransaction = await Transaction.findOne({
             attributes: ['id', 'userId', 'cartId'],
             where: {
@@ -61,6 +62,7 @@ export const review = async (req, res) => {
             return res.status(404).json({ msg: 'Transaksi tidak ditemukan' });
         }
 
+        // Mencegah ulasan berulang
         const reviewStat = await Reviews.findOne({
             where: {
                 [Op.and]: [{ userId: req.userId }, { productId: prId }, { transactionId: findTransaction.id }]
@@ -74,11 +76,11 @@ export const review = async (req, res) => {
 
         const file = req.files.file;
         const size = file.data.length;
-        const ext = path.extname(file.name).toLowerCase(); // Ekstensi file
-        const uniqueIdentifier = Date.now(); // Generate a unique identifier (timestamp)
-        const fileName = `${file.md5}_${uniqueIdentifier}${ext}`; // Append the unique identifier to the file name
+        const ext = path.extname(file.name).toLowerCase();
+        const uniqueIdentifier = Date.now();
+        const fileName = `${file.md5}_${uniqueIdentifier}${ext}`;
 
-        // Tentukan URL berdasarkan tipe file
+        // Memisahkan antara gambar dengan video
         let url;
         const allowedType = ['.jpeg', '.jpg', '.png', '.mp4'];
         if (ext === '.mp4') {
@@ -89,18 +91,16 @@ export const review = async (req, res) => {
             return res.status(422).json({ msg: "File harus berekstensi .jpeg, .jpg, .png, atau .mp4" });
         }
 
-        // Validasi ukuran file
         if (size > 20000000) {
             return res.status(422).json({ msg: "Ukuran file maksimal 20mb" });
         }
 
-        // Simpan ulasan ke dalam database
         await Reviews.create({
             userId: req.userId,
             productId: prId,
             transactionId: findTransaction.id,
             rate: rate,
-            review: review, // Pastikan nama field ini sama dengan nama kolom di model
+            review: review,
             media: fileName,
             url: url
         });
@@ -113,16 +113,16 @@ export const review = async (req, res) => {
 
 export const editReview = async (req, res) => {
     try {
-        const { rate, review } = req.body; // Mengambil data rate dan review dari body request
+        const { rate, review } = req.body;
 
         const file = req.files ? req.files.file : null; // Mengecek apakah ada file yang diunggah
         let fileName, url;
 
         if (file) {
             const size = file.data.length;
-            const ext = path.extname(file.name).toLowerCase(); // Ekstensi file
-            const uniqueIdentifier = Date.now(); // Generate a unique identifier (timestamp)
-            fileName = `${file.md5}_${uniqueIdentifier}${ext}`; // Tambahkan unique identifier ke nama file
+            const ext = path.extname(file.name).toLowerCase();
+            const uniqueIdentifier = Date.now();
+            fileName = `${file.md5}_${uniqueIdentifier}${ext}`;
 
             // Tentukan URL berdasarkan tipe file
             const allowedType = ['.jpeg', '.jpg', '.png', '.mp4'];
@@ -134,7 +134,6 @@ export const editReview = async (req, res) => {
                 return res.status(422).json({ msg: "File harus berekstensi .jpeg, .jpg, .png, atau .mp4" });
             }
 
-            // Validasi ukuran file
             if (size > 20000000) {
                 return res.status(422).json({ msg: "Ukuran file maksimal 20MB" });
             }
@@ -147,7 +146,6 @@ export const editReview = async (req, res) => {
             }
         }
 
-        // Update ulasan di dalam database
         const updateData = {
             rate: rate,
             review: review,
@@ -171,28 +169,3 @@ export const editReview = async (req, res) => {
         res.status(400).json({ msg: error.message });
     }
 };
-
-export const deleteReview = async (req, res) => {
-    const findTransaction = await Transaction.findOne({
-        attributes: ['id', 'userId', 'cartId'],
-        where: {
-            [Op.and]: [{ userId: req.userId }, { status: 'recieved' }]
-        }
-    });
-    const review = await Reviews.findOne({
-        where: {
-            [Op.and]: [{ id: req.params.id }, { userId: req.userId }, { transactionId: findTransaction.id }]
-        }
-    });
-    if (!review) return res.status(404).json({ msg: 'Ulasan tidak ditemukan!' });
-    try {
-        await Reviews.destroy({
-            where: {
-                [Op.and]: [{ id: review.id }, { userId: req.userId }]
-            }
-        });
-        res.status(200).json({ msg: 'Ulasan berhasil dihapus!' });
-    } catch (error) {
-        res.status(400).json({ msg: error.message });
-    }
-}

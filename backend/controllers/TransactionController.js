@@ -7,29 +7,31 @@ import { Op } from "sequelize";
 
 
 // User
+// Menampilkan transaksi
 export const checkoutList = async (req, res) => {
     let response;
-    if (req.role == "admin") return res.status(422).json({ msg: 'Tidak dapat diakses' })
+    if (req.role == "admin") return res.status(422).json({ msg: 'Tidak dapat mengakses' })
     try {
         let products = await Products.findAll({
             attributes: ['id', 'product_name', 'image', 'url', 'price', 'discount']
         });
 
-        // Extract productIds from products
+        // Mendapatkan id_produk dari semua produk
         const productIds = products.map(product => product.id);
 
-        // Find the corresponding cart entries for the products
+        // Mencari produk yang ada di dalam keranjang berdasakan pengguna
         let carts = await Cart.findAll({
             where: {
                 [Op.and]: [{ productId: productIds }, { userId: req.userId }, { status: 'checkout' }]
             }
         });
 
-        // Extract cartIds from carts
+        // Mendapatkan id_cart dari semua keranjang (cart)
         const cartIds = carts.map(cart => cart.id);
 
-        // Find transactions associated with the cartIds
+        // Mencari transaksi berdasakan pengguna dan id_cart
         response = await Transaction.findAll({
+            attributes: ['total_price', 'total_disc', 'total_qty', 'payment', 'address', 'status'],
             where: {
                 [Op.and]: [{ cartId: cartIds }, { userId: req.userId }]
             },
@@ -60,6 +62,7 @@ export const checkoutList = async (req, res) => {
     }
 }
 
+// konfirmasi pesanan
 export const confirmOrder = async (req, res) => {
     const { payment, acc_num, address } = req.body;
 
@@ -76,21 +79,18 @@ export const confirmOrder = async (req, res) => {
         const total_disc = cartItems.reduce((sum, item) => sum + item.subtotal_disc, 0);
         const total_qty = cartItems.reduce((sum, item) => sum + item.qty, 0);
 
-        // Loop untuk setiap item di keranjang
         for (const cartItem of cartItems) {
-            // Mengurangi stok produk berdasarkan qty di keranjang
             const product = await Products.findOne({
                 where: { id: cartItem.productId }
             });
 
             if (product) {
-                const updatedStock = product.stock - cartItem.qty;
+                const updatedStock = product.stock - cartItem.qty; // Mengurangi stok produk berdasarkan qty di keranjang
                 await Products.update(
                     { stock: updatedStock },
                     { where: { id: product.id } }
                 );
 
-                // Membuat transaksi untuk item ini
                 await Transaction.create({
                     cartId: cartItem.id,
                     userId: req.userId,
@@ -112,13 +112,13 @@ export const confirmOrder = async (req, res) => {
                 throw new Error(`Produk dengan ID ${cartItem.productId} tidak ditemukan.`);
             }
         }
-
         res.status(200).json({ msg: 'Pembelian berhasil dipesan, mohon tunggu konfirmasi' });
     } catch (error) {
         res.status(500).json({ msg: `Pembelian gagal: ${error.message}` });
     }
 }
 
+// membatalkan pesanan
 export const cancelOrder = async (req, res) => {
     const cekStatus = await Transaction.findOne({
         attributes: ['id', 'status'],
@@ -126,6 +126,7 @@ export const cancelOrder = async (req, res) => {
             [Op.and]: [{ id: req.params.id, userId: req.userId }]
         }
     });
+    // jika barang sudah diantar
     if (cekStatus.status === 'shipping') return res.status(422).json({ msg: 'Pesanan tidak dapat dibalkan karena pesanan sedang diantar' });
     try {
         await Transaction.update({
@@ -141,6 +142,7 @@ export const cancelOrder = async (req, res) => {
     }
 }
 
+// Penerimaan pesanan
 export const receiveOrder = async (req, res) => {
     const cekStatus = await Transaction.findOne({
         attributes: ['id', 'status'],
@@ -165,6 +167,7 @@ export const receiveOrder = async (req, res) => {
 }
 
 // Admin
+// Menampilkan seluruh transaksi
 export const getAllTransactions = async (req, res) => {
     let response;
     try {
@@ -172,20 +175,19 @@ export const getAllTransactions = async (req, res) => {
             attributes: ['id', 'product_name', 'image', 'url', 'price', 'discount']
         });
 
-        // Extract productIds from products
+        // Mendapatkan id_product dari setiap produk
         const productIds = products.map(product => product.id);
 
-        // Find the corresponding cart entries for the products
+        // Mendapatkan list keranjang berdasarkan produk
         let carts = await Cart.findAll({
             where: {
                 productId: productIds
             }
         });
 
-        // Extract cartIds from carts
+        // Mendapatkan id_cart dari setiap keranjang (cart)
         const cartIds = carts.map(cart => cart.id);
 
-        // Find transactions associated with the cartIds
         response = await Transaction.findAll({
             where: {
                 cartId: cartIds
@@ -213,6 +215,7 @@ export const getAllTransactions = async (req, res) => {
     }
 }
 
+// konfirmasi pembayaran pengguna
 export const confirm = async (req, res) => {
     const invalid_id = await Transaction.findOne({
         where: {
@@ -234,6 +237,7 @@ export const confirm = async (req, res) => {
     }
 }
 
+// Pembatalan pesanan
 export const cancel = async (req, res) => {
     const invalid_id = await Transaction.findOne({
         where: {
@@ -263,6 +267,7 @@ export const cancel = async (req, res) => {
     }
 }
 
+// konfirmasi pengiriman pesanan
 export const shipping = async (req, res) => {
     try {
         await Transaction.update({
@@ -272,31 +277,8 @@ export const shipping = async (req, res) => {
                 id: req.params.id
             }
         });
-        res.status(200).json({ msg: 'Pesanan telah diantar ke alamat anda' });
+        res.status(200).json({ msg: 'Pesanan telah diantar ke alamat tujuan' });
     } catch (error) {
         res.status(422).json({ msg: error.message });
-    }
-}
-
-export const receive = async (req, res) => {
-    const cekStatus = await Transaction.findOne({
-        attributes: ['id', 'status'],
-        where: {
-            id: req.params.id
-        }
-    });
-    if (cekStatus.status === 'shipping') {
-        try {
-            await Transaction.update({
-                status: 'recieved',
-            }, {
-                where: {
-                    id: req.params.id
-                }
-            });
-            res.status(200).json({ msg: 'Pesanan telah diterima pembeli' });
-        } catch (error) {
-            res.status(422).json({ msg: error.message });
-        }
     }
 }
