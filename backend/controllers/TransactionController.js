@@ -126,6 +126,7 @@ export const cancelOrder = async (req, res) => {
             [Op.and]: [{ id: req.params.id, userId: req.userId }]
         }
     });
+    if (!cekStatus) return res.status(404).json({ msg: 'Anda belum memesan apapun' });
     // jika barang sudah diantar
     if (cekStatus.status === 'shipping') return res.status(422).json({ msg: 'Pesanan tidak dapat dibalkan karena pesanan sedang diantar' });
     try {

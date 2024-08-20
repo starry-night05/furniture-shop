@@ -21,7 +21,7 @@ export const Login = async (req, res) => {
 
 export const Me = async (req, res) => {
     const user = await Users.findOne({
-        attributes: ['id', 'firstname', 'lastname', 'email', 'tlp', 'address', 'role'],
+        attributes: ['id', 'firstname', 'lastname', 'email', 'image', 'url', 'tlp', 'address', 'role'],
         where: {
             id: req.session.userId
         }

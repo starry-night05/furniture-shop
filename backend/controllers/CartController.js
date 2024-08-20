@@ -111,13 +111,13 @@ export const updateCartProduct = async (req, res) => {
         }
     });
     const product = await Products.findOne({
-        attributes: ['stock'],
+        attributes: ['stock', 'price', 'discount'],
         where: {
             id: cart.productId
         }
     });
-    const qty = req.body;
-    const subtotal_price = cart.subtotal_price;
+    const { qty } = req.body;
+    const subtotal_price = product.price;
     if (qty > product.stock) return res.status(422).json({ msg: 'Jumlah pesanan melebihi stok yang tersedia' }) // jumlah melebihi stok yang tersedia
     try {
         await Cart.update({
@@ -128,7 +128,7 @@ export const updateCartProduct = async (req, res) => {
                 id: cart.id
             }
         });
-        res.status(200).json({ msg: 'Psanan telah diperbarui' });
+        res.status(200).json({ msg: 'Pesanan telah diperbarui' });
     } catch (error) {
         res.status(500).json({ msg: error.message });
     }

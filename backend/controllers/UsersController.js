@@ -134,7 +134,6 @@ export const regUser = async (req, res) => {
             return res.status(422).json({ msg: 'No. Hp sudah digunakan, gunakan No. Hp lain!' });
         }
     }
-
     try {
         await Users.create({
             firstname: firstname,
