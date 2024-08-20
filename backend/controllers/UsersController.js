@@ -173,32 +173,23 @@ export const editProfile = async (req, res) => {
 
 // edit user
 export const editUser = async (req, res) => {
-    // Cari pengguna berdasarkan ID dari parameter request
     const user = await Users.findOne({
         where: {
             id: req.params.id
         }
     });
-
-    // Jika pengguna tidak ditemukan, kembalikan respon 404
     if (!user) return res.status(404).json({ msg: 'User tidak ditemukan' });
-
-    // Ambil data dari body request
     const { firstname, lastname, password, confPassword, mail, phone, address, role } = req.body;
-
-    // Inisialisasi variabel untuk email, telepon, dan password yang di-hash
-    let email = user.email; // Default ke email pengguna saat ini
-    let tlp = user.tlp; // Default ke nomor telepon pengguna saat ini
-    let hashPassword = user.password; // Default ke password pengguna saat ini
+    let email = user.email;
+    let tlp = user.tlp;
+    let hashPassword = user.password;
 
     // Jika pengguna ingin mengubah password, email, atau nomor telepon
     if (password && mail && phone) {
-        // Validasi password dengan regex
         const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@#$!&*]).{8,}$/;
         if (!passwordRegex.test(password)) {
             return res.status(400).json({ msg: 'Password setidaknya mengandung satu huruf kapital, angka, dan simbol (@,#,$,!,&,*), serta memiliki panjang minimal 8 karakter' });
         }
-
         // Hash password baru
         hashPassword = await argon2.hash(password);
 
@@ -206,7 +197,7 @@ export const editUser = async (req, res) => {
         const emailUser = await Users.findOne({
             attributes: ['email', 'tlp'],
             where: {
-                id: { [Op.not]: user.id }, // Pastikan pengguna lain, bukan pengguna saat ini
+                id: { [Op.not]: user.id },
                 [Op.or]: [{ email: mail }, { tlp: phone }] // Cek berdasarkan email atau telepon
             }
         });
@@ -220,17 +211,14 @@ export const editUser = async (req, res) => {
                 return res.status(422).json({ msg: 'No. Hp sudah digunakan, gunakan No. Hp lain!' });
             }
         }
-
         // Set email dan nomor telepon baru
         email = mail;
         tlp = phone;
     }
-
     // Pastikan password dan konfirmasi password sama
     if (password !== confPassword) return res.status(400).json({ msg: 'Password dan konfirmasi password tidak sama' });
 
     try {
-        // Update data pengguna
         await Users.update({
             firstname: firstname,
             lastname: lastname,
@@ -244,11 +232,8 @@ export const editUser = async (req, res) => {
                 id: user.id
             }
         });
-
-        // Kembalikan respon berhasil
         res.status(200).json({ msg: 'Update berhasil' });
     } catch (error) {
-        // Tangani error dan kembalikan pesan error
         res.status(400).json({ msg: error.message });
     }
 }
