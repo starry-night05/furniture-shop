@@ -86,7 +86,7 @@ export const createProduct = async (req, res) => {
         try {
             await Products.create({
                 categoryId: categoryId,
-                userId: req.userId,
+                userId: 2,
                 product_name: product_name,
                 description: description,
                 stock: stock,

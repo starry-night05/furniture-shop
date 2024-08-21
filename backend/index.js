@@ -20,7 +20,7 @@ const app = express();
 
 // Create tables
 // (async () => {
-//     await db.sync({ alter: true });
+//     await db.sync();
 // })();
 
 const sessionStore = SequelizeStore(session.Store);
